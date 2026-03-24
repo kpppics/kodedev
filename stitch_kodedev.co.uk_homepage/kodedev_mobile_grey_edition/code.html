@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KODE Digital | Professional Web &amp; App Development</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#001e2f",
+              "surface-container-low": "#eff4ff",
+              "primary-container": "#6063ee",
+              "on-background": "#0b1c30",
+              "on-surface-variant": "#464554",
+              "on-primary-fixed": "#07006c",
+              "surface-variant": "#d3e4fe",
+              "outline": "#767586",
+              "on-tertiary-fixed": "#36003e",
+              "surface-dim": "#cbdbf5",
+              "tertiary-fixed-dim": "#fbabff",
+              "surface-bright": "#f8f9ff",
+              "on-tertiary": "#ffffff",
+              "on-surface": "#0b1c30",
+              "inverse-on-surface": "#eaf1ff",
+              "primary-fixed-dim": "#c0c1ff",
+              "on-secondary-fixed-variant": "#004c6e",
+              "on-error-container": "#93000a",
+              "on-primary-container": "#fffbff",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "on-error": "#ffffff",
+              "surface-tint": "#494bd6",
+              "surface-container": "#e5eeff",
+              "surface": "#f8f9ff",
+              "secondary-fixed": "#c9e6ff",
+              "error-container": "#ffdad6",
+              "surface-container-high": "#dce9ff",
+              "surface-container-highest": "#d3e4fe",
+              "tertiary": "#9e00b5",
+              "secondary-fixed-dim": "#89ceff",
+              "secondary": "#006591",
+              "outline-variant": "#c7c4d7",
+              "error": "#ba1a1a",
+              "inverse-surface": "#213145",
+              "on-tertiary-fixed-variant": "#7c008e",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#c0c1ff",
+              "tertiary-container": "#c028d7",
+              "on-secondary": "#ffffff",
+              "primary-fixed": "#e1e0ff",
+              "on-tertiary-container": "#fffbff",
+              "background": "#f8f9ff",
+              "tertiary-fixed": "#ffd6fd",
+              "on-primary": "#ffffff",
+              "primary": "#4648d4",
+              "secondary-container": "#39b8fd",
+              "on-secondary-container": "#004666"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f8f9ff]/70 dark:bg-[#0b1c30]/70 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.04)]">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#6366F1] dark:text-[#818cf8]" data-icon="terminal">terminal</span>
+<span class="text-xl font-bold bg-gradient-to-br from-[#4648d4] to-[#6063ee] bg-clip-text text-transparent font-['Space_Grotesk'] tracking-tight">KODE Digital</span>
+</div>
+<button class="md:hidden text-on-surface hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6">
+<!-- Hero Section -->
+<section class="mb-20 text-center">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-surface-container text-primary font-medium text-xs tracking-widest uppercase">
+<span class="material-symbols-outlined text-sm" data-icon="rocket_launch">rocket_launch</span>
+                Future-Ready Tech
+            </div>
+<h1 class="font-headline font-bold text-4xl leading-[1.1] mb-6 tracking-tight text-on-background">
+                Need a website or app? <span class="text-primary">I make it simple.</span>
+</h1>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8 max-w-md mx-auto">
+                Affordable websites, redesigns, and apps built for real people and small businesses.
+            </p>
+<div class="flex flex-col gap-4">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white font-bold py-4 rounded-full shadow-lg shadow-primary/20 scale-95 active:scale-90 transition-transform">
+                    Get My Free Sample
+                </button>
+<button class="w-full border-2 border-outline-variant/30 text-on-surface font-bold py-4 rounded-full hover:bg-surface-container-low transition-colors">
+                    Get a Quote
+                </button>
+</div>
+</section>
+<!-- Services Section -->
+<section class="mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8 text-center">How I can help</h2>
+<div class="grid gap-4">
+<div class="p-6 rounded-3xl bg-surface-container-low border-b-4 border-primary/10">
+<div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="add_box">add_box</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-2">New Websites</h3>
+<p class="text-on-surface-variant text-sm">Custom, high-speed websites built from the ground up to convert visitors into customers.</p>
+</div>
+<div class="p-6 rounded-3xl bg-surface-container-low border-b-4 border-secondary-container/10">
+<div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-secondary-container text-3xl" data-icon="auto_fix_high">auto_fix_high</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-2">Website Redesign</h3>
+<p class="text-on-surface-variant text-sm">Transform your outdated site into a modern, mobile-responsive powerhouse that represents your brand.</p>
+</div>
+<div class="p-6 rounded-3xl bg-surface-container-low border-b-4 border-tertiary/10">
+<div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="install_mobile">install_mobile</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-2">Apps for Your Business</h3>
+<p class="text-on-surface-variant text-sm">Bespoke mobile and web applications designed to solve your specific business challenges.</p>
+</div>
+</div>
+</section>
+<!-- Concept Gallery -->
+<section class="mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8 text-center">Concept Gallery</h2>
+<div class="flex flex-col gap-8">
+<!-- Project 1 -->
+<div class="group relative overflow-hidden rounded-[2rem] bg-surface-container-highest">
+<img alt="Coffee Shop Concept" class="w-full h-64 object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" data-alt="overhead view of a modern coffee shop interior with minimalist wooden furniture and soft morning light through large windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ1HWHdOevZ-ZS-tOwCtdJ0FEYaUjs2q3-NWmxlBbwwJof2Ra2geSRaiiavWQpYVNMvPHaWXSYqhUWA_UxcnY6grCA6ybQSATEkqpWo1XzshFUcDmZoYPCDw9_VQ9Xo4-UneF8NqRxCuAH6JUkVlSLai6wcwoK9672J60p4JancgSnbcxpa9cUvJx8N7pGv9upMEpCPEawiaA1BKG2Yobkm9hvrhr-n3WFzAOCF1bMeLHjUyF6RxeWss55tWUhZnTR-CSTbcUxxz4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 to-transparent"></div>
+<div class="absolute bottom-0 p-6">
+<span class="text-[10px] uppercase tracking-widest text-primary-fixed-dim font-bold mb-2 block">Hospitality</span>
+<h3 class="font-headline text-xl font-bold text-white">Modern Coffee Shop</h3>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="group relative overflow-hidden rounded-[2rem] bg-surface-container-highest">
+<img alt="Gym App Concept" class="w-full h-64 object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" data-alt="dynamic close up of a person using a high-tech fitness tracking app on a smartphone in a modern dark gym setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGJ5HnLqqEytI6UtyAf9YZ5Ot4H_ubyTgSV7crj2TI1j858etIiW3sKZTtP7hY5HzPh5iizG2kq5Gq65mvkyQgstmYuR0Wm4FKueqNUzjb3OL_KgIHjpMhcZGWTEJM_18rV-mS0N65b5_reNv1jooJmoS1mskb1etCLSt5vs1l52d5aCeXZSmt_vOVoEzRMClFOgmk2Fk8idMbnooY5jAbRrFolAg2IExWqHvXJAUDAjcGM04AcAWuYQ1_bpAR8tB7Yxyw0az7fKU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 to-transparent"></div>
+<div class="absolute bottom-0 p-6">
+<span class="text-[10px] uppercase tracking-widest text-primary-fixed-dim font-bold mb-2 block">Health &amp; Fitness</span>
+<h3 class="font-headline text-xl font-bold text-white">Local Gym App</h3>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="group relative overflow-hidden rounded-[2rem] bg-surface-container-highest">
+<img alt="Real Estate Landing Page" class="w-full h-64 object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" data-alt="architectural shot of a luxury modern house with clean lines glass walls and evening blue hour lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwBcoqs7TepqMlYJMMnIo8Ey8RjM7I7KZNiHI1elwHzcW67uzC6jzK2Qy20tnIJNlT9wqe4e_8gIB7oWkd22LNdRnz7ypq66vhiXY4OuqICWmIMzYxI3_wqyXmmAESDYgGMkL8ADBrYUZOV3hEcYkrP5rmIZL7wOT0ytPETD0MIrvoF3NcMbUfKC-qcsWzImKR_7skw7eR0xBNU-kZNqyMbvBbvO93sQVGOlikmWR0WGTuRiBBze1og5FnK18QYGKGHi7KLP0gzAQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/80 to-transparent"></div>
+<div class="absolute bottom-0 p-6">
+<span class="text-[10px] uppercase tracking-widest text-primary-fixed-dim font-bold mb-2 block">Real Estate</span>
+<h3 class="font-headline text-xl font-bold text-white">Property Portal</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="mb-20 bg-surface-container-low rounded-[3rem] p-8">
+<h2 class="font-headline text-2xl font-bold mb-10 text-center">How It Works</h2>
+<div class="space-y-12 relative">
+<div class="absolute left-[23px] top-4 bottom-4 w-px bg-outline-variant/30"></div>
+<div class="relative flex gap-6">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10 shrink-0">1</div>
+<div>
+<h3 class="font-bold text-lg mb-1">Tell me</h3>
+<p class="text-on-surface-variant text-sm">We discuss your goals, audience, and what makes your business unique.</p>
+</div>
+</div>
+<div class="relative flex gap-6">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10 shrink-0">2</div>
+<div>
+<h3 class="font-bold text-lg mb-1">I design</h3>
+<p class="text-on-surface-variant text-sm">I create a bespoke visual concept that aligns with your brand identity.</p>
+</div>
+</div>
+<div class="relative flex gap-6">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10 shrink-0">3</div>
+<div>
+<h3 class="font-bold text-lg mb-1">I build</h3>
+<p class="text-on-surface-variant text-sm">I turn the design into a lightning-fast, secure, and responsive digital product.</p>
+</div>
+</div>
+<div class="relative flex gap-6">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold z-10 shrink-0">4</div>
+<div>
+<h3 class="font-bold text-lg mb-1">You launch</h3>
+<p class="text-on-surface-variant text-sm">We go live! I handle the technical setup so you can focus on your business.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="mb-20">
+<h2 class="font-headline text-2xl font-bold mb-8 text-center">Trusted by locals</h2>
+<div class="grid gap-6">
+<div class="p-8 bg-white rounded-[2rem] shadow-sm italic relative">
+<span class="material-symbols-outlined text-surface-container-highest text-6xl absolute top-4 right-4 opacity-50" data-icon="format_quote">format_quote</span>
+<p class="text-on-surface mb-6 relative z-10">"KODE transformed our messy legacy site into something we are actually proud to show clients. The process was surprisingly simple."</p>
+<div class="flex items-center gap-3 not-italic">
+<div class="w-10 h-10 rounded-full bg-primary-fixed"></div>
+<div>
+<p class="font-bold text-sm">Sarah Jenkins</p>
+<p class="text-xs text-on-surface-variant">SJ Interiors</p>
+</div>
+</div>
+</div>
+<div class="p-8 bg-white rounded-[2rem] shadow-sm italic relative">
+<span class="material-symbols-outlined text-surface-container-highest text-6xl absolute top-4 right-4 opacity-50" data-icon="format_quote">format_quote</span>
+<p class="text-on-surface mb-6 relative z-10">"Professional, fast, and understands the local market. My gym app has changed how I manage memberships entirely."</p>
+<div class="flex items-center gap-3 not-italic">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed"></div>
+<div>
+<p class="font-bold text-sm">Marcus Reed</p>
+<p class="text-xs text-on-surface-variant">The Iron Room</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Free Sample Form -->
+<section class="mb-20 bg-primary-container rounded-[2.5rem] p-8 text-white">
+<div class="mb-8">
+<h2 class="font-headline text-2xl font-bold mb-2">Get My Free Sample</h2>
+<p class="text-primary-fixed opacity-90 text-sm">No commitment. I'll build a landing page preview specifically for your business.</p>
+</div>
+<form class="space-y-4">
+<div>
+<label class="block text-[10px] uppercase tracking-widest font-bold mb-2 opacity-70">Basic Info</label>
+<input class="w-full bg-white/10 border-0 rounded-2xl p-4 text-white placeholder:text-white/50 focus:ring-2 focus:ring-white/30" placeholder="Your Name" type="text"/>
+</div>
+<div>
+<input class="w-full bg-white/10 border-0 rounded-2xl p-4 text-white placeholder:text-white/50 focus:ring-2 focus:ring-white/30" placeholder="Business Name" type="text"/>
+</div>
+<div>
+<label class="block text-[10px] uppercase tracking-widest font-bold mb-2 opacity-70">Style Preferences</label>
+<select class="w-full bg-white/10 border-0 rounded-2xl p-4 text-white focus:ring-2 focus:ring-white/30 appearance-none">
+<option class="bg-primary-container">Minimal &amp; Clean</option>
+<option class="bg-primary-container">Bold &amp; Vibrant</option>
+<option class="bg-primary-container">Classic &amp; Elegant</option>
+</select>
+</div>
+<div>
+<input class="w-full bg-white/10 border-0 rounded-2xl p-4 text-white placeholder:text-white/50 focus:ring-2 focus:ring-white/30" placeholder="Website you like (Optional)" type="url"/>
+</div>
+<button class="w-full bg-white text-primary font-bold py-4 rounded-full mt-4 hover:bg-opacity-90 transition-all">
+                    Generate Sample
+                </button>
+</form>
+</section>
+<!-- About Section -->
+<section class="mb-20 text-center">
+<img alt="The Developer" class="w-24 h-24 rounded-full mx-auto mb-6 object-cover border-4 border-surface-container" data-alt="friendly headshot of a young professional man in a casual blazer with a warm smile and soft natural background lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwJFWrCv3CwMseVExmEvibwLDFw1e7t8_lKgAa0UHEKlTKzlnZ2DgI-wfiwaqLTYRN7BUSEzqJb66Snpyh6Af2i0xbOab8hQ0BLNYdTLxWiK434BTEHN8elqqjOpsfJWKCuToE2stMp8LhLOP1RRxuThCX4c0-dxoCd8a4dXacdHK2O0vkdr7AJNf4J-mDw9a9lee4xItGxXZ81yNOK9NNZZrf886FGcEr9Z4gd67P9v1EcBu2MCiqyw1enCq2uO6cYxWh8Wk5-p4"/>
+<h2 class="font-headline text-2xl font-bold mb-4">Nice to meet you. Approachable, human, and local.</h2>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+                I'm a solo developer dedicated to helping small businesses bridge the gap between "getting by" and "scaling up" with high-end tech that doesn't break the bank.
+            </p>
+<span class="text-primary font-bold tracking-widest text-[10px] uppercase">est. 2026</span>
+</section>
+<!-- Contact Form -->
+<section class="mb-12" id="contact">
+<div class="text-center mb-10">
+<h2 class="font-headline text-3xl font-bold mb-2">Start Your Project</h2>
+<p class="text-on-surface-variant">Let's build something remarkable.</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-[3rem]">
+<form class="space-y-6">
+<div class="space-y-1">
+<label class="text-sm font-bold px-1">Name</label>
+<input class="w-full bg-white border-outline-variant/20 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-sm font-bold px-1">Email</label>
+<input class="w-full bg-white border-outline-variant/20 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" type="email"/>
+</div>
+<div class="space-y-1">
+<label class="text-sm font-bold px-1">Message</label>
+<textarea class="w-full bg-white border-outline-variant/20 rounded-2xl p-4 focus:ring-2 focus:ring-primary/20" rows="4"></textarea>
+</div>
+<button class="w-full bg-primary text-white font-bold py-5 rounded-full shadow-lg shadow-primary/10">
+                        Send Message
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-4 pb-2 bg-[#ffffff]/80 dark:bg-[#0b1c30]/80 backdrop-blur-2xl rounded-t-[2rem] z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center bg-[#4648d4] text-white rounded-full w-12 h-12 mb-1 shadow-lg shadow-[#4648d4]/20 translate-y-[-4px] transition-transform duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="Code">code</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest hidden">Work</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#64748b] dark:text-[#94a3b8] px-4 hover:text-[#4648d4] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">Stack</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#64748b] dark:text-[#94a3b8] px-4 hover:text-[#4648d4] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">About</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#64748b] dark:text-[#94a3b8] px-4 hover:text-[#4648d4] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest mt-1">Contact</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="flex flex-col items-center gap-6 py-12 px-8 mb-20 w-full bg-[#eff4ff] dark:bg-[#0b1c30] rounded-t-[32px] mt-12">
+<div class="font-['Space_Grotesk'] text-lg font-bold text-[#0b1c30] dark:text-white">KODE Digital</div>
+<div class="flex gap-8">
+<a class="text-[#64748b] dark:text-[#94a3b8] font-['Inter'] text-sm hover:text-[#4648d4] transition-all" href="#">Github</a>
+<a class="text-[#64748b] dark:text-[#94a3b8] font-['Inter'] text-sm hover:text-[#4648d4] transition-all" href="#">LinkedIn</a>
+<a class="text-[#64748b] dark:text-[#94a3b8] font-['Inter'] text-sm hover:text-[#4648d4] transition-all" href="#">Source</a>
+</div>
+<p class="text-[#64748b] dark:text-[#94a3b8] font-['Inter'] text-sm leading-relaxed text-center">© 2024 KODE Digital. Crafted with precision.</p>
+</footer>
+</body></html>
