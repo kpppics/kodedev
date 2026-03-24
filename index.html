@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KODEDEV | Human-Centric Web &amp; App Development</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-primary": "#2f2ebe",
+              "on-secondary-container": "#001e2f",
+              "tertiary-fixed-dim": "#7c008e",
+              "on-background": "#0f172a",
+              "tertiary": "#a21caf",
+              "background": "#cbd5e1",
+              "primary-fixed": "#4f46e5",
+              "on-primary-fixed": "#ffffff",
+              "outline": "#64748b",
+              "surface-container-low": "#e2e8f0",
+              "surface-container-highest": "#f1f5f9",
+              "on-tertiary-container": "#ffffff",
+              "outline-variant": "#94a3b8",
+              "surface-container-high": "#f8fafc",
+              "secondary": "#0284c7",
+              "on-secondary-fixed": "#ffffff",
+              "primary-container": "#4f46e5",
+              "on-surface-variant": "#475569",
+              "inverse-surface": "#1e293b",
+              "on-tertiary-fixed-variant": "#ffd6fd",
+              "on-primary-container": "#ffffff",
+              "secondary-fixed": "#0ea5e9",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#f1f5f9",
+              "surface-tint": "#4f46e5",
+              "surface-dim": "#cbd5e1",
+              "surface-bright": "#f8fafc",
+              "tertiary-container": "#d946ef",
+              "primary-fixed-dim": "#6366f1",
+              "secondary-fixed-dim": "#38bdf8",
+              "tertiary-fixed": "#fae8ff",
+              "surface-variant": "#e2e8f0",
+              "error-container": "#fee2e2",
+              "secondary-container": "#0ea5e9",
+              "inverse-on-surface": "#f8fafc",
+              "on-surface": "#0f172a",
+              "on-error-container": "#991b1b",
+              "on-secondary": "#ffffff",
+              "surface": "#cbd5e1",
+              "error": "#dc2626",
+              "on-primary": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed-variant": "#e1e0ff",
+              "on-secondary-fixed-variant": "#c9e6ff",
+              "on-tertiary-fixed": "#36003e",
+              "on-error": "#ffffff",
+              "primary": "#4f46e5"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+      }
+      .glass-effect {
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .neon-glow {
+        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+      }
+      .neon-border {
+        border: 1px solid rgba(79, 70, 229, 0.2);
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-slate-100/80 backdrop-blur-xl border-b border-slate-300 transition-all">
+<nav class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
+<div class="text-2xl font-bold tracking-tighter text-slate-900 font-headline">KODEDEV <span class="text-[10px] align-top font-body font-normal text-slate-500 tracking-normal ml-1">est. 2026</span></div>
+<!-- Desktop Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="font-headline font-medium text-sm tracking-tight text-slate-600 hover:text-primary transition-colors hover:scale-105 duration-200" href="#services">Services</a>
+<a class="font-headline font-medium text-sm tracking-tight text-slate-600 hover:text-primary transition-colors hover:scale-105 duration-200" href="#portfolio">Concept Gallery</a>
+<a class="font-headline font-medium text-sm tracking-tight text-slate-600 hover:text-primary transition-colors hover:scale-105 duration-200" href="#how-it-works">How It Works</a>
+<a class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-headline font-bold text-sm tracking-tight shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all" href="#quote">Get a Quote</a>
+</div>
+<!-- Mobile Menu Icon (Visual Only) -->
+<div class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</div>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[800px] flex items-center overflow-hidden px-6">
+<div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+<div class="z-10">
+<h1 class="font-headline text-5xl md:text-7xl font-bold tracking-tight text-on-surface leading-[1.1] mb-6">
+                    Need a website or app? <span class="text-primary">I make it simple.</span>
+</h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+                    Affordable websites, redesigns, and apps built for real people and small businesses.
+                </p>
+<div class="flex flex-wrap gap-4">
+<a class="bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-bold text-base shadow-xl shadow-primary/25 hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all" href="#free-sample">
+                        Get My Free Sample
+                    </a>
+<a class="px-8 py-4 rounded-full border-2 border-slate-400 font-headline font-bold text-base text-on-surface hover:bg-slate-200 transition-all" href="#quote">
+                        Get a Quote
+                    </a>
+</div>
+</div>
+<div class="relative">
+<div class="aspect-square rounded-[3rem] overflow-hidden shadow-2xl rotate-3 scale-95 md:scale-100 border-4 border-white">
+<img class="w-full h-full object-cover" data-alt="clean minimal workspace with laptop and notebook showing modern web design interface on screen with soft morning lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwpIWr2w67rFTO5vyd-aMcPAD_SIMayu-VwefM88-7dKVKfMxnN9DXhVUJpoxs0tT6W94OHdR8v0n9bR_MxhhnL1KAVSfQHjBLrBWeuynCpiALzVKu03VOkQYKCB7TEcpzpe0bTyZzcS8AubsfSwK-NXxvKGqS0XnWTuniZ70uadPu6LWli4Cd_-F1Y3EI0a_DWHUbaAgxbwp3rAHGj6cTKtUhWpkN34XUQ_Q0W17qwpQmeEI_8yPReEnonCZcp-bpABqhU6ItbeI"/>
+</div>
+<div class="absolute -bottom-6 -left-6 bg-white/90 p-6 rounded-2xl shadow-2xl max-w-[240px] border border-slate-200 backdrop-blur-md">
+<div class="flex gap-2 text-tertiary mb-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-sm font-medium italic text-slate-700">"Best investment for my local bakery. Professional and easy to talk to."</p>
+</div>
+</div>
+</div>
+<!-- Background Decorative Elements -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/5 via-transparent to-transparent -z-10 blur-3xl"></div>
+</section>
+<!-- Services Section (Bento Grid) -->
+<section class="py-24 bg-slate-200" id="services">
+<div class="max-w-7xl mx-auto px-6">
+<div class="mb-16">
+<span class="text-primary font-bold tracking-widest text-xs uppercase block mb-4">What I Can Do For You</span>
+<h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface">Digital Solutions</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Service 1 -->
+<div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-indigo-500/10 hover:shadow-xl transition-all group border border-slate-300">
+<div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-3xl">language</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-4 text-slate-900">New Websites</h3>
+<p class="text-on-surface-variant leading-relaxed">Modern, responsive, and SEO-ready websites that help you stand out from the crowd and convert visitors.</p>
+</div>
+<!-- Service 2 -->
+<div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-indigo-500/10 hover:shadow-xl transition-all group border border-slate-300">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 group-hover:bg-secondary/20 transition-all">
+<span class="material-symbols-outlined text-3xl">auto_fix_high</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-4 text-slate-900">Website Redesign</h3>
+<p class="text-on-surface-variant leading-relaxed">Breathe new life into your existing site with a fresh look and updated features that match your growing brand.</p>
+</div>
+<!-- Service 3 -->
+<div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-indigo-500/10 hover:shadow-xl transition-all group border border-slate-300">
+<div class="w-14 h-14 rounded-2xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-6 group-hover:scale-110 group-hover:bg-tertiary/20 transition-all">
+<span class="material-symbols-outlined text-3xl">app_shortcut</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-4 text-slate-900">Apps for Your Business</h3>
+<p class="text-on-surface-variant leading-relaxed">Custom tools for ordering, booking, payments, and dashboards built specifically for your business logic.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Concept Gallery Section -->
+<section class="py-24 bg-surface" id="portfolio">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+<div class="max-w-2xl">
+<span class="text-primary font-bold tracking-widest text-xs uppercase block mb-4">Project Previews</span>
+<h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface">Concept Gallery</h2>
+</div>
+<div class="p-4 rounded-2xl border border-slate-400 bg-white/40 backdrop-blur-sm md:max-w-xs">
+<p class="text-on-surface-variant text-sm font-medium">High-fidelity explorations demonstrating what <span class="text-primary font-bold">KODEDEV</span> can build for your specific industry.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+<!-- Concept 1 -->
+<div class="group cursor-default">
+<div class="aspect-video rounded-[2.5rem] overflow-hidden mb-6 bg-white shadow-md border border-slate-300">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="modern coffee shop website concept with warm tones and elegant typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9NWYJDKvSvc8qZwdQaefccQp0hzqLG3Zp7Otv-lO9KRScXoNrlpJaGI-du8Xl12nemJkuYppXoX2BV9-JRzBuV_2LNhJ0N9Yui8DVcGnZYw_vU5ZxX-n7-DeJ8nIlEPP5Cyf3OcCh7x-qYz5QG36U8glK03hfDzsD2Fjv8RqJZ4eiYljZzEi1cZlJ_llvx2EYqL9OCZwhAgIE2JYf_cyIeEAQbbOqZOVShlUjZSfr5fLfsAUrmqxhOLTxp79IGKNAIU3x21ZxQR8"/>
+</div>
+<h4 class="font-headline text-2xl font-bold mb-2 text-slate-900">Modern Coffee Shop</h4>
+<p class="text-on-surface-variant">A warm, inviting digital storefront featuring online ordering and loyalty program integration.</p>
+</div>
+<!-- Concept 2 -->
+<div class="group cursor-default">
+<div class="aspect-video rounded-[2.5rem] overflow-hidden mb-6 bg-white shadow-md border border-slate-300">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="local gym application interface with workout tracking and class booking features" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH3Xvx0szlz8X5jNh17d9KV7r_qgrEgbJWQazgisqmdv4MUwJbzk9wf1YuMoOeF-v_c_pee-14mYnVdL-Afjw74wbPzj9lhRxpOLwm3Vp74l4aS7ANY5ms0WIRPDUacbi8lyVSAtkgJFdc_okxMTK_wnrQ552wKt8QfYbmVuxm61W1aIiHzUrOzAtHm66W5JmWVOFouZGHTpEl5M31vUl-b7263FMDJ45WZlUoofzOpITnPfEqFUIbEykpMcWqHRGFDEzsV7eW2fA"/>
+</div>
+<h4 class="font-headline text-2xl font-bold mb-2 text-slate-900">Local Gym App</h4>
+<p class="text-on-surface-variant">Functional member portal concept for booking classes, tracking progress, and billing management.</p>
+</div>
+<!-- Concept 3 -->
+<div class="group cursor-default">
+<div class="aspect-video rounded-[2.5rem] overflow-hidden mb-6 bg-white shadow-md border border-slate-300">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="real estate landing page with high-quality property photos and lead capture form" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-aTUYLnkjRw8HDHP2H61e3Wyu6EXB_0-mx2ho9aY8jiPJuFpw36NMBIEWYAsv-hSMCFA2AO488vXhLF96MnRy73IlXDHXuEW16z8hJBC0VuwM8gatJMJV4sfLYpI9AL0WKTeFvZBh81nDF1ykUnlf4IBrkSBMWrGI9dEaeifgWcf0IcLrEod8duccu4TEHE5GP0fHwiR-ePuHEc-q6OwY1KaUSa1j-CvF2YgQlxMFeG8AVdjbjti-gVXb68OkMJmCHKMLrKW2Wuc"/>
+</div>
+<h4 class="font-headline text-2xl font-bold mb-2 text-slate-900">Real Estate Landing Page</h4>
+<p class="text-on-surface-variant">High-conversion landing page design with interactive property maps and automated scheduling.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="py-24 bg-slate-300 relative overflow-hidden" id="how-it-works">
+<div class="max-w-7xl mx-auto px-6 relative z-10">
+<div class="text-center mb-20">
+<h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface mb-4">How It Works</h2>
+<p class="text-on-surface-variant font-medium">Your journey from idea to launch in 4 simple steps.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<!-- Step 1 -->
+<div class="text-center">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg border border-primary/20 neon-glow">
+<span class="font-headline text-2xl font-bold text-primary">01</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-3 text-slate-900">Tell me</h3>
+<p class="text-on-surface-variant text-sm font-medium">We chat about your business goals and what you need.</p>
+</div>
+<!-- Step 2 -->
+<div class="text-center">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg border border-primary/20 neon-glow">
+<span class="font-headline text-2xl font-bold text-primary">02</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-3 text-slate-900">I design</h3>
+<p class="text-on-surface-variant text-sm font-medium">I create a visual draft that matches your brand's personality.</p>
+</div>
+<!-- Step 3 -->
+<div class="text-center">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg border border-primary/20 neon-glow">
+<span class="font-headline text-2xl font-bold text-primary">03</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-3 text-slate-900">I build</h3>
+<p class="text-on-surface-variant text-sm font-medium">I turn the design into a fast, functional reality.</p>
+</div>
+<!-- Step 4 -->
+<div class="text-center">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg border border-primary/20 neon-glow">
+<span class="font-headline text-2xl font-bold text-primary">04</span>
+</div>
+<h3 class="font-headline text-xl font-bold mb-3 text-slate-900">You launch</h3>
+<p class="text-on-surface-variant text-sm font-medium">Your new site goes live and you start seeing results.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-24 bg-surface">
+<div class="max-w-5xl mx-auto px-6">
+<div class="grid md:grid-cols-2 gap-12">
+<div class="bg-white p-10 rounded-[3rem] border border-slate-300 relative shadow-sm">
+<span class="material-symbols-outlined text-primary text-5xl opacity-20 absolute top-8 right-8">format_quote</span>
+<p class="text-xl text-slate-800 mb-8 italic font-medium">"KODEDEV didn't just build a site; they built a tool that actually saves me hours every week on bookings."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 border border-primary/30"></div>
+<div>
+<p class="font-bold text-slate-900">Sarah Jenkins</p>
+<p class="text-sm text-on-surface-variant font-medium">Owner, Bloom Florals</p>
+</div>
+</div>
+</div>
+<div class="bg-white p-10 rounded-[3rem] border border-slate-300 relative mt-12 md:mt-0 shadow-sm">
+<span class="material-symbols-outlined text-primary text-5xl opacity-20 absolute top-8 right-8">format_quote</span>
+<p class="text-xl text-slate-800 mb-8 italic font-medium">"Highly professional, easy to talk to, and the final design was way beyond my expectations for the price."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary/10 border border-secondary/30"></div>
+<div>
+<p class="font-bold text-slate-900">Marcus Reed</p>
+<p class="text-sm text-on-surface-variant font-medium">Freelance Architect</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Free Sample Website Form (Standout Section) -->
+<section class="py-24 bg-surface px-6" id="free-sample">
+<div class="max-w-4xl mx-auto">
+<div class="bg-primary p-8 md:p-16 rounded-[3rem] text-on-primary shadow-2xl shadow-primary/30 border border-white/20">
+<div class="text-center mb-12">
+<h2 class="font-headline text-4xl md:text-5xl font-bold mb-6">Get My Free Sample</h2>
+<p class="text-indigo-100 text-lg max-w-xl mx-auto">See what your business could look like with KODEDEV before you commit. No strings attached.</p>
+</div>
+<form class="space-y-10">
+<!-- Basic Info -->
+<div>
+<h3 class="font-headline text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">person</span> Basic Info
+                        </h3>
+<div class="grid md:grid-cols-2 gap-4">
+<input class="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-xl px-6 py-4 focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all w-full" placeholder="Full Name" type="text"/>
+<input class="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-xl px-6 py-4 focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all w-full" placeholder="Email Address" type="email"/>
+</div>
+</div>
+<!-- Business Details -->
+<div>
+<h3 class="font-headline text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">business</span> Business Details
+                        </h3>
+<div class="space-y-4">
+<input class="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-xl px-6 py-4 focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all w-full" placeholder="Business Name" type="text"/>
+<div class="grid md:grid-cols-2 gap-4">
+<input class="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-xl px-6 py-4 focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all w-full" placeholder="Existing Website (if any)" type="url"/>
+<input class="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-xl px-6 py-4 focus:ring-2 focus:ring-white/40 focus:border-transparent transition-all w-full" placeholder="Website you like the look of (optional)" type="text"/>
+</div>
+</div>
+</div>
+<!-- Branding & Preferences -->
+<div class="grid md:grid-cols-2 gap-10">
+<div>
+<h3 class="font-headline text-xl font-bold mb-4">Design Style</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
+<input class="text-white focus:ring-white" name="style" type="radio"/>
+<span>Modern &amp; Clean</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
+<input class="text-white focus:ring-white" name="style" type="radio"/>
+<span>Bold &amp; Techy</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
+<input class="text-white focus:ring-white" name="style" type="radio"/>
+<span>Warm &amp; Friendly</span>
+</label>
+</div>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold mb-4">Required Pages</h3>
+<div class="grid grid-cols-2 gap-2">
+<label class="flex items-center gap-2 text-sm"><input class="rounded border-white/20 bg-white/10 text-white" type="checkbox"/> Services</label>
+<label class="flex items-center gap-2 text-sm"><input class="rounded border-white/20 bg-white/10 text-white" type="checkbox"/> Portfolio</label>
+<label class="flex items-center gap-2 text-sm"><input class="rounded border-white/20 bg-white/10 text-white" type="checkbox"/> Blog</label>
+<label class="flex items-center gap-2 text-sm"><input class="rounded border-white/20 bg-white/10 text-white" type="checkbox"/> Shop</label>
+<label class="flex items-center gap-2 text-sm"><input class="rounded border-white/20 bg-white/10 text-white" type="checkbox"/> Contact</label>
+<label class="flex items-center gap-2 text-sm"><input class="rounded border-white/20 bg-white/10 text-white" type="checkbox"/> Booking</label>
+</div>
+</div>
+</div>
+<div class="pt-6">
+<button class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all" type="submit">
+                            Get My Free Sample
+                        </button>
+</div>
+</form>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="py-24 bg-slate-200 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid md:grid-cols-2 gap-16 items-center">
+<div class="relative">
+<div class="w-full aspect-square rounded-[4rem] bg-white overflow-hidden shadow-2xl -rotate-2 border-8 border-white">
+<img class="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-700" data-alt="portrait of a friendly smiling male developer in his 30s wearing a casual navy sweater in a natural light setting with soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQcuSUNy8DA1ItQBWP6mXv7h3F5SmbKBQvuuWwyT64EESibxeoggdf7N2SLfbT9pjiyFsankrmTjH7_MH_fMl7u4EGVkmTBWwXQeuxO2hklwb5mzCwNq1eWxR6OLLNvEEIZK3Q3hAxwopc5nDqkVhV-h7Ri62a0V1TSbZ5ecit_xJ8qd8LYG_I9jhTX0WBNMIBWwZ-861ST5ZW-9VQ1_Nv3YpjAvqC19dpE60LMGNpBiWMuZN2d34j5lj3RPENqdTgs6wq4g6ZedI"/>
+</div>
+<div class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/20 rounded-full blur-3xl -z-10"></div>
+</div>
+<div>
+<span class="text-primary font-bold tracking-widest text-xs uppercase block mb-4">Nice to meet you</span>
+<h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface mb-8">Approachable, human, and local.</h2>
+<div class="space-y-6 text-on-surface-variant leading-relaxed text-lg font-medium">
+<p>Hi, I'm the human behind KODEDEV. I started this in <span class="text-primary font-bold">est. 2026</span> because I saw too many small businesses struggling with overpriced agencies or "do-it-yourself" builders that never quite look right.</p>
+<p>I believe code is a craft, but service is about people. I speak plain English (no technical jargon, I promise) and focus on making your digital life easier.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Form Section -->
+<section class="py-24 bg-surface" id="quote">
+<div class="max-w-4xl mx-auto px-6">
+<div class="bg-white p-10 md:p-16 rounded-[3rem] shadow-xl border border-slate-300">
+<div class="text-center mb-12">
+<h2 class="font-headline text-4xl font-bold text-slate-900 mb-4">Start Your Project</h2>
+<p class="text-on-surface-variant font-medium">Fill out the form below and I'll get back to you within 24 hours.</p>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 ml-2">Name</label>
+<input class="w-full bg-slate-50 border border-slate-300 focus:ring-2 focus:ring-primary/40 focus:border-primary/50 rounded-2xl p-4 text-slate-900 outline-none transition-all" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 ml-2">Email</label>
+<input class="w-full bg-slate-50 border border-slate-300 focus:ring-2 focus:ring-primary/40 focus:border-primary/50 rounded-2xl p-4 text-slate-900 outline-none transition-all" type="email"/>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-sm font-bold text-slate-700 ml-2">Message</label>
+<textarea class="w-full bg-slate-50 border border-slate-300 focus:ring-2 focus:ring-primary/40 focus:border-primary/50 rounded-3xl p-6 text-slate-900 outline-none transition-all" rows="5"></textarea>
+</div>
+<div class="md:col-span-2 pt-4">
+<button class="w-full bg-primary text-on-primary font-headline font-bold py-5 rounded-full shadow-lg hover:shadow-primary/40 transition-all hover:scale-[1.01] active:scale-95">
+                            Send Message
+                        </button>
+</div>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-200 border-t border-slate-300 mt-20">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8 w-full py-12 px-6">
+<div>
+<div class="text-lg font-bold text-slate-900 mb-2 font-headline">KODEDEV <span class="text-[10px] align-top font-body font-normal text-slate-500 tracking-normal ml-1">est. 2026</span></div>
+<p class="font-body text-sm text-slate-600 font-medium">© 2026 KODEDEV.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-body text-sm text-slate-600 font-medium hover:text-primary transition-colors hover:underline decoration-primary/30 underline-offset-4" href="#">Privacy Policy</a>
+<a class="font-body text-sm text-slate-600 font-medium hover:text-primary transition-colors hover:underline decoration-primary/30 underline-offset-4" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</body></html>
