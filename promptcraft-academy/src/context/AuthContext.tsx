@@ -81,12 +81,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function hydrate() {
       try {
         const [
-          storedUser,
-          storedToken,
-          storedConsent,
-          storedSafeMode,
-          storedOnboarded,
-        const [
           storedUserVal,
           storedTokenVal,
           storedConsentVal,

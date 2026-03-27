@@ -237,14 +237,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
           storedStreak,
           storedLastActive,
           storedQuests,
-        const [
-          storedXpVal,
-          storedTotalXpVal,
-          storedLevelVal,
-          storedBadgesVal,
-          storedStreakVal,
-          storedLastActiveVal,
-          storedQuestsVal,
         ] = await Promise.all([
           AsyncStorage.getItem(STORAGE_KEYS.XP),
           AsyncStorage.getItem(STORAGE_KEYS.TOTAL_XP),
@@ -255,26 +247,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
           AsyncStorage.getItem(STORAGE_KEYS.DAILY_QUESTS),
         ]);
 
-        // alias to match the rest of the function
-        const storedXp = [null, storedXpVal];
-        const storedTotalXp = [null, storedTotalXpVal];
-        const storedLevel = [null, storedLevelVal];
-        const storedBadges = [null, storedBadgesVal];
-        const storedStreak = [null, storedStreakVal];
-        const storedLastActive = [null, storedLastActiveVal];
-        const storedQuests = [null, storedQuestsVal];
-
         if (!mounted) return;
 
-        if (storedXp[1]) setXp(parseInt(storedXp[1], 10));
-        if (storedTotalXp[1]) setTotalXp(parseInt(storedTotalXp[1], 10));
-        if (storedLevel[1]) setLevel(parseInt(storedLevel[1], 10));
-        if (storedBadges[1]) setBadges(JSON.parse(storedBadges[1]) as Badge[]);
-        if (storedStreak[1]) setStreak(parseInt(storedStreak[1], 10));
+        if (storedXp) setXp(parseInt(storedXp, 10));
+        if (storedTotalXp) setTotalXp(parseInt(storedTotalXp, 10));
+        if (storedLevel) setLevel(parseInt(storedLevel, 10));
+        if (storedBadges) setBadges(JSON.parse(storedBadges) as Badge[]);
+        if (storedStreak) setStreak(parseInt(storedStreak, 10));
 
         // Check if the daily quests are still valid (same day)
-        if (storedQuests[1]) {
-          const parsed = JSON.parse(storedQuests[1]) as DailyQuest[];
+        if (storedQuests) {
+          const parsed = JSON.parse(storedQuests) as DailyQuest[];
           const now = new Date();
           const firstExpiry = parsed[0]?.expiresAt
             ? new Date(parsed[0].expiresAt)
@@ -300,8 +283,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         }
 
         // Streak: check if the user was active yesterday
-        if (storedLastActive[1]) {
-          const lastActive = new Date(storedLastActive[1]);
+        if (storedLastActive) {
+          const lastActive = new Date(storedLastActive);
           const now = new Date();
           const diffDays = Math.floor(
             (now.getTime() - lastActive.getTime()) / (1000 * 60 * 60 * 24),
