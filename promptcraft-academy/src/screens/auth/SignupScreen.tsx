@@ -178,8 +178,8 @@ export default function SignupScreen({ navigation }: Props) {
       });
       await completeOnboarding();
       // AppNavigator automatically switches to MainStack once authenticated + onboarded
-    } catch {
-      Alert.alert('Error', 'Could not create account. Please try again.');
+    } catch (err: any) {
+      Alert.alert('Error', err?.message ?? 'Could not create account. Please try again.');
     }
   };
 

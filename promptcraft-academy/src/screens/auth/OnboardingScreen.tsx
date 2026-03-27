@@ -230,6 +230,16 @@ export default function OnboardingScreen({ navigation }: Props) {
             <Ionicons name="arrow-forward" size={24} color={COLORS.surface} />
           </TouchableOpacity>
         )}
+
+        {/* Already have an account */}
+        <TouchableOpacity
+          style={styles.loginLink}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text style={styles.loginLinkText}>
+            Already have an account? <Text style={[styles.loginLinkBold, { color: pages[currentIndex].backgroundColor }]}>Log In</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -389,5 +399,16 @@ const styles = StyleSheet.create({
     fontSize: FONTS.sizes.xl,
     fontWeight: FONTS.weights.bold,
     color: COLORS.surface,
+  },
+  loginLink: {
+    marginTop: SPACING.lg,
+    alignItems: 'center',
+  },
+  loginLinkText: {
+    fontSize: FONTS.sizes.md,
+    color: COLORS.textSecondary,
+  },
+  loginLinkBold: {
+    fontWeight: FONTS.weights.bold,
   },
 });
