@@ -17,6 +17,7 @@ import {
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore, TrackId } from '../../types';
 import { api } from '../../services/api';
+import { useGame } from '../../context/GameContext';
 
 const TRACK_COLOR = COLORS.storyStudio;
 
@@ -30,6 +31,7 @@ const SIMULATED_STORIES: Record<string, string> = {
 };
 
 export default function StoryStudioScreen() {
+  const { addXp } = useGame();
   const [prompt, setPrompt] = useState('');
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [selectedSetting, setSelectedSetting] = useState<string | null>(null);
@@ -111,6 +113,14 @@ export default function StoryStudioScreen() {
 
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
       Animated.timing(bookAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+
+      const xpAmount = 50 + Math.round(overall / 2);
+      const { leveledUp, newLevel } = await addXp(xpAmount);
+      if (leveledUp) {
+        Alert.alert('Level Up!', `You reached level ${newLevel}! Keep writing amazing stories!`);
+      } else {
+        Alert.alert('Great job!', `You earned ${xpAmount} XP for your story!`);
+      }
     } catch (err) {
       Alert.alert('Error', 'Could not generate story. Please try again.');
     } finally {
