@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
+import { useAuth } from '../../context/AuthContext';
 
 const { width } = Dimensions.get('window');
 
@@ -83,6 +84,7 @@ const strengthLabels: Record<PasswordStrength, string> = {
 };
 
 export default function SignupScreen({ navigation }: Props) {
+  const { signup, completeOnboarding } = useAuth();
   const [step, setStep] = useState<Step>('parent');
 
   // Parent account fields
@@ -160,13 +162,21 @@ export default function SignupScreen({ navigation }: Props) {
     }
   };
 
-  const handleCreateAccount = () => {
-    if (validateChild()) {
-      Alert.alert(
-        'Welcome to Promptcraft Academy!',
-        `Account created for ${childUsername}. Let's start learning!`,
-        [{ text: 'Let\'s Go!', onPress: () => navigation.replace('MainTabs') }]
-      );
+  const handleCreateAccount = async () => {
+    if (!validateChild()) return;
+    try {
+      await signup({
+        username: childUsername,
+        displayName: childUsername,
+        age: parseInt(childAge, 10),
+        role: 'child',
+        avatar: selectedAvatar,
+        parentEmail,
+      });
+      await completeOnboarding();
+      // AppNavigator automatically switches to MainStack once authenticated + onboarded
+    } catch {
+      Alert.alert('Error', 'Could not create account. Please try again.');
     }
   };
 

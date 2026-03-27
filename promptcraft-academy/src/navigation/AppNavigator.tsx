@@ -14,6 +14,7 @@ import { useAuth } from '../context/AuthContext';
 // ---- Existing Screens ----
 import OnboardingScreen from '../screens/auth/OnboardingScreen';
 import ParentConsentScreen from '../screens/auth/ParentConsentScreen';
+import RealSignupScreen from '../screens/auth/SignupScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import TracksScreen from '../screens/home/TracksScreen';
 
@@ -65,7 +66,7 @@ const placeholderStyles = StyleSheet.create({
 });
 
 // ---- Placeholder screen components ----
-const SignupScreen = makePlaceholder('Sign Up', 'person-add', COLORS.primary);
+const SignupScreen = RealSignupScreen;
 const LoginScreen = makePlaceholder('Log In', 'log-in', COLORS.primary);
 const CreateScreen = makePlaceholder('Create', 'add-circle', COLORS.artFactory);
 const BattlesScreen = makePlaceholder('Prompt Battles', 'trophy', COLORS.xpGold);
