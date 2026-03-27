@@ -158,7 +158,7 @@ export default function LoginScreen({ navigation }: Props) {
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.loginBtnText}>
-                {mode === 'child' ? '🚀 Let's go!' : 'Log in'}
+                {mode === 'child' ? '🚀 Lets go!' : 'Log in'}
               </Text>
             )}
           </TouchableOpacity>
