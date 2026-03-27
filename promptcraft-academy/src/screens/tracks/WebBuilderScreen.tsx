@@ -18,6 +18,7 @@ import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
 import { api } from '../../services/api';
 import { useGame } from '../../context/GameContext';
+import HtmlPreview from '../../components/common/HtmlPreview';
 
 const TRACK_COLOR = COLORS.webBuilder;
 
@@ -295,21 +296,7 @@ export default function WebBuilderScreen() {
             </View>
           ) : (
             /* Preview Panel */
-            <Animated.View
-              style={[
-                styles.previewPanel,
-                {
-                  transform: [
-                    {
-                      translateY: slideAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [30, 0],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
+            <Animated.View style={[styles.previewPanel, { transform: [{ translateY: slideAnim.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) }] }]}>
               <View style={styles.previewBrowser}>
                 <View style={styles.browserBar}>
                   <View style={styles.browserDots}>
@@ -321,13 +308,7 @@ export default function WebBuilderScreen() {
                     <Text style={styles.browserUrlText}>my-awesome-site.com</Text>
                   </View>
                 </View>
-                <View style={styles.previewContent}>
-                  <Text style={styles.previewTitle}>My Awesome Website</Text>
-                  <Text style={styles.previewBody}>Built with Promptcraft Academy!</Text>
-                  <View style={styles.previewButton}>
-                    <Text style={styles.previewButtonText}>Click Me!</Text>
-                  </View>
-                </View>
+                <HtmlPreview html={generatedCode} height={380} />
               </View>
             </Animated.View>
           )}

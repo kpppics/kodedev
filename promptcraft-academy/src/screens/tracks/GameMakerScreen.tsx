@@ -18,6 +18,7 @@ import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
 import { api } from '../../services/api';
 import { useGame } from '../../context/GameContext';
+import HtmlPreview from '../../components/common/HtmlPreview';
 
 const TRACK_COLOR = COLORS.gameMaker;
 const TRACK_TEXT = '#5D4E00'; // Dark text for yellow backgrounds
@@ -235,41 +236,8 @@ export default function GameMakerScreen() {
       {/* Game Preview Area */}
       {gameCreated ? (
         <Animated.View style={[styles.gameCard, { opacity: fadeAnim }]}>
-          {/* WebView placeholder */}
-          <Animated.View
-            style={[
-              styles.gamePreview,
-              {
-                transform: [
-                  {
-                    scale: bounceAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0.8, 1],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <View style={styles.gameScreen}>
-              <Text style={styles.gameScreenTitle}>
-                {selectedType || 'Custom'} Game
-              </Text>
-              <View style={styles.gameCharacter}>
-                <Text style={styles.gameCharacterEmoji}>
-                  {GAME_TYPES.find(t => t.label === selectedType)?.icon || '🎯'}
-                </Text>
-              </View>
-              <Text style={styles.gameScreenText}>Your game is ready to play!</Text>
-              <View style={styles.gameScoreDisplay}>
-                <Text style={styles.gameScoreLabel}>Score: 0</Text>
-                <Text style={styles.gameLivesLabel}>Lives: 3</Text>
-              </View>
-              <TouchableOpacity style={styles.playBtn}>
-                <Text style={styles.playBtnText}>PLAY</Text>
-              </TouchableOpacity>
-              <Text style={styles.gamePreviewNote}>Full game preview coming soon!</Text>
-            </View>
+          <Animated.View style={[styles.gamePreview, { transform: [{ scale: bounceAnim.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] }) }] }]}>
+            <HtmlPreview html={gameHtml} height={450} title={`${selectedType || 'Custom'} Game — tap to play!`} />
           </Animated.View>
 
           {/* Applied Mods */}
