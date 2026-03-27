@@ -1,0 +1,187 @@
+What if learning the most important skill of the next decade felt like play?
+
+PromptCraft Academy teaches children ages 6–16 to think clearly, write creatively, code confidently, and communicate with AI — through six expertly crafted learning tracks, a safe AI engine with strict child-safety filters, and a parent dashboard that keeps families informed and in control.
+
+No ads. No social features. No compromises on safety. Just genuinely great learning.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SIX LEARNING TRACKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧠 PROMPT ENGINEERING
+AI literacy is the new reading literacy. PromptCraft Academy teaches children how to communicate with AI tools clearly and creatively — forming precise questions, iterating on ideas, and evaluating responses critically. These skills transfer directly to school, future careers, and everyday problem-solving.
+
+Levels 1–10 progress from simple single-step prompts all the way to multi-part creative briefs. By Level 10, kids are writing prompts that produce genuinely impressive results — and they understand *why* they work.
+
+✍️ CREATIVE WRITING
+Every child has stories to tell. Our Creative Writing track helps them tell them better. AI-powered story starters, character generators, setting builders, and genre challenge modes combine with structured writing lessons based on craft principles used by real authors.
+
+Children build a personal story portfolio as they work through the track. By the end, they'll have completed short stories, poems, dialogue scenes, and a full story outline they're proud of.
+
+💻 CODING FUNDAMENTALS
+The best time to introduce coding concepts is before kids develop the fear of getting it wrong. PromptCraft Academy's Coding track uses logic puzzles and story-driven sequence challenges to teach computational thinking without requiring any prior experience or setup.
+
+Kids learn variables, conditions, loops, and debugging — not by memorising syntax, but by solving creative problems. The skills transfer seamlessly to Scratch, Python, and beyond.
+
+📖 STORYTELLING & NARRATIVE
+Strong communicators stand out in every field. This track teaches the craft behind great stories: three-act structure, character development, show-don't-tell, dialogue punctuation, pacing, and narrative voice.
+
+Each lesson combines guided reading of exemplar texts, practice exercises with AI feedback, and open-ended creative challenges. Kids develop genuine analytical and creative writing skills aligned to school English curricula.
+
+🔢 MATH PROBLEM-SOLVING
+Maths anxiety is real — and word problems are often where it starts. PromptCraft Academy transforms word problems into adventure scenarios, then uses AI to walk kids through multiple solution approaches step by step.
+
+Kids learn to break down complex problems, identify what information matters, check their reasoning, and discover that there's almost always more than one valid path to the answer. Builds the mindset, not just the mechanics.
+
+🔬 SCIENCE EXPLORATION
+Curiosity is the engine of science. This track puts children in the role of researcher: forming hypotheses, designing simple experiments, analysing results, and asking the follow-up questions that keep inquiry going.
+
+AI acts as a knowledgeable lab partner — answering questions, suggesting variables to test, and helping kids understand why results sometimes surprise us. Aligned to NGSS (US) and UK KS2/KS3 Science.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PARENT DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Knowing what your child is doing — and celebrating their progress — has never been easier.
+
+• Real-time progress tracking across all six learning tracks
+• Weekly email digests summarising highlights, streaks, and achievements
+• Detailed challenge history: see exactly what your child worked on and what the AI said
+• Achievement badges and milestone celebrations sent directly to parents
+• Content controls: restrict topics, set daily time limits, approve new challenge types
+• Portfolio management: view, organise, and export your child's creative work
+• Manage up to 5 child profiles from a single parent account (Family Plan)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CLASSROOM MODE FOR EDUCATORS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Teachers get a free Premium subscription with a verified .edu or school email address.
+
+• Manage up to 30 students from a single teacher dashboard
+• Assign specific challenges and tracks to your class or individual students
+• Monitor real-time completion rates and quality scores
+• Curriculum alignment notes for US Common Core ELA/Math and UK National Curriculum
+• Generate class-wide progress reports with one tap
+• Export individual student portfolios for assessment purposes
+• Set class-wide time limits and challenge filters
+
+Used by teachers in 14 countries across primary, middle, and secondary schools.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SAFETY & PRIVACY — OUR PROMISE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+We built PromptCraft Academy as parents ourselves. Safety is not a feature — it is the foundation.
+
+NO ADVERTISING: PromptCraft Academy has never shown an advertisement and never will. Our only revenue comes from subscriptions paid by parents. Your child's attention is not our product.
+
+NO SOCIAL FEATURES: There are no public profiles, no comment sections, no follower counts, no direct messaging between children, and no ability for strangers to contact your child in any way.
+
+CHILD-SAFE AI: Every single AI response generated in the App passes through a proprietary multi-layer child-safety filter before it reaches a young user. Inappropriate content is blocked and logged for review. The filter is tested and updated monthly.
+
+COPPA COMPLIANT: We comply fully with the US Children's Online Privacy Protection Act. No personal information is collected from children under 13 without verifiable parental consent.
+
+GDPR-K COMPLIANT: We meet the highest EU and UK standards for children's data protection, including the UK Children's Code and GDPR Article 8.
+
+DATA MINIMISATION: We collect only what we absolutely need to operate the App. We do not collect GPS location, advertising identifiers, or any biometric data.
+
+NO DATA SALES: Your child's data is never sold, rented, or shared with any third party for commercial purposes. Full stop.
+
+FULL DELETION: Delete your child's account and all associated data at any time — instantly, with no penalty and no questions asked.
+
+SOC 2 CERTIFIED: Our infrastructure is hosted on AWS with SOC 2 Type II certification and AES-256 encryption at rest.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACHIEVEMENT SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+50 collectible achievement badges across all six tracks and general milestones:
+
+• First Story Complete
+• Prompt Master (Levels 1–10 each have their own badge)
+• Science Explorer
+• Code Cracker
+• 7-Day Learning Streak
+• 30-Day Learning Streak
+• Portfolio Builder
+• Word Wizard
+• Math Adventurer
+... and many more, including rare secret achievements that reward curiosity and persistence.
+
+Badge collections are visible in the child's profile and can be shared with parents. No social sharing outside the family unit.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LANGUAGES SUPPORTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+English, Spanish, French, German, Portuguese (Brazil)
+
+More languages coming in 2026 — vote for your language in the app!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PRICING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FREE (no credit card required)
+• Full access to one learning track of your choice
+• 30+ challenges and activities
+• Achievement badges and progress tracking
+• Parent progress dashboard
+
+PREMIUM — $4.99/month or $39.99/year (save 33%)
+• All six learning tracks unlocked
+• 200+ total challenges
+• Offline mode — learn anywhere, no internet needed
+• Priority AI response speed
+• Unlimited portfolio storage and exports
+
+FAMILY PLAN — $9.99/month or $79.99/year (save 33%)
+• Premium access for up to 5 children
+• Shared parent dashboard with individual child profiles
+• Sibling challenges and friendly family competitions
+• One bill, total family coverage
+
+EDUCATORS
+• Free Premium with a verified school or .edu email address
+• Contact us at educators@promptcraft.academy for institution-wide licensing
+
+Subscriptions renew automatically. Cancel anytime in Google Play → Subscriptions. No cancellation fees.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT FAMILIES ARE SAYING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"My daughter has used probably every educational app on the market. This is the first one she asks to use — not the first one I have to beg her to open." — Mum of an 8-year-old
+
+"I'm a Year 5 teacher and I've been using Classroom Mode for a term. The dashboard alone saves me a significant amount of time each week, and the kids genuinely look forward to their PromptCraft sessions." — Primary school teacher
+
+"What I love most is that my son is learning skills that will actually matter when he's older — AI communication, writing, logical thinking. And he thinks he's just playing." — Dad of a 10-year-old
+
+"The creative writing track transformed my shy 12-year-old into someone who shares her stories with the whole family. She's proud of her work." — Parent
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SYSTEM REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Android 8.0 (Oreo) or higher
+• Works on phones and tablets
+• Optimised for tablets in landscape mode
+• Offline mode available for Premium subscribers (requires initial download of track content)
+• Approximately 85MB download
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTACT & SUPPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+We're real people who care deeply about your experience.
+
+General support: support@promptcraft.academy
+Educators: educators@promptcraft.academy
+Privacy & data: privacy@promptcraft.academy
+Safety concerns: safety@promptcraft.academy (monitored 24/7)
+Website: www.promptcraft.academy
+
+We respond to every message. Usually within a few hours.
+
+PromptCraft Academy — Where curious kids become confident thinkers.

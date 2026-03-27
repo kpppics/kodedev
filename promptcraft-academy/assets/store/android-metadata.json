@@ -1,0 +1,83 @@
+{
+  "app": {
+    "title": "PromptCraft Academy: AI Learning for Kids",
+    "short_description": "Safe AI-powered learning in writing, coding, math & science for ages 6-16.",
+    "full_description": "PromptCraft Academy is the award-winning educational app that teaches children ages 6–16 how to think creatively, write compellingly, and communicate with AI — skills that will define the next generation.\n\nSix expertly designed learning tracks guide kids from beginner to advanced through interactive challenges powered by a safe, child-filtered AI engine. Every prompt, every response, every badge — built for young minds.\n\n★ SIX LEARNING TRACKS ★\n\n🖊 PROMPT ENGINEERING\nTeach kids the most valuable skill of the AI age: how to ask great questions and craft effective prompts. From simple instructions to multi-step creative commands, kids learn to think precisely and communicate clearly.\n\n✍ CREATIVE WRITING\nSpark imagination with AI-assisted story starters, character generators, world-building tools, and genre challenges. Kids co-create stories with AI, then make them entirely their own.\n\n💻 CODING FUNDAMENTALS\nLogic puzzles, sequence challenges, and beginner programming concepts taught through storytelling. No prior experience needed — just curiosity.\n\n📖 STORYTELLING & NARRATIVE\nLearn the craft of great stories: plot structure, character arcs, dialogue, pacing, and voice. Kids read examples, practise techniques, and build a personal story portfolio.\n\n🔢 MATH PROBLEM-SOLVING\nWord problems reimagined as adventures. Kids use AI to break down complex problems, check their reasoning, and discover multiple solution paths — building real mathematical thinking.\n\n🔬 SCIENCE EXPLORATION\nFrom hypothesis to conclusion, kids run guided experiments, explore scientific concepts, and ask questions the way real scientists do.\n\n★ PARENT & TEACHER FEATURES ★\n\n• Comprehensive progress dashboard for every child\n• Weekly digest emails with highlights, streaks, and achievements\n• Classroom Mode: manage up to 30 students from one teacher account\n• Curriculum alignment notes for US Common Core and UK National Curriculum\n• Content controls: set daily time limits, restrict topics, approve new challenges\n• Portfolio export: download your child's work as a beautiful PDF\n• Free Premium subscription for verified educators (.edu email required)\n\n★ SAFETY & PRIVACY ★\n\nPromptCraft Academy was built from the ground up with child safety as the top priority:\n\n• Zero advertising — not now, not ever\n• No social features, no direct messaging, no public profiles\n• All AI outputs pass through a strict child-safety filter before reaching young users\n• COPPA compliant (US Children's Online Privacy Protection Act)\n• GDPR-K compliant (EU children's data regulations)\n• No data sold or shared with any third party\n• All data stored securely in SOC 2 certified infrastructure\n• Full data deletion available on request at any time\n\n★ WHAT'S INCLUDED FOR FREE ★\n\nThe free tier gives every child complete access to one learning track of their choice — no credit card required, no time limit. Explore over 30 challenges and earn your first batch of achievement badges before deciding to upgrade.\n\n★ PREMIUM PLANS ★\n\n• Individual Premium: $4.99/month or $39.99/year\n  — Unlock all six learning tracks\n  — Offline mode for learning anywhere\n  — Priority AI response speed\n  — Unlimited portfolio storage\n\n• Family Plan: $9.99/month or $79.99/year\n  — Everything in Premium for up to 5 children\n  — Shared parent dashboard\n  — Sibling challenges and friendly competitions\n\nSubscriptions auto-renew. Cancel anytime in Google Play settings.\n\n★ SYSTEM REQUIREMENTS ★\n\nRequires Android 8.0 or higher. Works on phones and tablets. Optimised for larger screens in landscape mode.",
+    "category": "Education",
+    "content_rating": {
+      "rating": "Everyone",
+      "interactive_elements": [
+        "In-App Purchases",
+        "Digital Purchases"
+      ],
+      "content_descriptors": {
+        "violence": false,
+        "sexual_content": false,
+        "language": false,
+        "gambling": false,
+        "drug_references": false,
+        "horror": false
+      }
+    },
+    "target_audience": {
+      "primary_ages": "6-16",
+      "includes_children_under_13": true,
+      "coppa_compliant": true,
+      "gdpr_k_compliant": true,
+      "directed_to_children": true
+    },
+    "contact": {
+      "email": "support@promptcraft.academy",
+      "website": "https://www.promptcraft.academy",
+      "privacy_policy": "https://www.promptcraft.academy/privacy"
+    },
+    "tags": [
+      "education",
+      "kids learning",
+      "AI learning",
+      "creative writing",
+      "coding for kids",
+      "STEM",
+      "prompt engineering",
+      "school",
+      "homework",
+      "children",
+      "storytelling",
+      "math",
+      "science",
+      "teacher",
+      "classroom"
+    ],
+    "release_notes": "Welcome to PromptCraft Academy v1.0!\n\nLaunching with:\n• Six complete learning tracks (200+ challenges)\n• Parent dashboard with weekly progress digests\n• Classroom Mode for teachers (free Premium included)\n• Achievement system with 50 collectible badges\n• Offline mode for Premium subscribers\n• Available in English, Spanish, French, German, and Portuguese\n\nWe'd love to hear what you think — tap the feedback button in the app or email us at hello@promptcraft.academy",
+    "pricing": {
+      "base_price": "Free",
+      "in_app_purchases": true,
+      "subscriptions": [
+        {
+          "id": "premium_monthly",
+          "name": "Premium Monthly",
+          "price_usd": 4.99,
+          "period": "P1M"
+        },
+        {
+          "id": "premium_annual",
+          "name": "Premium Annual",
+          "price_usd": 39.99,
+          "period": "P1Y"
+        },
+        {
+          "id": "family_monthly",
+          "name": "Family Plan Monthly",
+          "price_usd": 9.99,
+          "period": "P1M"
+        },
+        {
+          "id": "family_annual",
+          "name": "Family Plan Annual",
+          "price_usd": 79.99,
+          "period": "P1Y"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "app": {
+    "name": "PromptCraft Academy",
+    "subtitle": "AI Writing & Coding for Kids",
+    "description": "PromptCraft Academy is the safest, most engaging way for children ages 6–16 to master AI prompt engineering, creative writing, coding fundamentals, storytelling, math problem-solving, and science exploration — all through hands-on, guided lessons powered by AI.\n\nBuilt with parents and teachers in mind, every feature is COPPA-compliant and designed to spark curiosity without screen-time guilt. Kids earn badges, level up through six learning tracks, and build a portfolio of real projects they're proud of.\n\nSIX LEARNING TRACKS:\n• Prompt Engineering — Teach kids how to talk to AI clearly and creatively\n• Creative Writing — Story starters, character builders, and world creation\n• Coding Fundamentals — Logic puzzles and beginner programming concepts\n• Storytelling & Narrative — Structure, plot, voice, and imagination\n• Math Problem-Solving — Word problems made visual and engaging\n• Science Exploration — Hypothesis, experiment, and discovery prompts\n\nPARENT & TEACHER DASHBOARD:\n• Real-time progress tracking across all six tracks\n• Weekly email digests with highlights and insights\n• Classroom mode for up to 30 students\n• Content controls and daily time limits\n• Export portfolios as PDF or share with family\n\nSAFETY FIRST:\n• No ads, ever\n• No social features or direct messaging\n• All AI responses reviewed against strict child-safety filters\n• COPPA and GDPR-K compliant\n• Data never sold or shared with third parties\n\nFREE & PREMIUM:\nThe free tier includes full access to one learning track. Upgrade to Premium for unlimited tracks, offline mode, and priority AI response times.",
+    "keywords": [
+      "kids learning",
+      "AI education",
+      "prompt engineering",
+      "creative writing for kids",
+      "coding for kids",
+      "STEM learning",
+      "children education",
+      "learning app",
+      "school app",
+      "homework help",
+      "creative coding",
+      "storytelling app",
+      "math for kids",
+      "science for kids",
+      "teacher tools"
+    ],
+    "promotional_text": "New: Classroom Mode now supports up to 30 students with live progress tracking! Teachers get a free Premium account.",
+    "whats_new": "Version 1.0 — Welcome to PromptCraft Academy!\n\n• Six fully-guided learning tracks launching today\n• Parent dashboard with weekly progress digests\n• Classroom mode for educators (free Premium with verified .edu email)\n• 200+ starter challenges across all tracks\n• Badge and achievement system with 50 collectible rewards\n• Offline mode for Premium subscribers\n• Available in English, Spanish, French, German, and Portuguese",
+    "support_url": "https://support.promptcraft.academy",
+    "marketing_url": "https://www.promptcraft.academy",
+    "privacy_url": "https://www.promptcraft.academy/privacy",
+    "category": {
+      "primary": "Education",
+      "secondary": "Entertainment"
+    },
+    "age_rating": {
+      "rating": "4+",
+      "interactive_elements": [
+        "In-App Purchases"
+      ],
+      "content_descriptors": {
+        "violence": "None",
+        "adult_content": "None",
+        "language": "None",
+        "gambling": "None",
+        "unrestricted_web_access": false
+      }
+    },
+    "pricing": {
+      "base_currency": "USD",
+      "price_tier": "Free",
+      "in_app_purchases": [
+        {
+          "product_id": "com.promptcraft.academy.premium.monthly",
+          "reference_name": "Premium Monthly",
+          "type": "auto_renewable_subscription",
+          "price_usd": 4.99
+        },
+        {
+          "product_id": "com.promptcraft.academy.premium.annual",
+          "reference_name": "Premium Annual",
+          "type": "auto_renewable_subscription",
+          "price_usd": 39.99
+        },
+        {
+          "product_id": "com.promptcraft.academy.family.monthly",
+          "reference_name": "Family Plan Monthly",
+          "type": "auto_renewable_subscription",
+          "price_usd": 9.99
+        },
+        {
+          "product_id": "com.promptcraft.academy.family.annual",
+          "reference_name": "Family Plan Annual",
+          "type": "auto_renewable_subscription",
+          "price_usd": 79.99
+        }
+      ]
+    },
+    "localizations": {
+      "en-US": {
+        "name": "PromptCraft Academy",
+        "subtitle": "AI Writing & Coding for Kids"
+      },
+      "es-ES": {
+        "name": "PromptCraft Academy",
+        "subtitle": "IA y Programación para Niños"
+      },
+      "fr-FR": {
+        "name": "PromptCraft Academy",
+        "subtitle": "IA et Codage pour Enfants"
+      },
+      "de-DE": {
+        "name": "PromptCraft Academy",
+        "subtitle": "KI und Programmierung für Kinder"
+      },
+      "pt-BR": {
+        "name": "PromptCraft Academy",
+        "subtitle": "IA e Programação para Crianças"
+      }
+    }
+  }
+}
