@@ -23,6 +23,7 @@ const TRACK_COLOR = COLORS.storyStudio;
 const CHARACTERS = ['Princess', 'Robot', 'Dragon', 'Astronaut', 'Wizard', 'Pirate'];
 const SETTINGS = ['Enchanted Forest', 'Outer Space', 'Underwater', 'Castle', 'Future City'];
 const PLOT_TWISTS = ['A secret door appears!', 'The villain becomes a friend!', 'Time freezes!', 'A magical storm arrives!'];
+const CUSTOM = '+ Custom';
 
 const SIMULATED_STORIES: Record<string, string> = {
   default: `Once upon a time, in a land far, far away, there lived a curious young explorer named Alex. Every morning, Alex would gaze out the window at the sparkling mountains in the distance, wondering what adventures lay beyond.\n\nOne day, a mysterious golden butterfly appeared at the windowsill. "Follow me," it seemed to whisper with each flutter of its wings. And so, Alex's greatest adventure began...\n\nThrough winding paths and enchanted forests, past talking rivers and singing stones, Alex discovered that the greatest treasure wasn't gold or jewels — it was the courage to explore the unknown.`,
@@ -33,6 +34,12 @@ export default function StoryStudioScreen() {
   const [selectedCharacter, setSelectedCharacter] = useState<string | null>(null);
   const [selectedSetting, setSelectedSetting] = useState<string | null>(null);
   const [selectedTwist, setSelectedTwist] = useState<string | null>(null);
+  const [customCharacter, setCustomCharacter] = useState('');
+  const [customSetting, setCustomSetting] = useState('');
+  const [customTwist, setCustomTwist] = useState('');
+  const [showCustomCharacter, setShowCustomCharacter] = useState(false);
+  const [showCustomSetting, setShowCustomSetting] = useState(false);
+  const [showCustomTwist, setShowCustomTwist] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedStory, setGeneratedStory] = useState('');
   const [promptScore, setPromptScore] = useState<PromptScore | null>(null);
@@ -70,7 +77,14 @@ export default function StoryStudioScreen() {
     try {
       const fullPrompt = buildFullPrompt();
       const result = await api.aiStory({ prompt: fullPrompt, ageGroup: 'children' });
-      const story = result.title ? `${result.title}\n\n${result.story}` : result.story;
+      // Strip any raw JSON/markdown fences the model may have leaked
+      const cleanStory = (result.story ?? '')
+        .replace(/^```(?:json)?\s*/i, '')
+        .replace(/```\s*$/i, '')
+        .replace(/^\{[\s\S]*?"story"\s*:\s*"/, '')
+        .replace(/"\s*\}$/, '')
+        .trim();
+      const story = result.title ? `${result.title}\n\n${cleanStory}` : cleanStory;
       setGeneratedStory(story);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
@@ -147,9 +161,12 @@ export default function StoryStudioScreen() {
 
   const buildFullPrompt = (): string => {
     let full = prompt;
-    if (selectedCharacter) full += ` Character: ${selectedCharacter}.`;
-    if (selectedSetting) full += ` Setting: ${selectedSetting}.`;
-    if (selectedTwist) full += ` Twist: ${selectedTwist}`;
+    const character = showCustomCharacter && customCharacter.trim() ? customCharacter.trim() : selectedCharacter;
+    const setting = showCustomSetting && customSetting.trim() ? customSetting.trim() : selectedSetting;
+    const twist = showCustomTwist && customTwist.trim() ? customTwist.trim() : selectedTwist;
+    if (character) full += ` Character: ${character}.`;
+    if (setting) full += ` Setting: ${setting}.`;
+    if (twist) full += ` Twist: ${twist}`;
     return full;
   };
 
@@ -160,6 +177,11 @@ export default function StoryStudioScreen() {
     items: string[],
     selected: string | null,
     onSelect: (v: string | null) => void,
+    showCustom: boolean,
+    setShowCustom: (v: boolean) => void,
+    customValue: string,
+    setCustomValue: (v: string) => void,
+    placeholder: string,
   ) => (
     <View style={styles.chipSection}>
       <Text style={styles.chipLabel}>{label}</Text>
@@ -167,13 +189,28 @@ export default function StoryStudioScreen() {
         {items.map(item => (
           <TouchableOpacity
             key={item}
-            style={[styles.chip, selected === item && styles.chipActive]}
-            onPress={() => onSelect(selected === item ? null : item)}
+            style={[styles.chip, !showCustom && selected === item && styles.chipActive]}
+            onPress={() => { setShowCustom(false); onSelect(selected === item ? null : item); }}
           >
-            <Text style={[styles.chipText, selected === item && styles.chipTextActive]}>{item}</Text>
+            <Text style={[styles.chipText, !showCustom && selected === item && styles.chipTextActive]}>{item}</Text>
           </TouchableOpacity>
         ))}
+        <TouchableOpacity
+          style={[styles.chip, showCustom && styles.chipActive]}
+          onPress={() => { setShowCustom(!showCustom); onSelect(null); }}
+        >
+          <Text style={[styles.chipText, showCustom && styles.chipTextActive]}>+ Custom</Text>
+        </TouchableOpacity>
       </ScrollView>
+      {showCustom && (
+        <TextInput
+          style={styles.customInput}
+          placeholder={placeholder}
+          placeholderTextColor={COLORS.textLight}
+          value={customValue}
+          onChangeText={setCustomValue}
+        />
+      )}
     </View>
   );
 
@@ -231,9 +268,9 @@ export default function StoryStudioScreen() {
       </View>
 
       {/* Selectors */}
-      {renderChipRow('Pick a Character', CHARACTERS, selectedCharacter, setSelectedCharacter)}
-      {renderChipRow('Choose a Setting', SETTINGS, selectedSetting, setSelectedSetting)}
-      {renderChipRow('Add a Plot Twist', PLOT_TWISTS, selectedTwist, setSelectedTwist)}
+      {renderChipRow('Pick a Character', CHARACTERS, selectedCharacter, setSelectedCharacter, showCustomCharacter, setShowCustomCharacter, customCharacter, setCustomCharacter, 'Type a character name...')}
+      {renderChipRow('Choose a Setting', SETTINGS, selectedSetting, setSelectedSetting, showCustomSetting, setShowCustomSetting, customSetting, setCustomSetting, 'Type a setting...')}
+      {renderChipRow('Add a Plot Twist', PLOT_TWISTS, selectedTwist, setSelectedTwist, showCustomTwist, setShowCustomTwist, customTwist, setCustomTwist, 'Type a plot twist...')}
 
       {/* Generate Button */}
       <Animated.View style={{ transform: [{ scale: isGenerating ? pulseAnim : 1 }] }}>
@@ -386,6 +423,17 @@ const styles = StyleSheet.create({
   },
   chipTextActive: {
     color: '#FFF',
+  },
+  customInput: {
+    marginTop: SPACING.sm,
+    borderWidth: 1.5,
+    borderColor: TRACK_COLOR,
+    borderRadius: RADIUS.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    fontSize: FONTS.sizes.md,
+    color: COLORS.text,
+    backgroundColor: COLORS.surface,
   },
   generateBtn: {
     backgroundColor: TRACK_COLOR,
