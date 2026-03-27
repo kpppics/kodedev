@@ -11,7 +11,12 @@ import React, {
   useMemo,
   type ReactNode,
 } from 'react';
-import { storage as AsyncStorage } from '../utils/storage';
+// Inline storage — no native modules, works on web and mobile
+const store = {
+  get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
+  set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch {} },
+  del: (k: string) => { try { localStorage.removeItem(k); } catch {} },
+};
 import type { User, UserRole, ChildProfile, ParentProfile } from '../types';
 
 // ---- Storage Keys ----
@@ -80,19 +85,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function hydrate() {
       try {
-        const [
-          storedUserVal,
-          storedTokenVal,
-          storedConsentVal,
-          storedSafeModeVal,
-          storedOnboardedVal,
-        ] = await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.USER),
-          AsyncStorage.getItem(STORAGE_KEYS.AUTH_TOKEN),
-          AsyncStorage.getItem(STORAGE_KEYS.PARENT_CONSENT),
-          AsyncStorage.getItem(STORAGE_KEYS.SAFE_MODE),
-          AsyncStorage.getItem(STORAGE_KEYS.HAS_ONBOARDED),
-        ]);
+        const storedUserVal     = store.get(STORAGE_KEYS.USER);
+        const storedTokenVal    = store.get(STORAGE_KEYS.AUTH_TOKEN);
+        const storedConsentVal  = store.get(STORAGE_KEYS.PARENT_CONSENT);
+        const storedSafeModeVal = store.get(STORAGE_KEYS.SAFE_MODE);
+        const storedOnboardedVal = store.get(STORAGE_KEYS.HAS_ONBOARDED);
 
         if (!mounted) return;
 
@@ -138,10 +135,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       const mockToken = `token_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
-      await Promise.all([
-        AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(mockUser)),
-        AsyncStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, mockToken),
-      ]);
+      store.set(STORAGE_KEYS.USER, JSON.stringify(mockUser));
+      store.set(STORAGE_KEYS.AUTH_TOKEN, mockToken);
 
       setUser(mockUser);
       setToken(mockToken);
@@ -173,10 +168,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       const newToken = `token_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
-      await Promise.all([
-        AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser)),
-        AsyncStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, newToken),
-      ]);
+      store.set(STORAGE_KEYS.USER, JSON.stringify(newUser));
+      store.set(STORAGE_KEYS.AUTH_TOKEN, newToken);
 
       setUser(newUser);
       setToken(newToken);
@@ -189,10 +182,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // ---- Logout ----
   const logout = useCallback(async () => {
     try {
-      await Promise.all([
-        AsyncStorage.removeItem(STORAGE_KEYS.USER),
-        AsyncStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN),
-      ]);
+      store.del(STORAGE_KEYS.USER);
+      store.del(STORAGE_KEYS.AUTH_TOKEN);
       setUser(null);
       setToken(null);
     } catch (error) {
@@ -203,19 +194,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ---- Parent Consent ----
   const setParentConsent = useCallback(async (granted: boolean) => {
-    await AsyncStorage.setItem(STORAGE_KEYS.PARENT_CONSENT, String(granted));
+    store.set(STORAGE_KEYS.PARENT_CONSENT, String(granted));
     setParentConsentGiven(granted);
   }, []);
 
   // ---- Safe Mode ----
   const setSafeMode = useCallback(async (enabled: boolean) => {
-    await AsyncStorage.setItem(STORAGE_KEYS.SAFE_MODE, String(enabled));
+    store.set(STORAGE_KEYS.SAFE_MODE, String(enabled));
     setSafeModeState(enabled);
   }, []);
 
   // ---- Complete Onboarding ----
   const completeOnboarding = useCallback(async () => {
-    await AsyncStorage.setItem(STORAGE_KEYS.HAS_ONBOARDED, 'true');
+    store.set(STORAGE_KEYS.HAS_ONBOARDED, 'true');
     setHasOnboarded(true);
   }, []);
 
@@ -224,7 +215,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (updates: Partial<User>) => {
       if (!user) return;
       const updatedUser = { ...user, ...updates };
-      await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
+      store.set(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
       setUser(updatedUser);
     },
     [user],

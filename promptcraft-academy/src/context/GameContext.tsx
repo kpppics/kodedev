@@ -11,7 +11,12 @@ import React, {
   useMemo,
   type ReactNode,
 } from 'react';
-import { storage as AsyncStorage } from '../utils/storage';
+// Inline storage — no native modules, works on web and mobile
+const store = {
+  get: async (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
+  set: async (k: string, v: string) => { try { localStorage.setItem(k, v); } catch {} },
+  del: async (k: string) => { try { localStorage.removeItem(k); } catch {} },
+};
 import type { Badge, DailyQuest, BadgeCategory } from '../types';
 
 // ---- Storage Keys ----
@@ -238,13 +243,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
           storedLastActive,
           storedQuests,
         ] = await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.XP),
-          AsyncStorage.getItem(STORAGE_KEYS.TOTAL_XP),
-          AsyncStorage.getItem(STORAGE_KEYS.LEVEL),
-          AsyncStorage.getItem(STORAGE_KEYS.BADGES),
-          AsyncStorage.getItem(STORAGE_KEYS.STREAK),
-          AsyncStorage.getItem(STORAGE_KEYS.LAST_ACTIVE),
-          AsyncStorage.getItem(STORAGE_KEYS.DAILY_QUESTS),
+          store.get(STORAGE_KEYS.XP),
+          store.get(STORAGE_KEYS.TOTAL_XP),
+          store.get(STORAGE_KEYS.LEVEL),
+          store.get(STORAGE_KEYS.BADGES),
+          store.get(STORAGE_KEYS.STREAK),
+          store.get(STORAGE_KEYS.LAST_ACTIVE),
+          store.get(STORAGE_KEYS.DAILY_QUESTS),
         ]);
 
         if (!mounted) return;
@@ -268,7 +273,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
           } else {
             const fresh = generateDailyQuests();
             setDailyQuests(fresh);
-            await AsyncStorage.setItem(
+            await store.set(
               STORAGE_KEYS.DAILY_QUESTS,
               JSON.stringify(fresh),
             );
@@ -276,7 +281,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         } else {
           const fresh = generateDailyQuests();
           setDailyQuests(fresh);
-          await AsyncStorage.setItem(
+          await store.set(
             STORAGE_KEYS.DAILY_QUESTS,
             JSON.stringify(fresh),
           );
@@ -293,7 +298,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
           if (diffDays > 1) {
             // Streak broken
             setStreak(0);
-            await AsyncStorage.setItem(STORAGE_KEYS.STREAK, '0');
+            await store.set(STORAGE_KEYS.STREAK, '0');
           }
         }
       } catch (error) {
@@ -331,9 +336,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setLevel(currentLevel);
 
       await Promise.all([
-        AsyncStorage.setItem(STORAGE_KEYS.XP, String(currentXp)),
-        AsyncStorage.setItem(STORAGE_KEYS.TOTAL_XP, String(currentTotalXp)),
-        AsyncStorage.setItem(STORAGE_KEYS.LEVEL, String(currentLevel)),
+        store.set(STORAGE_KEYS.XP, String(currentXp)),
+        store.set(STORAGE_KEYS.TOTAL_XP, String(currentTotalXp)),
+        store.set(STORAGE_KEYS.LEVEL, String(currentLevel)),
       ]);
 
       return { leveledUp, newLevel: currentLevel };
@@ -356,7 +361,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       };
       const updated = [...badges, earned];
       setBadges(updated);
-      await AsyncStorage.setItem(STORAGE_KEYS.BADGES, JSON.stringify(updated));
+      await store.set(STORAGE_KEYS.BADGES, JSON.stringify(updated));
     },
     [badges],
   );
@@ -373,7 +378,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         q.id === questId ? { ...q, isCompleted: true } : q,
       );
       setDailyQuests(updated);
-      await AsyncStorage.setItem(
+      await store.set(
         STORAGE_KEYS.DAILY_QUESTS,
         JSON.stringify(updated),
       );
@@ -389,7 +394,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   // ---- Update Streak ----
   const updateStreak = useCallback(async () => {
     const now = new Date();
-    const storedLastActive = await AsyncStorage.getItem(
+    const storedLastActive = await store.get(
       STORAGE_KEYS.LAST_ACTIVE,
     );
 
@@ -426,8 +431,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     setStreak(newStreak);
     await Promise.all([
-      AsyncStorage.setItem(STORAGE_KEYS.STREAK, String(newStreak)),
-      AsyncStorage.setItem(STORAGE_KEYS.LAST_ACTIVE, now.toISOString()),
+      store.set(STORAGE_KEYS.STREAK, String(newStreak)),
+      store.set(STORAGE_KEYS.LAST_ACTIVE, now.toISOString()),
     ]);
   }, [streak]);
 
@@ -441,13 +446,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setDailyQuests(generateDailyQuests());
 
     await Promise.all([
-      AsyncStorage.removeItem(STORAGE_KEYS.XP),
-      AsyncStorage.removeItem(STORAGE_KEYS.TOTAL_XP),
-      AsyncStorage.removeItem(STORAGE_KEYS.LEVEL),
-      AsyncStorage.removeItem(STORAGE_KEYS.BADGES),
-      AsyncStorage.removeItem(STORAGE_KEYS.STREAK),
-      AsyncStorage.removeItem(STORAGE_KEYS.LAST_ACTIVE),
-      AsyncStorage.removeItem(STORAGE_KEYS.DAILY_QUESTS),
+      store.del(STORAGE_KEYS.XP),
+      store.del(STORAGE_KEYS.TOTAL_XP),
+      store.del(STORAGE_KEYS.LEVEL),
+      store.del(STORAGE_KEYS.BADGES),
+      store.del(STORAGE_KEYS.STREAK),
+      store.del(STORAGE_KEYS.LAST_ACTIVE),
+      store.del(STORAGE_KEYS.DAILY_QUESTS),
     ]);
   }, []);
 
