@@ -81,6 +81,11 @@ class ApiService {
     return this.request('POST', '/auth/parent-consent', body);
   }
 
+  // AI
+  async aiStory(body: { prompt: string; ageGroup?: string }): Promise<{ story: string; title: string; characters: string[]; setting: string }> {
+    return this.request('POST', '/ai/story', body);
+  }
+
   // User Profile
   async getProfile(userId: string): Promise<ChildProfile | ParentProfile> {
     return this.request('GET', `/users/${userId}`);

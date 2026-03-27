@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore, TrackId } from '../../types';
-import { aiService } from '../../services/ai';
+import { api } from '../../services/api';
 
 const TRACK_COLOR = COLORS.storyStudio;
 
@@ -69,7 +69,7 @@ export default function StoryStudioScreen() {
 
     try {
       const fullPrompt = buildFullPrompt();
-      const result = await aiService.generateStory({ prompt: fullPrompt });
+      const result = await api.aiStory({ prompt: fullPrompt, ageGroup: 'children' });
       const story = result.title ? `${result.title}\n\n${result.story}` : result.story;
       setGeneratedStory(story);
 
