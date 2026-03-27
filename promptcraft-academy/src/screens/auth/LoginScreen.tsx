@@ -35,8 +35,8 @@ export default function LoginScreen({ navigation }: Props) {
       await login({ username: identifier, password: secret });
       await completeOnboarding();
       // AppNavigator automatically routes to MainStack
-    } catch {
-      Alert.alert('Oops!', 'Could not log in. Please check your details.');
+    } catch (err: any) {
+      Alert.alert('Oops!', err?.message ?? 'Could not log in. Please check your details.');
     } finally {
       setLoading(false);
     }
