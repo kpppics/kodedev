@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "PromptCraft Academy",
+    "name": "Go Cosmo",
     "slug": "promptcraft-academy",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,25 +12,25 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.promptcraft.academy",
+      "bundleIdentifier": "ai.gocosmo.app",
       "supportsTablet": true,
       "requiresFullScreen": false,
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "PromptCraft Academy uses the microphone so your child can record voice prompts and participate in speaking activities.",
-        "NSCameraUsageDescription": "PromptCraft Academy uses the camera to let your child upload a profile photo and capture creative project images.",
-        "NSPhotoLibraryUsageDescription": "PromptCraft Academy accesses your photo library so your child can choose a profile picture or save their creative work."
+        "NSMicrophoneUsageDescription": "Go Cosmo uses the microphone so your child can record voice prompts and participate in speaking activities.",
+        "NSCameraUsageDescription": "Go Cosmo uses the camera to let your child upload a profile photo and capture creative project images.",
+        "NSPhotoLibraryUsageDescription": "Go Cosmo accesses your photo library so your child can choose a profile picture or save their creative work."
       },
       "entitlements": {
         "com.apple.developer.in-app-payments": [
-          "com.promptcraft.academy.premium.monthly",
-          "com.promptcraft.academy.premium.annual",
-          "com.promptcraft.academy.family.monthly",
-          "com.promptcraft.academy.family.annual"
+          "ai.gocosmo.app.premium.monthly",
+          "ai.gocosmo.app.premium.annual",
+          "ai.gocosmo.app.family.monthly",
+          "ai.gocosmo.app.family.annual"
         ]
       }
     },
     "android": {
-      "package": "com.promptcraft.academy",
+      "package": "ai.gocosmo.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",

@@ -1,613 +1,337 @@
-import React from 'react';
+// ==========================================
+// PROFILE SCREEN — Go Cosmo
+// Kid's personal achievement showcase
+// ==========================================
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Animated,
+  Platform,
   Dimensions,
-  FlatList,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
-import {
-  RootStackParamList,
-  ChildProfile,
-  Badge,
-  Project,
-  TrackId,
-} from '../../types';
+import { RootStackParamList } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { useGame } from '../../context/GameContext';
+import Cosmo from '../../components/mascot/Cosmo';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+const { width: W } = Dimensions.get('window');
 
-// -------------------------------------------------------------------
-// Mock data -- replace with real store / API calls
-// -------------------------------------------------------------------
-const MOCK_CHILD: ChildProfile = {
-  id: '1',
-  username: 'prompt_star',
-  displayName: 'Alex',
-  avatar: 'fox',
-  role: 'child',
-  age: 10,
-  level: 7,
-  xp: 2350,
-  totalXp: 3000,
-  streak: 5,
-  badges: [
-    { id: 'b1', name: 'First Prompt', description: 'Write your first prompt', icon: 'create', category: 'creation', earnedAt: '2025-02-01', requirement: 'Write 1 prompt' },
-    { id: 'b2', name: 'Story Starter', description: 'Complete 5 Story Studio lessons', icon: 'book', category: 'skill', earnedAt: '2025-02-10', requirement: 'Complete 5 Story lessons' },
-    { id: 'b3', name: 'Hot Streak', description: 'Maintain a 5-day streak', icon: 'flame', category: 'streak', earnedAt: '2025-03-01', requirement: '5-day streak' },
-    { id: 'b4', name: 'Social Star', description: 'Get 10 likes on a project', icon: 'heart', category: 'social', earnedAt: '2025-03-15', requirement: '10 likes on a project' },
-    { id: 'b5', name: 'Art Apprentice', description: 'Complete 10 Art Factory lessons', icon: 'color-palette', category: 'mastery', earnedAt: '2025-03-20', requirement: 'Complete 10 Art lessons' },
-    { id: 'b6', name: 'Prompt Pro', description: 'Score 90+ on a prompt', icon: 'trophy', category: 'skill', earnedAt: '2025-03-22', requirement: 'Score 90+ on a prompt' },
-  ],
-  promptsCreated: 42,
-  projectsCreated: 18,
-  parentId: 'p1',
-  createdAt: '2025-01-15',
-};
+// Avatar options — emoji avatars for kids
+const AVATARS = ['🦊', '🐯', '🦁', '🐼', '🐸', '🦄', '🐲', '🦋', '🐬', '🦉', '🐧', '🦊'];
 
-const LEVEL_TITLES: Record<number, string> = {
-  1: 'Prompt Newbie',
-  2: 'Prompt Apprentice',
-  3: 'Prompt Crafter',
-  4: 'Prompt Builder',
-  5: 'Prompt Artist',
-  6: 'Prompt Master',
-  7: 'Prompt Wizard',
-  8: 'Prompt Legend',
-  9: 'Prompt Champion',
-  10: 'Prompt Grandmaster',
-};
-
-const RECENT_PROJECTS: Project[] = [
-  {
-    id: 'p1',
-    userId: '1',
-    trackId: 'story-studio',
-    title: 'Dragon Adventure',
-    prompt: 'Write a story about a friendly dragon',
-    result: '',
-    promptScore: { clarity: 80, creativity: 90, context: 75, result: 85, overall: 82, feedback: '', suggestions: [] },
-    createdAt: '2026-03-25',
-    isPublic: true,
-    likes: 12,
-  },
-  {
-    id: 'p2',
-    userId: '1',
-    trackId: 'art-factory',
-    title: 'Space Cat',
-    prompt: 'Draw a cat astronaut',
-    result: '',
-    promptScore: { clarity: 90, creativity: 95, context: 80, result: 88, overall: 88, feedback: '', suggestions: [] },
-    createdAt: '2026-03-24',
-    isPublic: true,
-    likes: 25,
-  },
-  {
-    id: 'p3',
-    userId: '1',
-    trackId: 'game-maker',
-    title: 'Maze Runner',
-    prompt: 'Make a maze game',
-    result: '',
-    promptScore: { clarity: 70, creativity: 80, context: 70, result: 75, overall: 74, feedback: '', suggestions: [] },
-    createdAt: '2026-03-23',
-    isPublic: false,
-    likes: 0,
-  },
+const TRACK_STATS = [
+  { id: 'story-studio',   name: 'Stories',  emoji: '📖', color: COLORS.storyStudio },
+  { id: 'game-maker',     name: 'Games',    emoji: '🎮', color: COLORS.gameMaker },
+  { id: 'web-builder',    name: 'Websites', emoji: '🌐', color: COLORS.webBuilder },
+  { id: 'art-factory',    name: 'Artworks', emoji: '🎨', color: COLORS.artFactory },
+  { id: 'music-maker',    name: 'Songs',    emoji: '🎵', color: COLORS.musicMaker },
+  { id: 'code-explainer', name: 'Code',     emoji: '💻', color: COLORS.codeExplainer },
 ];
 
-const TRACK_META: Record<TrackId, { icon: keyof typeof Ionicons.glyphMap; color: string }> = {
-  'story-studio': { icon: 'book', color: COLORS.storyStudio },
-  'web-builder': { icon: 'globe', color: COLORS.webBuilder },
-  'game-maker': { icon: 'game-controller', color: COLORS.gameMaker },
-  'art-factory': { icon: 'color-palette', color: COLORS.artFactory },
-  'music-maker': { icon: 'musical-notes', color: COLORS.musicMaker },
-  'code-explainer': { icon: 'code-slash', color: COLORS.codeExplainer },
-};
+// Badge definitions
+const ALL_BADGES = [
+  { id: 'first-story',    emoji: '📖', name: 'Story Starter',    desc: 'Created your first story',     color: COLORS.storyStudio },
+  { id: 'first-game',     emoji: '🎮', name: 'Game Dev!',        desc: 'Built your first game',        color: COLORS.gameMaker },
+  { id: 'streak-3',       emoji: '🔥', name: '3-Day Streak',     desc: 'Learned 3 days in a row',      color: COLORS.streak },
+  { id: 'streak-7',       emoji: '⚡', name: 'Week Warrior',     desc: 'Learned 7 days in a row',      color: '#FFD60A' },
+  { id: 'first-web',      emoji: '🌐', name: 'Web Wizard',       desc: 'Built your first webpage',     color: COLORS.webBuilder },
+  { id: 'first-art',      emoji: '🎨', name: 'Art Creator',      desc: 'Made your first AI artwork',   color: COLORS.artFactory },
+  { id: 'xp-500',         emoji: '⭐', name: '500 XP Club',      desc: 'Earned 500 total XP',          color: '#FFD60A' },
+  { id: 'xp-1000',        emoji: '🏆', name: 'XP Champion',      desc: 'Earned 1000 total XP',         color: '#FF7043' },
+  { id: 'cosmo-chat',     emoji: '🤖', name: 'Cosmo\'s Friend',  desc: 'Had your first Cosmo chat',    color: COLORS.primary },
+  { id: 'prompt-master',  emoji: '✨', name: 'Prompt Master',    desc: 'Got a 90+ prompt score',       color: COLORS.primary },
+];
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const XP_RING_SIZE = 120;
-const XP_RING_STROKE = 10;
-
-// -------------------------------------------------------------------
-// Sub-components
-// -------------------------------------------------------------------
-
-const AvatarDisplay: React.FC<{ size?: number }> = ({ size = 90 }) => (
-  <View style={[styles.avatarOuter, { width: size + 8, height: size + 8, borderRadius: (size + 8) / 2 }]}>
-    <View style={[styles.avatarCircle, { width: size, height: size, borderRadius: size / 2 }]}>
-      <Ionicons name="happy" size={size * 0.55} color={COLORS.primary} />
-    </View>
-  </View>
-);
-
-const XpProgressRing: React.FC<{ current: number; total: number; level: number }> = ({
-  current,
-  total,
-  level,
-}) => {
-  const progress = Math.min(current / total, 1);
-  const circumference = 2 * Math.PI * ((XP_RING_SIZE - XP_RING_STROKE) / 2);
-  const strokeDashoffset = circumference * (1 - progress);
-
+function StatCard({ value, label, emoji, color }: { value: string | number; label: string; emoji: string; color: string }) {
+  const scale = useRef(new Animated.Value(1)).current;
   return (
-    <View style={styles.xpRingContainer}>
-      {/* Background ring */}
-      <View style={styles.xpRingBackground}>
-        <View style={styles.xpRingInner}>
-          <Text style={styles.xpRingLevel}>{level}</Text>
-          <Text style={styles.xpRingLabel}>LEVEL</Text>
-        </View>
-      </View>
-      {/* Progress indicator (simplified since SVG is not available) */}
-      <View
-        style={[
-          styles.xpRingProgress,
-          {
-            borderColor: COLORS.primary,
-            borderTopColor: 'transparent',
-            borderRightColor: progress > 0.25 ? COLORS.primary : 'transparent',
-            borderBottomColor: progress > 0.5 ? COLORS.primary : 'transparent',
-            borderLeftColor: progress > 0.75 ? COLORS.primary : 'transparent',
-            transform: [{ rotate: '-45deg' }],
-          },
-        ]}
-      />
-      <Text style={styles.xpRingText}>
-        {current} / {total} XP
-      </Text>
-    </View>
+    <Animated.View style={[sc.card, { transform: [{ scale }] }]}>
+      <LinearGradient colors={[color + '22', color + '11']} style={sc.inner}>
+        <Text style={sc.emoji}>{emoji}</Text>
+        <Text style={[sc.value, { color }]}>{value}</Text>
+        <Text style={sc.label}>{label}</Text>
+      </LinearGradient>
+    </Animated.View>
   );
-};
+}
 
-const StatItem: React.FC<{
-  icon: keyof typeof Ionicons.glyphMap;
-  value: number;
-  label: string;
-  color: string;
-}> = ({ icon, value, label, color }) => (
-  <View style={styles.statItem}>
-    <View style={[styles.statIconCircle, { backgroundColor: color + '20' }]}>
-      <Ionicons name={icon} size={22} color={color} />
-    </View>
-    <Text style={styles.statValue}>{value}</Text>
-    <Text style={styles.statLabel}>{label}</Text>
-  </View>
-);
+const sc = StyleSheet.create({
+  card: { width: (W - SPACING.lg * 2 - SPACING.md * 2) / 3, borderRadius: RADIUS.xl, overflow: 'hidden', ...SHADOWS.small },
+  inner: { padding: SPACING.md, alignItems: 'center' },
+  emoji: { fontSize: 26, marginBottom: 4 },
+  value: { fontSize: FONTS.sizes.xxl, fontWeight: FONTS.weights.black },
+  label: { fontSize: FONTS.sizes.xs, color: COLORS.textSecondary, marginTop: 2, textAlign: 'center' },
+});
 
-const BadgeItem: React.FC<{ badge: Badge }> = ({ badge }) => {
-  const categoryColors: Record<string, string> = {
-    creation: COLORS.storyStudio,
-    skill: COLORS.primary,
-    streak: COLORS.streak,
-    social: COLORS.webBuilder,
-    mastery: COLORS.xpGold,
-  };
-  const color = categoryColors[badge.category] ?? COLORS.primary;
-
-  return (
-    <View style={styles.badgeItem}>
-      <View style={[styles.badgeIconCircle, { backgroundColor: color + '20' }]}>
-        <Ionicons name={(badge.icon as keyof typeof Ionicons.glyphMap) ?? 'ribbon'} size={24} color={color} />
-      </View>
-      <Text style={styles.badgeName} numberOfLines={1}>
-        {badge.name}
-      </Text>
-    </View>
-  );
-};
-
-const ProjectRow: React.FC<{ project: Project; onPress: () => void }> = ({ project, onPress }) => {
-  const track = TRACK_META[project.trackId];
-  return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.projectRow}>
-      <View style={[styles.projectIcon, { backgroundColor: track.color }]}>
-        <Ionicons name={track.icon} size={20} color="#fff" />
-      </View>
-      <View style={styles.projectInfo}>
-        <Text style={styles.projectTitle} numberOfLines={1}>
-          {project.title}
-        </Text>
-        <Text style={styles.projectDate}>{project.createdAt}</Text>
-      </View>
-      <View style={styles.projectScore}>
-        <Text style={styles.projectScoreText}>{project.promptScore.overall}</Text>
-        <Ionicons name="star" size={12} color={COLORS.xpGold} />
-      </View>
-      <Ionicons name="chevron-forward" size={18} color={COLORS.textLight} />
-    </TouchableOpacity>
-  );
-};
-
-// -------------------------------------------------------------------
-// Main component
-// -------------------------------------------------------------------
-
-const ProfileScreen: React.FC = () => {
+export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { user } = useAuth();
-  const { xp, xpToNext, level, levelTitle, streak, badges: earnedBadges } = useGame();
+  const { user, signOut } = useAuth();
+  const { xp, xpToNext, level, streak, badges: earnedBadges } = useGame();
 
-  const displayName = user?.displayName ?? user?.username ?? 'Learner';
-  const username = user?.username ?? '';
+  const name = user?.displayName ?? user?.username ?? 'Learner';
+  const avatarEmoji = AVATARS[Math.abs((user?.username?.charCodeAt(0) ?? 0) % AVATARS.length)];
+
+  const totalXp = xp;
+  const progressPercent = Math.min((xp / xpToNext) * 100, 100);
+  const progressAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(progressAnim, { toValue: progressPercent / 100, duration: 1000, useNativeDriver: false }).start();
+  }, [progressPercent]);
+
+  const progressWidth = progressAnim.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] });
+
+  const earnedBadgeIds = earnedBadges.map(b => b.id);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-      {/* Header / Avatar Section */}
-      <View style={styles.headerSection}>
-        <View style={styles.headerBg}>
-          <TouchableOpacity
-            style={styles.editBtn}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('Settings')}
-          >
-            <Ionicons name="settings-outline" size={22} color="#fff" />
+    <ScrollView style={s.root} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
+
+      {/* Header */}
+      <LinearGradient
+        colors={['#2B0050', '#7B2FAE', '#FF3CAC']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={s.header}
+      >
+        <View style={[s.blob, { top: -30, right: -20, width: 130, height: 130 }]} />
+        <View style={[s.blob, { bottom: -20, left: -20, width: 90, height: 90 }]} />
+
+        {/* Top row */}
+        <View style={s.headerTop}>
+          <View />
+          <TouchableOpacity style={s.settingsBtn} onPress={() => navigation.navigate('Settings')}>
+            <Ionicons name="settings-outline" size={22} color="rgba(255,255,255,0.8)" />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.avatarWrapper}>
-          <AvatarDisplay size={90} />
+        {/* Avatar */}
+        <View style={s.avatarWrap}>
+          <LinearGradient colors={['rgba(255,255,255,0.35)', 'rgba(255,255,255,0.15)']} style={s.avatarRing}>
+            <Text style={s.avatarEmoji}>{avatarEmoji}</Text>
+          </LinearGradient>
+          <View style={s.levelPill}>
+            <LinearGradient colors={['#FFD60A', '#FF7043']} style={s.levelPillInner}>
+              <Text style={s.levelPillText}>LV {level}</Text>
+            </LinearGradient>
+          </View>
         </View>
 
-        <Text style={styles.displayName}>{displayName}</Text>
-        <Text style={styles.username}>@{username}</Text>
+        <Text style={s.profileName}>{name}</Text>
+        <Text style={s.profileSub}>Future AI Creator ✨</Text>
 
-        {/* Level badge */}
-        <View style={styles.levelBadge}>
-          <Ionicons name="shield-checkmark" size={16} color={COLORS.xpGold} />
-          <Text style={styles.levelBadgeText}>{levelTitle}</Text>
+        {/* XP bar */}
+        <View style={s.xpSection}>
+          <View style={s.xpRow}>
+            <Text style={s.xpLabel}>{xp.toLocaleString()} XP</Text>
+            <Text style={s.xpNext}>{xpToNext.toLocaleString()} to Level {level + 1}</Text>
+          </View>
+          <View style={s.xpBar}>
+            <Animated.View style={[s.xpFill, { width: progressWidth }]}>
+              <LinearGradient colors={['#FFD60A', '#FF7043']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+              <View style={s.xpShine} />
+            </Animated.View>
+          </View>
+        </View>
+
+        {/* Streak */}
+        <View style={s.streakRow}>
+          <View style={s.streakItem}>
+            <Ionicons name="flame" size={20} color="#FF6348" />
+            <Text style={s.streakVal}>{streak}</Text>
+            <Text style={s.streakLbl}>day streak</Text>
+          </View>
+          <View style={s.streakDivide} />
+          <View style={s.streakItem}>
+            <Ionicons name="star" size={20} color="#FFD60A" />
+            <Text style={s.streakVal}>{totalXp.toLocaleString()}</Text>
+            <Text style={s.streakLbl}>total XP</Text>
+          </View>
+          <View style={s.streakDivide} />
+          <View style={s.streakItem}>
+            <Text style={{ fontSize: 20 }}>🏅</Text>
+            <Text style={s.streakVal}>{earnedBadgeIds.length}</Text>
+            <Text style={s.streakLbl}>badges</Text>
+          </View>
+        </View>
+      </LinearGradient>
+
+      {/* Quick actions */}
+      <View style={s.quickActions}>
+        <TouchableOpacity style={s.qa} onPress={() => (navigation as any).navigate('CosmoChat')}>
+          <LinearGradient colors={['#FF3CAC', '#FF7043']} style={s.qaGrad}>
+            <Cosmo mood="happy" size={44} animate={false} />
+          </LinearGradient>
+          <Text style={s.qaLabel}>Talk to{'\n'}Cosmo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={s.qa} onPress={() => navigation.navigate('Leaderboard')}>
+          <LinearGradient colors={['#FFD60A', '#FF7043']} style={s.qaGrad}>
+            <Ionicons name="trophy" size={26} color="#fff" />
+          </LinearGradient>
+          <Text style={s.qaLabel}>Leader-{'\n'}board</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={s.qa} onPress={() => navigation.navigate('Quests')}>
+          <LinearGradient colors={['#2B5CE6', '#9B5DE5']} style={s.qaGrad}>
+            <Ionicons name="compass" size={26} color="#fff" />
+          </LinearGradient>
+          <Text style={s.qaLabel}>Daily{'\n'}Quests</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={s.qa} onPress={() => navigation.navigate('Subscription')}>
+          <LinearGradient colors={['#00C9A7', '#2B5CE6']} style={s.qaGrad}>
+            <Ionicons name="rocket" size={26} color="#fff" />
+          </LinearGradient>
+          <Text style={s.qaLabel}>Go{'\n'}Premium!</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Stats row */}
+      <View style={s.section}>
+        <Text style={s.sectionTitle}>📊 My Stats</Text>
+        <View style={s.statsRow}>
+          <StatCard value={level} label="Level" emoji="🌟" color={COLORS.primary} />
+          <StatCard value={streak} label="Streak" emoji="🔥" color={COLORS.streak} />
+          <StatCard value={earnedBadgeIds.length} label="Badges" emoji="🏅" color={COLORS.secondary} />
         </View>
       </View>
 
-      {/* XP Progress Ring */}
-      <XpProgressRing current={xp} total={xpToNext} level={level} />
-
-      {/* Stats Row */}
-      <View style={styles.statsRow}>
-        <StatItem icon="construct" value={MOCK_CHILD.projectsCreated} label="Projects" color={COLORS.webBuilder} />
-        <StatItem icon="create" value={MOCK_CHILD.promptsCreated} label="Prompts" color={COLORS.primary} />
-        <StatItem icon="flame" value={streak} label="Streak" color={COLORS.streak} />
+      {/* Badges */}
+      <View style={s.section}>
+        <View style={s.sectionHead}>
+          <Text style={s.sectionTitle}>🏆 Badges</Text>
+          <Text style={s.sectionSub}>{earnedBadgeIds.length}/{ALL_BADGES.length} earned</Text>
+        </View>
+        <View style={s.badgeGrid}>
+          {ALL_BADGES.map(badge => {
+            const earned = earnedBadgeIds.includes(badge.id);
+            return (
+              <View key={badge.id} style={[s.badgeItem, !earned && s.badgeItemLocked]}>
+                <LinearGradient
+                  colors={earned ? [badge.color + 'CC', badge.color + '88'] : ['#E5E7EB', '#D1D5DB']}
+                  style={s.badgeCircle}
+                >
+                  <Text style={[s.badgeEmoji, !earned && { opacity: 0.4 }]}>{badge.emoji}</Text>
+                  {!earned && <View style={s.lockOverlay}><Ionicons name="lock-closed" size={12} color="#9CA3AF" /></View>}
+                </LinearGradient>
+                <Text style={[s.badgeName, !earned && s.badgeNameLocked]} numberOfLines={2}>
+                  {badge.name}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
       </View>
 
-      {/* Badge Showcase */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Ionicons name="ribbon" size={22} color={COLORS.xpGold} />
-          <Text style={styles.sectionTitle}>Badge Showcase</Text>
-          <Text style={styles.sectionCount}>{earnedBadges.length} earned</Text>
-        </View>
-        <View style={styles.badgeGrid}>
-          {earnedBadges.map((badge) => (
-            <BadgeItem key={badge.id} badge={badge} />
+      {/* Account section */}
+      <View style={s.section}>
+        <Text style={s.sectionTitle}>⚙️ Account</Text>
+        <View style={s.menuCard}>
+          {[
+            { icon: 'person-outline', label: 'Edit Profile', action: () => {} },
+            { icon: 'shield-checkmark-outline', label: 'Parent Dashboard', action: () => navigation.navigate('ParentDashboard') },
+            { icon: 'rocket-outline', label: 'Upgrade to Premium', action: () => navigation.navigate('Subscription') },
+            { icon: 'help-circle-outline', label: 'Help & Support', action: () => {} },
+          ].map((item, i, arr) => (
+            <React.Fragment key={item.label}>
+              <TouchableOpacity style={s.menuRow} onPress={item.action} activeOpacity={0.7}>
+                <View style={s.menuIcon}>
+                  <Ionicons name={item.icon as any} size={20} color={COLORS.primary} />
+                </View>
+                <Text style={s.menuLabel}>{item.label}</Text>
+                <Ionicons name="chevron-forward" size={18} color={COLORS.textLight} />
+              </TouchableOpacity>
+              {i < arr.length - 1 && <View style={s.menuDivider} />}
+            </React.Fragment>
           ))}
         </View>
+
+        <TouchableOpacity style={s.signOutBtn} onPress={signOut}>
+          <Ionicons name="log-out-outline" size={18} color={COLORS.error} />
+          <Text style={s.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Recent Projects */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Ionicons name="folder-open" size={22} color={COLORS.primary} />
-          <Text style={styles.sectionTitle}>Recent Projects</Text>
-        </View>
-        {RECENT_PROJECTS.map((project) => (
-          <ProjectRow
-            key={project.id}
-            project={project}
-            onPress={() => navigation.navigate('ProjectView', { projectId: project.id })}
-          />
-        ))}
-      </View>
-
-      {/* My Prompt Library Button */}
-      <TouchableOpacity
-        activeOpacity={0.85}
-        style={styles.promptLibraryBtn}
-        onPress={() => navigation.navigate('PromptLibrary')}
-      >
-        <Ionicons name="library" size={24} color="#fff" />
-        <Text style={styles.promptLibraryText}>My Prompt Library</Text>
-        <Ionicons name="arrow-forward" size={20} color="rgba(255,255,255,0.8)" />
-      </TouchableOpacity>
-
-      {/* Edit Profile Button */}
-      <TouchableOpacity
-        activeOpacity={0.85}
-        style={styles.editProfileBtn}
-        onPress={() => navigation.navigate('Settings')}
-      >
-        <Ionicons name="pencil" size={20} color={COLORS.primary} />
-        <Text style={styles.editProfileText}>Edit Profile</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
-};
+}
 
-export default ProfileScreen;
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: COLORS.background },
+  content: { paddingBottom: 120 },
 
-// -------------------------------------------------------------------
-// Styles
-// -------------------------------------------------------------------
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  scrollContent: {
-    paddingBottom: SPACING.huge + SPACING.xxl,
-  },
-
-  // Header
-  headerSection: {
+  header: {
     alignItems: 'center',
-    paddingBottom: SPACING.lg,
-  },
-  headerBg: {
-    width: '100%',
-    height: 120,
-    backgroundColor: COLORS.primary,
-    borderBottomLeftRadius: RADIUS.xxl,
-    borderBottomRightRadius: RADIUS.xxl,
-  },
-  editBtn: {
-    position: 'absolute',
-    top: SPACING.xl,
-    right: SPACING.lg,
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarWrapper: {
-    marginTop: -50,
-  },
-  avatarOuter: {
-    borderWidth: 4,
-    borderColor: COLORS.xpGold,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarCircle: {
-    backgroundColor: COLORS.primaryLight + '30',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  displayName: {
-    fontSize: FONTS.sizes.xxl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-    marginTop: SPACING.sm,
-  },
-  username: {
-    fontSize: FONTS.sizes.md,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  levelBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.xpGold + '20',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: RADIUS.full,
-    marginTop: SPACING.sm,
-  },
-  levelBadgeText: {
-    fontSize: FONTS.sizes.sm,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.xpGold,
-    marginLeft: 6,
-  },
-
-  // XP Ring
-  xpRingContainer: {
-    alignItems: 'center',
-    marginVertical: SPACING.lg,
-  },
-  xpRingBackground: {
-    width: XP_RING_SIZE,
-    height: XP_RING_SIZE,
-    borderRadius: XP_RING_SIZE / 2,
-    borderWidth: XP_RING_STROKE,
-    borderColor: COLORS.border,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  xpRingProgress: {
-    position: 'absolute',
-    top: 0,
-    width: XP_RING_SIZE,
-    height: XP_RING_SIZE,
-    borderRadius: XP_RING_SIZE / 2,
-    borderWidth: XP_RING_STROKE,
-  },
-  xpRingInner: {
-    alignItems: 'center',
-  },
-  xpRingLevel: {
-    fontSize: FONTS.sizes.hero,
-    fontWeight: FONTS.weights.extrabold,
-    color: COLORS.primary,
-  },
-  xpRingLabel: {
-    fontSize: FONTS.sizes.xs,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.textSecondary,
-    letterSpacing: 2,
-  },
-  xpRingText: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-    marginTop: SPACING.xs,
-  },
-
-  // Stats
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginHorizontal: SPACING.lg,
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
-    paddingVertical: SPACING.lg,
-    ...SHADOWS.small,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statIconCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: SPACING.xs,
-  },
-  statValue: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-  },
-  statLabel: {
-    fontSize: FONTS.sizes.xs,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-
-  // Sections
-  section: {
-    marginTop: SPACING.xl,
+    paddingTop: Platform.OS === 'ios' ? 56 : 36,
+    paddingBottom: SPACING.xxl,
     paddingHorizontal: SPACING.lg,
+    overflow: 'hidden',
+    borderBottomLeftRadius: 36,
+    borderBottomRightRadius: 36,
+    marginBottom: SPACING.lg,
   },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  sectionTitle: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-    marginLeft: SPACING.sm,
-    flex: 1,
-  },
-  sectionCount: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-  },
+  blob: { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.1)' },
+  headerTop: { width: '100%', flexDirection: 'row', justifyContent: 'flex-end', marginBottom: SPACING.md },
+  settingsBtn: { width: 38, height: 38, borderRadius: 19, backgroundColor: 'rgba(255,255,255,0.2)', alignItems: 'center', justifyContent: 'center' },
 
-  // Badge grid
-  badgeGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  badgeItem: {
-    width: (SCREEN_WIDTH - SPACING.lg * 2 - SPACING.sm * 2) / 3,
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  badgeIconCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: SPACING.xs,
-  },
-  badgeName: {
-    fontSize: FONTS.sizes.xs,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.text,
-    textAlign: 'center',
-  },
+  avatarWrap: { alignItems: 'center', marginBottom: SPACING.md },
+  avatarRing: { width: 100, height: 100, borderRadius: 50, alignItems: 'center', justifyContent: 'center' },
+  avatarEmoji: { fontSize: 56 },
+  levelPill: { position: 'absolute', bottom: -8, alignSelf: 'center' },
+  levelPillInner: { paddingHorizontal: 14, paddingVertical: 4, borderRadius: 99 },
+  levelPillText: { fontSize: FONTS.sizes.sm, fontWeight: FONTS.weights.black, color: '#1A0530' },
 
-  // Recent projects
-  projectRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
-    padding: SPACING.md,
-    marginBottom: SPACING.sm,
-    ...SHADOWS.small,
-  },
-  projectIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: RADIUS.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  projectInfo: {
-    flex: 1,
-    marginLeft: SPACING.md,
-  },
-  projectTitle: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.text,
-  },
-  projectDate: {
-    fontSize: FONTS.sizes.xs,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  projectScore: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: SPACING.sm,
-  },
-  projectScoreText: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.xpGold,
-    marginRight: 2,
-  },
+  profileName: { fontSize: FONTS.sizes.xxl, fontWeight: FONTS.weights.black, color: '#fff', marginTop: SPACING.md },
+  profileSub: { fontSize: FONTS.sizes.md, color: 'rgba(255,255,255,0.8)', marginTop: 4 },
 
-  // Prompt Library Button
-  promptLibraryBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.primary,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.xl,
-    paddingVertical: SPACING.lg,
-    borderRadius: RADIUS.lg,
-    ...SHADOWS.medium,
-  },
-  promptLibraryText: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: FONTS.weights.bold,
-    color: '#fff',
-    marginHorizontal: SPACING.sm,
-  },
+  xpSection: { width: '100%', marginTop: SPACING.lg, gap: 6 },
+  xpRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  xpLabel: { fontSize: FONTS.sizes.sm, color: 'rgba(255,255,255,0.9)', fontWeight: FONTS.weights.bold },
+  xpNext: { fontSize: FONTS.sizes.sm, color: 'rgba(255,255,255,0.65)' },
+  xpBar: { height: 14, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 99, overflow: 'hidden' },
+  xpFill: { height: '100%', borderRadius: 99, overflow: 'hidden' },
+  xpShine: { position: 'absolute', top: 2, left: 4, right: 4, height: 4, borderRadius: 99, backgroundColor: 'rgba(255,255,255,0.4)' },
 
-  // Edit Profile Button
-  editProfileBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.surface,
-    marginHorizontal: SPACING.lg,
-    marginTop: SPACING.md,
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.lg,
-    borderWidth: 1.5,
-    borderColor: COLORS.primary,
-  },
-  editProfileText: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.primary,
-    marginLeft: SPACING.sm,
-  },
+  streakRow: { flexDirection: 'row', alignItems: 'center', marginTop: SPACING.lg, backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: RADIUS.xl, paddingVertical: SPACING.md, paddingHorizontal: SPACING.xl, gap: 0 },
+  streakItem: { flex: 1, alignItems: 'center', gap: 2 },
+  streakVal: { fontSize: FONTS.sizes.xl, fontWeight: FONTS.weights.black, color: '#fff' },
+  streakLbl: { fontSize: FONTS.sizes.xs, color: 'rgba(255,255,255,0.75)' },
+  streakDivide: { width: 1, height: 40, backgroundColor: 'rgba(255,255,255,0.2)' },
+
+  quickActions: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: SPACING.lg, marginBottom: SPACING.xl },
+  qa: { alignItems: 'center', gap: SPACING.sm },
+  qaGrad: { width: 60, height: 60, borderRadius: 20, alignItems: 'center', justifyContent: 'center', ...SHADOWS.small },
+  qaLabel: { fontSize: FONTS.sizes.xs, fontWeight: FONTS.weights.semibold, color: COLORS.textSecondary, textAlign: 'center', lineHeight: 15 },
+
+  section: { paddingHorizontal: SPACING.lg, marginBottom: SPACING.xl },
+  sectionHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: SPACING.md },
+  sectionTitle: { fontSize: FONTS.sizes.xl, fontWeight: FONTS.weights.black, color: COLORS.text, marginBottom: SPACING.md },
+  sectionSub: { fontSize: FONTS.sizes.sm, color: COLORS.textSecondary, fontWeight: FONTS.weights.medium },
+
+  statsRow: { flexDirection: 'row', justifyContent: 'space-between' },
+
+  badgeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
+  badgeItem: { width: (W - SPACING.lg * 2 - SPACING.sm * 4) / 5, alignItems: 'center', gap: 4 },
+  badgeItemLocked: { opacity: 0.65 },
+  badgeCircle: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center' },
+  badgeEmoji: { fontSize: 26 },
+  lockOverlay: { position: 'absolute', bottom: 2, right: 2 },
+  badgeName: { fontSize: 9, fontWeight: FONTS.weights.semibold, color: COLORS.text, textAlign: 'center', lineHeight: 12 },
+  badgeNameLocked: { color: COLORS.textLight },
+
+  menuCard: { backgroundColor: '#fff', borderRadius: RADIUS.xxl, overflow: 'hidden', borderWidth: 1.5, borderColor: COLORS.border, ...SHADOWS.small, marginBottom: SPACING.md },
+  menuRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: SPACING.lg, paddingVertical: SPACING.lg, gap: SPACING.md },
+  menuIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: COLORS.primary + '15', alignItems: 'center', justifyContent: 'center' },
+  menuLabel: { flex: 1, fontSize: FONTS.sizes.md, fontWeight: FONTS.weights.semibold, color: COLORS.text },
+  menuDivider: { height: 1, backgroundColor: COLORS.border, marginHorizontal: SPACING.lg },
+
+  signOutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.sm, paddingVertical: SPACING.md, backgroundColor: COLORS.error + '12', borderRadius: RADIUS.xl, borderWidth: 1.5, borderColor: COLORS.error + '30' },
+  signOutText: { fontSize: FONTS.sizes.md, fontWeight: FONTS.weights.bold, color: COLORS.error },
 });

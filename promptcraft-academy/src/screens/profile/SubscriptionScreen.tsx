@@ -1,677 +1,355 @@
-import React, { useState } from 'react';
+// ==========================================
+// SUBSCRIPTION SCREEN — Go Cosmo
+// Professional pricing for parents
+// ==========================================
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Animated,
+  Platform,
+  Dimensions,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import { SubscriptionTier } from '../../types';
+import Cosmo from '../../components/mascot/Cosmo';
 
-// ── Types ──────────────────────────────────────────────────
-interface PlanInfo {
+const { width: W } = Dimensions.get('window');
+
+interface Plan {
   tier: SubscriptionTier;
   name: string;
-  monthlyPrice: string;
-  yearlyPrice: string;
-  priceNote?: string;
-  features: string[];
-  highlighted: boolean;
+  monthly: string;
+  yearly: string;
+  yearlyMonthly: string;
+  saving: string;
+  color: string;
+  gradient: readonly [string, string];
   badge?: string;
+  highlighted: boolean;
+  features: string[];
 }
 
-// ── Data ───────────────────────────────────────────────────
-const PLANS: PlanInfo[] = [
+const PLANS: Plan[] = [
   {
     tier: 'free',
-    name: 'Free',
-    monthlyPrice: '£0',
-    yearlyPrice: '£0',
-    features: [
-      '3 projects per track',
-      'Basic Story & Web tracks',
-      'Prompt scoring feedback',
-      'Community gallery access',
-    ],
+    name: 'Explorer',
+    monthly: 'FREE',
+    yearly: 'FREE',
+    yearlyMonthly: 'Free forever',
+    saving: '',
+    color: '#6B7280',
+    gradient: ['#9CA3AF', '#6B7280'],
     highlighted: false,
+    features: [
+      '3 AI creations per day',
+      'Story Studio access',
+      'Cosmo chat (10 msgs/day)',
+      'Basic progress tracking',
+      'Parent dashboard view',
+    ],
   },
   {
     tier: 'junior',
-    name: 'Junior',
-    monthlyPrice: '£3.99',
-    yearlyPrice: '£24.99',
-    priceNote: 'Save 48% yearly',
-    features: [
-      'All 6 learning tracks',
-      'Unlimited projects',
-      'Advanced prompt analysis',
-      'Prompt Battles',
-      'Badges & leaderboard',
-      'Offline project access',
-    ],
-    highlighted: true,
+    name: 'Junior Creator',
+    monthly: '£4.99',
+    yearly: '£39.99',
+    yearlyMonthly: '£3.33/mo',
+    saving: 'Save 33%',
+    color: COLORS.primary,
+    gradient: ['#FF3CAC', '#FF7043'],
     badge: 'Most Popular',
+    highlighted: true,
+    features: [
+      'Unlimited AI creations',
+      'All 6 learning tracks',
+      'Unlimited Cosmo chat',
+      'Voice conversations with Cosmo',
+      'XP, badges & leaderboard',
+      'Project gallery & sharing',
+      'Detailed progress reports',
+      'Parent dashboard + alerts',
+    ],
   },
   {
     tier: 'family',
-    name: 'Family',
-    monthlyPrice: '£6.99',
-    yearlyPrice: '£44.99',
-    priceNote: 'Save 46% yearly',
-    features: [
-      'Everything in Junior',
-      'Up to 4 children',
-      'Parent dashboard',
-      'Progress reports',
-      'Screen time controls',
-      'Priority support',
-    ],
-    highlighted: false,
+    name: 'Family Plan',
+    monthly: '£9.99',
+    yearly: '£79.99',
+    yearlyMonthly: '£6.67/mo',
+    saving: 'Save 33%',
+    color: COLORS.secondary,
+    gradient: ['#2B5CE6', '#9B5DE5'],
     badge: 'Best Value',
-  },
-  {
-    tier: 'classroom',
-    name: 'Classroom',
-    monthlyPrice: '—',
-    yearlyPrice: '£49.99',
-    priceNote: 'Per year',
-    features: [
-      'Everything in Family',
-      'Up to 30 students',
-      'Teacher dashboard',
-      'Challenge creation',
-      'Grading & feedback tools',
-      'Curriculum alignment',
-      'Bulk student management',
-    ],
     highlighted: false,
+    features: [
+      'Everything in Junior Creator',
+      'Up to 4 children',
+      'Family leaderboard',
+      'Classroom mode',
+      'Priority AI responses',
+      'Exclusive Cosmo costumes',
+      'Weekly family challenge',
+      'Premium support',
+    ],
   },
 ];
 
-const FEATURE_COMPARISON = [
-  { feature: 'Learning tracks', free: '2', junior: '6', family: '6', classroom: '6' },
-  { feature: 'Projects', free: '3 each', junior: 'Unlimited', family: 'Unlimited', classroom: 'Unlimited' },
-  { feature: 'Prompt Battles', free: '—', junior: 'Yes', family: 'Yes', classroom: 'Yes' },
-  { feature: 'Children / Students', free: '1', junior: '1', family: 'Up to 4', classroom: 'Up to 30' },
-  { feature: 'Parent dashboard', free: '—', junior: '—', family: 'Yes', classroom: 'Yes' },
-  { feature: 'Teacher tools', free: '—', junior: '—', family: '—', classroom: 'Yes' },
-  { feature: 'Offline access', free: '—', junior: 'Yes', family: 'Yes', classroom: 'Yes' },
-  { feature: 'Priority support', free: '—', junior: '—', family: 'Yes', classroom: 'Yes' },
+const TRUST_BADGES = [
+  { icon: '🔒', label: 'COPPA\nCompliant' },
+  { icon: '⭐', label: 'Kid\nSafe AI' },
+  { icon: '🚫', label: 'Ad\nFree' },
+  { icon: '💳', label: 'Cancel\nAnytime' },
 ];
 
-const CURRENT_PLAN: SubscriptionTier = 'free';
+const REVIEWS = [
+  { name: 'Sarah M.', text: 'My daughter uses it every single day — she\'s learned more about AI in a week than I have in years!', stars: 5 },
+  { name: 'James T.', text: 'The games Cosmo helps them build are actually playable! My son is obsessed.', stars: 5 },
+  { name: 'Emma R.', text: 'Finally an app that keeps them learning AND entertained. Worth every penny.', stars: 5 },
+];
 
-// ── Component ──────────────────────────────────────────────
 export default function SubscriptionScreen() {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
-  const [showComparison, setShowComparison] = useState(false);
+  const navigation = useNavigation();
+  const [billing, setBilling] = useState<'monthly' | 'yearly'>('yearly');
+  const [selected, setSelected] = useState<SubscriptionTier>('junior');
+  const cosmoMood = useRef<'celebrating' | 'happy' | 'excited'>('happy');
+  const glowAnim = useRef(new Animated.Value(0.7)).current;
 
-  const renderBillingToggle = () => (
-    <View style={styles.billingToggle}>
-      <TouchableOpacity
-        style={[styles.billingOption, billingCycle === 'monthly' && styles.billingOptionActive]}
-        onPress={() => setBillingCycle('monthly')}
-      >
-        <Text style={[styles.billingOptionText, billingCycle === 'monthly' && styles.billingOptionTextActive]}>
-          Monthly
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.billingOption, billingCycle === 'yearly' && styles.billingOptionActive]}
-        onPress={() => setBillingCycle('yearly')}
-      >
-        <Text style={[styles.billingOptionText, billingCycle === 'yearly' && styles.billingOptionTextActive]}>
-          Yearly
-        </Text>
-        <View style={styles.saveBadge}>
-          <Text style={styles.saveBadgeText}>Save up to 48%</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(glowAnim, { toValue: 1, duration: 1200, useNativeDriver: true }),
+        Animated.timing(glowAnim, { toValue: 0.7, duration: 1200, useNativeDriver: true }),
+      ])
+    ).start();
+  }, []);
 
-  const renderPlanCard = (plan: PlanInfo) => {
-    const isCurrent = plan.tier === CURRENT_PLAN;
-    const price = billingCycle === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice;
-    const isClassroom = plan.tier === 'classroom';
+  const getPrice = (plan: Plan) =>
+    billing === 'yearly' ? (plan.yearly === 'FREE' ? 'FREE' : plan.yearlyMonthly) : plan.monthly;
 
-    return (
-      <View
-        key={plan.tier}
-        style={[
-          styles.planCard,
-          plan.highlighted && styles.planCardHighlighted,
-          isCurrent && styles.planCardCurrent,
-        ]}
-      >
-        {plan.badge && (
-          <View style={[styles.planBadge, plan.highlighted && styles.planBadgeHighlighted]}>
-            <Text style={[styles.planBadgeText, plan.highlighted && styles.planBadgeTextHighlighted]}>
-              {plan.badge}
-            </Text>
-          </View>
-        )}
+  return (
+    <ScrollView style={s.root} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
 
-        <Text style={[styles.planName, plan.highlighted && styles.planNameHighlighted]}>
-          {plan.name}
-        </Text>
+      {/* Hero */}
+      <LinearGradient colors={['#2B0050', '#7B2FAE', '#FF3CAC']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.hero}>
+        <View style={[s.blob, { top: -30, right: -20, width: 130, height: 130 }]} />
+        <View style={[s.blob, { bottom: -20, left: -20, width: 90, height: 90 }]} />
 
-        <View style={styles.planPricing}>
-          <Text style={[styles.planPrice, plan.highlighted && styles.planPriceHighlighted]}>
-            {price}
-          </Text>
-          {!isClassroom && plan.tier !== 'free' && (
-            <Text style={styles.planPricePeriod}>
-              /{billingCycle === 'monthly' ? 'mo' : 'yr'}
-            </Text>
-          )}
-        </View>
-        {plan.priceNote && billingCycle === 'yearly' && (
-          <Text style={styles.planPriceNote}>{plan.priceNote}</Text>
-        )}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
+          <Ionicons name="chevron-back" size={22} color="#fff" />
+        </TouchableOpacity>
 
-        <View style={styles.planFeatures}>
-          {plan.features.map((feature, i) => (
-            <View key={i} style={styles.planFeatureRow}>
-              <Ionicons
-                name="checkmark-circle"
-                size={18}
-                color={plan.highlighted ? COLORS.primary : COLORS.success}
-              />
-              <Text style={styles.planFeatureText}>{feature}</Text>
+        <Cosmo mood="celebrating" size={110} animate />
+        <Text style={s.heroTitle}>Unlock the Full{'\n'}Go Cosmo Experience!</Text>
+        <Text style={s.heroSub}>Join thousands of kids learning AI skills and having a blast every day 🚀</Text>
+
+        {/* Trust badges */}
+        <View style={s.trustRow}>
+          {TRUST_BADGES.map(b => (
+            <View key={b.label} style={s.trustBadge}>
+              <Text style={s.trustIcon}>{b.icon}</Text>
+              <Text style={s.trustLabel}>{b.label}</Text>
             </View>
           ))}
         </View>
+      </LinearGradient>
 
-        {isCurrent ? (
-          <View style={styles.currentPlanButton}>
-            <Ionicons name="checkmark" size={18} color={COLORS.success} />
-            <Text style={styles.currentPlanButtonText}>Current Plan</Text>
-          </View>
-        ) : (
+      {/* Billing toggle */}
+      <View style={s.billingWrap}>
+        <View style={s.billingToggle}>
           <TouchableOpacity
-            style={[
-              styles.selectPlanButton,
-              plan.highlighted && styles.selectPlanButtonHighlighted,
-            ]}
+            style={[s.billingBtn, billing === 'monthly' && s.billingBtnActive]}
+            onPress={() => setBilling('monthly')}
           >
-            <Text
-              style={[
-                styles.selectPlanButtonText,
-                plan.highlighted && styles.selectPlanButtonTextHighlighted,
-              ]}
+            <Text style={[s.billingBtnText, billing === 'monthly' && s.billingBtnTextActive]}>Monthly</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[s.billingBtn, billing === 'yearly' && s.billingBtnActive]}
+            onPress={() => setBilling('yearly')}
+          >
+            <Text style={[s.billingBtnText, billing === 'yearly' && s.billingBtnTextActive]}>Yearly</Text>
+            <View style={s.saveBadge}><Text style={s.saveBadgeText}>Save 33%</Text></View>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Plan cards */}
+      <View style={s.plansWrap}>
+        {PLANS.map(plan => {
+          const isSelected = selected === plan.tier;
+          return (
+            <TouchableOpacity
+              key={plan.tier}
+              onPress={() => setSelected(plan.tier)}
+              activeOpacity={0.88}
             >
-              {plan.tier === 'free' ? 'Get Started' : 'Start Free Trial'}
-            </Text>
+              <Animated.View style={[
+                s.planCard,
+                isSelected && s.planCardSelected,
+                isSelected && plan.highlighted && { opacity: glowAnim },
+              ]}>
+                {plan.badge && (
+                  <LinearGradient colors={plan.gradient} style={s.planBadge}>
+                    <Text style={s.planBadgeText}>{plan.badge}</Text>
+                  </LinearGradient>
+                )}
+
+                <View style={s.planHeader}>
+                  <View style={[s.planDot, isSelected && { backgroundColor: plan.color }]} />
+                  <View style={s.planTitleWrap}>
+                    <Text style={s.planName}>{plan.name}</Text>
+                    <Text style={s.planPrice}>
+                      {getPrice(plan)}
+                      {getPrice(plan) !== 'FREE' && getPrice(plan) !== plan.yearlyMonthly && <Text style={s.planPer}>/mo</Text>}
+                    </Text>
+                    {billing === 'yearly' && plan.saving && (
+                      <Text style={s.planSaving}>{plan.saving} vs monthly</Text>
+                    )}
+                  </View>
+                  {isSelected && (
+                    <LinearGradient colors={plan.gradient} style={s.checkCircle}>
+                      <Ionicons name="checkmark" size={16} color="#fff" />
+                    </LinearGradient>
+                  )}
+                </View>
+
+                {plan.features.map(f => (
+                  <View key={f} style={s.featureRow}>
+                    <LinearGradient colors={isSelected ? plan.gradient : ['#D1D5DB', '#9CA3AF']} style={s.featureDot}>
+                      <Ionicons name="checkmark" size={10} color="#fff" />
+                    </LinearGradient>
+                    <Text style={[s.featureText, !isSelected && s.featureTextDim]}>{f}</Text>
+                  </View>
+                ))}
+              </Animated.View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
+      {/* CTA */}
+      <View style={s.ctaWrap}>
+        {selected !== 'free' ? (
+          <TouchableOpacity activeOpacity={0.9}>
+            <LinearGradient
+              colors={PLANS.find(p => p.tier === selected)?.gradient ?? ['#FF3CAC', '#FF7043']}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              style={s.ctaBtn}
+            >
+              <Text style={s.ctaBtnText}>
+                Start Free 7-Day Trial 🚀
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={s.ctaBtnFree} activeOpacity={0.9} onPress={() => navigation.goBack()}>
+            <Text style={s.ctaBtnFreeText}>Continue with Free Plan</Text>
           </TouchableOpacity>
         )}
-      </View>
-    );
-  };
-
-  const renderLifetimeOffer = () => (
-    <View style={styles.lifetimeCard}>
-      <View style={styles.lifetimeHeader}>
-        <Ionicons name="diamond-outline" size={28} color={COLORS.xpGold} />
-        <View style={styles.lifetimeInfo}>
-          <Text style={styles.lifetimeTitle}>Lifetime Access</Text>
-          <Text style={styles.lifetimeSubtitle}>Pay once, learn forever</Text>
-        </View>
-      </View>
-      <View style={styles.lifetimePricing}>
-        <Text style={styles.lifetimePrice}>£59.99</Text>
-        <Text style={styles.lifetimePriceNote}>One-time payment - Junior plan features</Text>
-      </View>
-      <TouchableOpacity style={styles.lifetimeButton}>
-        <Ionicons name="flash" size={18} color="#FFF" />
-        <Text style={styles.lifetimeButtonText}>Get Lifetime Access</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderFeatureComparison = () => (
-    <View style={styles.comparisonSection}>
-      <TouchableOpacity
-        style={styles.comparisonToggle}
-        onPress={() => setShowComparison(!showComparison)}
-      >
-        <Text style={styles.comparisonToggleText}>Feature Comparison</Text>
-        <Ionicons
-          name={showComparison ? 'chevron-up' : 'chevron-down'}
-          size={20}
-          color={COLORS.primary}
-        />
-      </TouchableOpacity>
-
-      {showComparison && (
-        <View style={styles.comparisonTable}>
-          {/* Header row */}
-          <View style={[styles.comparisonRow, styles.comparisonHeaderRow]}>
-            <Text style={[styles.comparisonCell, styles.comparisonFeatureCell, styles.comparisonHeaderText]}>
-              Feature
-            </Text>
-            <Text style={[styles.comparisonCell, styles.comparisonHeaderText]}>Free</Text>
-            <Text style={[styles.comparisonCell, styles.comparisonHeaderText]}>Jr</Text>
-            <Text style={[styles.comparisonCell, styles.comparisonHeaderText]}>Fam</Text>
-            <Text style={[styles.comparisonCell, styles.comparisonHeaderText]}>Class</Text>
-          </View>
-          {FEATURE_COMPARISON.map((row, i) => (
-            <View
-              key={row.feature}
-              style={[styles.comparisonRow, i % 2 === 0 && styles.comparisonRowAlt]}
-            >
-              <Text style={[styles.comparisonCell, styles.comparisonFeatureCell]}>
-                {row.feature}
-              </Text>
-              <Text style={styles.comparisonCell}>{row.free}</Text>
-              <Text style={styles.comparisonCell}>{row.junior}</Text>
-              <Text style={styles.comparisonCell}>{row.family}</Text>
-              <Text style={styles.comparisonCell}>{row.classroom}</Text>
-            </View>
-          ))}
-        </View>
-      )}
-    </View>
-  );
-
-  const renderGuarantee = () => (
-    <View style={styles.guaranteeSection}>
-      <Ionicons name="shield-checkmark-outline" size={24} color={COLORS.success} />
-      <View style={styles.guaranteeInfo}>
-        <Text style={styles.guaranteeTitle}>30-Day Money-Back Guarantee</Text>
-        <Text style={styles.guaranteeText}>
-          Not satisfied? Get a full refund within 30 days, no questions asked. Your child's progress is always saved.
+        <Text style={s.ctaNote}>
+          {selected !== 'free'
+            ? '7-day free trial · Cancel anytime · No commitment'
+            : 'Upgrade anytime to unlock all features'}
         </Text>
       </View>
-    </View>
-  );
 
-  // ── Main render ───────────────────────────────────────────
-  return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={COLORS.text} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Choose Your Plan</Text>
-        <View style={styles.headerRight} />
+      {/* Reviews */}
+      <View style={s.reviewsSection}>
+        <Text style={s.reviewsTitle}>💬 What Parents Say</Text>
+        {REVIEWS.map((r, i) => (
+          <View key={i} style={s.reviewCard}>
+            <View style={s.reviewStars}>
+              {Array.from({ length: r.stars }).map((_, j) => (
+                <Ionicons key={j} name="star" size={14} color="#FFD60A" />
+              ))}
+            </View>
+            <Text style={s.reviewText}>"{r.text}"</Text>
+            <Text style={s.reviewName}>— {r.name}</Text>
+          </View>
+        ))}
       </View>
 
-      <Text style={styles.headerSubtitle}>
-        Unlock the full Promptcraft Academy experience
+      <Text style={s.legal}>
+        Subscriptions auto-renew unless cancelled 24 hours before renewal. Managed via your App Store / Google Play account.
       </Text>
-
-      {/* Billing Toggle */}
-      {renderBillingToggle()}
-
-      {/* Plan Cards */}
-      {PLANS.map(renderPlanCard)}
-
-      {/* Lifetime Option */}
-      {renderLifetimeOffer()}
-
-      {/* Feature Comparison */}
-      {renderFeatureComparison()}
-
-      {/* Money-Back Guarantee */}
-      {renderGuarantee()}
-
-      <View style={styles.bottomSpacer} />
     </ScrollView>
   );
 }
 
-// ── Styles ─────────────────────────────────────────────────
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: COLORS.background },
+  content: { paddingBottom: 60 },
 
-  // Header
-  header: {
-    flexDirection: 'row',
+  hero: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    paddingTop: Platform.OS === 'ios' ? 56 : 36,
+    paddingBottom: SPACING.xxl,
     paddingHorizontal: SPACING.xl,
-    paddingTop: SPACING.huge,
-    paddingBottom: SPACING.sm,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: RADIUS.full,
-    backgroundColor: COLORS.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...SHADOWS.small,
-  },
-  headerTitle: {
-    fontSize: FONTS.sizes.xxl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-  },
-  headerRight: {
-    width: 40,
-  },
-  headerSubtitle: {
-    fontSize: FONTS.sizes.md,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-    marginBottom: SPACING.xl,
-    paddingHorizontal: SPACING.xl,
-  },
-
-  // Billing Toggle
-  billingToggle: {
-    flexDirection: 'row',
-    marginHorizontal: SPACING.xl,
-    marginBottom: SPACING.xl,
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
-    padding: 4,
-    ...SHADOWS.small,
-  },
-  billingOption: {
-    flex: 1,
-    paddingVertical: SPACING.sm,
-    borderRadius: RADIUS.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  billingOptionActive: {
-    backgroundColor: COLORS.primary,
-  },
-  billingOptionText: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.textSecondary,
-  },
-  billingOptionTextActive: {
-    color: '#FFF',
-  },
-  saveBadge: {
-    backgroundColor: COLORS.xpGold + '30',
-    paddingHorizontal: 6,
-    paddingVertical: 1,
-    borderRadius: RADIUS.sm,
-    marginTop: 2,
-  },
-  saveBadgeText: {
-    fontSize: FONTS.sizes.xs,
-    fontWeight: FONTS.weights.bold,
-    color: '#B8860B',
-  },
-
-  // Plan Cards
-  planCard: {
-    backgroundColor: COLORS.surface,
-    marginHorizontal: SPACING.xl,
-    marginBottom: SPACING.lg,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.xl,
-    borderWidth: 1.5,
-    borderColor: COLORS.border,
-    ...SHADOWS.small,
-  },
-  planCardHighlighted: {
-    borderColor: COLORS.primary,
-    ...SHADOWS.medium,
-  },
-  planCardCurrent: {
-    borderColor: COLORS.success,
-  },
-  planBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: COLORS.success + '18',
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: RADIUS.sm,
-    marginBottom: SPACING.sm,
-  },
-  planBadgeHighlighted: {
-    backgroundColor: COLORS.primary + '18',
-  },
-  planBadgeText: {
-    fontSize: FONTS.sizes.xs,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.success,
-  },
-  planBadgeTextHighlighted: {
-    color: COLORS.primary,
-  },
-  planName: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-  },
-  planNameHighlighted: {
-    color: COLORS.primary,
-  },
-  planPricing: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginTop: SPACING.xs,
-    marginBottom: SPACING.xs,
-  },
-  planPrice: {
-    fontSize: FONTS.sizes.xxxl,
-    fontWeight: FONTS.weights.extrabold,
-    color: COLORS.text,
-  },
-  planPriceHighlighted: {
-    color: COLORS.primary,
-  },
-  planPricePeriod: {
-    fontSize: FONTS.sizes.md,
-    color: COLORS.textSecondary,
-    marginLeft: 2,
-  },
-  planPriceNote: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.success,
-    fontWeight: FONTS.weights.semibold,
-    marginBottom: SPACING.sm,
-  },
-  planFeatures: {
-    marginTop: SPACING.md,
-    marginBottom: SPACING.lg,
-    gap: SPACING.sm,
-  },
-  planFeatureRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-  },
-  planFeatureText: {
-    fontSize: FONTS.sizes.md,
-    color: COLORS.text,
-    flex: 1,
-  },
-
-  // Plan Buttons
-  selectPlanButton: {
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.md,
-    alignItems: 'center',
-    backgroundColor: COLORS.surfaceLight,
-    borderWidth: 1.5,
-    borderColor: COLORS.border,
-  },
-  selectPlanButtonHighlighted: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
-  },
-  selectPlanButtonText: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-  },
-  selectPlanButtonTextHighlighted: {
-    color: '#FFF',
-  },
-  currentPlanButton: {
-    flexDirection: 'row',
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.success + '12',
-    borderWidth: 1.5,
-    borderColor: COLORS.success,
-    gap: SPACING.xs,
-  },
-  currentPlanButtonText: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.success,
-  },
-
-  // Lifetime
-  lifetimeCard: {
-    backgroundColor: '#FFF9E6',
-    marginHorizontal: SPACING.xl,
-    marginBottom: SPACING.xxl,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.xl,
-    borderWidth: 2,
-    borderColor: COLORS.xpGold,
-    ...SHADOWS.medium,
-  },
-  lifetimeHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-    marginBottom: SPACING.md,
-  },
-  lifetimeInfo: {
-    flex: 1,
-  },
-  lifetimeTitle: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-  },
-  lifetimeSubtitle: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-  },
-  lifetimePricing: {
-    marginBottom: SPACING.lg,
-  },
-  lifetimePrice: {
-    fontSize: FONTS.sizes.hero,
-    fontWeight: FONTS.weights.extrabold,
-    color: COLORS.text,
-  },
-  lifetimePriceNote: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-  lifetimeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#DAA520',
-    paddingVertical: SPACING.md,
-    borderRadius: RADIUS.md,
-    gap: SPACING.sm,
-  },
-  lifetimeButtonText: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: FONTS.weights.bold,
-    color: '#FFF',
-  },
-
-  // Feature Comparison
-  comparisonSection: {
-    marginHorizontal: SPACING.xl,
-    marginBottom: SPACING.xxl,
-  },
-  comparisonToggle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.surface,
-    padding: SPACING.lg,
-    borderRadius: RADIUS.md,
-    ...SHADOWS.small,
-  },
-  comparisonToggleText: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.primary,
-  },
-  comparisonTable: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
-    marginTop: SPACING.sm,
     overflow: 'hidden',
-    ...SHADOWS.small,
   },
-  comparisonRow: {
-    flexDirection: 'row',
-    paddingVertical: SPACING.sm,
-    paddingHorizontal: SPACING.sm,
+  blob: { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.1)' },
+  backBtn: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 56 : 36,
+    left: SPACING.lg,
+    width: 40, height: 40, borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center', justifyContent: 'center',
   },
-  comparisonHeaderRow: {
-    backgroundColor: COLORS.primary + '10',
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-  },
-  comparisonRowAlt: {
-    backgroundColor: COLORS.surfaceLight,
-  },
-  comparisonCell: {
-    flex: 1,
-    fontSize: FONTS.sizes.xs,
-    color: COLORS.text,
-    textAlign: 'center',
-  },
-  comparisonFeatureCell: {
-    flex: 2,
-    textAlign: 'left',
-    fontWeight: FONTS.weights.medium,
-  },
-  comparisonHeaderText: {
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.primary,
-    fontSize: FONTS.sizes.xs,
-  },
+  heroTitle: { fontSize: FONTS.sizes.xxl, fontWeight: FONTS.weights.black, color: '#fff', textAlign: 'center', marginTop: SPACING.md, lineHeight: 32 },
+  heroSub: { fontSize: FONTS.sizes.md, color: 'rgba(255,255,255,0.85)', textAlign: 'center', marginTop: SPACING.sm, lineHeight: 22 },
 
-  // Guarantee
-  guaranteeSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginHorizontal: SPACING.xl,
-    marginBottom: SPACING.xl,
-    backgroundColor: COLORS.success + '08',
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: COLORS.success + '30',
-    gap: SPACING.md,
-  },
-  guaranteeInfo: {
-    flex: 1,
-  },
-  guaranteeTitle: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-    marginBottom: 4,
-  },
-  guaranteeText: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-    lineHeight: 18,
-  },
+  trustRow: { flexDirection: 'row', gap: SPACING.md, marginTop: SPACING.xl },
+  trustBadge: { alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: RADIUS.md, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, minWidth: 64 },
+  trustIcon: { fontSize: 22 },
+  trustLabel: { fontSize: FONTS.sizes.xs, color: '#fff', textAlign: 'center', marginTop: 3, lineHeight: 14, fontWeight: FONTS.weights.semibold },
 
-  bottomSpacer: {
-    height: SPACING.huge,
-  },
+  billingWrap: { alignItems: 'center', paddingVertical: SPACING.xl },
+  billingToggle: { flexDirection: 'row', backgroundColor: '#F0E0F5', borderRadius: RADIUS.full, padding: 4 },
+  billingBtn: { paddingHorizontal: SPACING.xl, paddingVertical: SPACING.sm, borderRadius: RADIUS.full, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  billingBtnActive: { backgroundColor: '#fff', ...SHADOWS.small },
+  billingBtnText: { fontSize: FONTS.sizes.md, fontWeight: FONTS.weights.semibold, color: COLORS.textSecondary },
+  billingBtnTextActive: { color: COLORS.text },
+  saveBadge: { backgroundColor: COLORS.success, borderRadius: 99, paddingHorizontal: 6, paddingVertical: 2 },
+  saveBadgeText: { fontSize: FONTS.sizes.xs, fontWeight: FONTS.weights.bold, color: '#fff' },
+
+  plansWrap: { paddingHorizontal: SPACING.lg, gap: SPACING.md },
+  planCard: { backgroundColor: '#fff', borderRadius: RADIUS.xxl, padding: SPACING.xl, borderWidth: 2, borderColor: COLORS.border, ...SHADOWS.small, overflow: 'hidden' },
+  planCardSelected: { borderColor: COLORS.primary, ...SHADOWS.medium },
+  planBadge: { position: 'absolute', top: 0, right: 0, paddingHorizontal: SPACING.md, paddingVertical: 5, borderBottomLeftRadius: RADIUS.lg, borderTopRightRadius: RADIUS.xxl },
+  planBadgeText: { fontSize: FONTS.sizes.xs, fontWeight: FONTS.weights.black, color: '#fff' },
+  planHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.lg, gap: SPACING.md },
+  planDot: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: COLORS.border, backgroundColor: 'transparent' },
+  planTitleWrap: { flex: 1 },
+  planName: { fontSize: FONTS.sizes.md, fontWeight: FONTS.weights.bold, color: COLORS.text },
+  planPrice: { fontSize: FONTS.sizes.xxl, fontWeight: FONTS.weights.black, color: COLORS.text, marginTop: 2 },
+  planPer: { fontSize: FONTS.sizes.sm, fontWeight: FONTS.weights.regular, color: COLORS.textSecondary },
+  planSaving: { fontSize: FONTS.sizes.xs, color: COLORS.success, fontWeight: FONTS.weights.bold, marginTop: 2 },
+  checkCircle: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  featureRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, marginBottom: 8 },
+  featureDot: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  featureText: { fontSize: FONTS.sizes.md, color: COLORS.text, flex: 1, lineHeight: 20 },
+  featureTextDim: { color: COLORS.textSecondary },
+
+  ctaWrap: { paddingHorizontal: SPACING.lg, marginTop: SPACING.xl, gap: SPACING.sm },
+  ctaBtn: { borderRadius: RADIUS.full, paddingVertical: SPACING.lg, alignItems: 'center', ...SHADOWS.medium },
+  ctaBtnText: { fontSize: FONTS.sizes.xl, fontWeight: FONTS.weights.black, color: '#fff' },
+  ctaBtnFree: { borderRadius: RADIUS.full, paddingVertical: SPACING.lg, alignItems: 'center', backgroundColor: COLORS.surface, borderWidth: 2, borderColor: COLORS.border },
+  ctaBtnFreeText: { fontSize: FONTS.sizes.lg, fontWeight: FONTS.weights.bold, color: COLORS.textSecondary },
+  ctaNote: { textAlign: 'center', fontSize: FONTS.sizes.sm, color: COLORS.textLight },
+
+  reviewsSection: { paddingHorizontal: SPACING.lg, marginTop: SPACING.xl, gap: SPACING.md },
+  reviewsTitle: { fontSize: FONTS.sizes.xl, fontWeight: FONTS.weights.black, color: COLORS.text, marginBottom: SPACING.sm },
+  reviewCard: { backgroundColor: '#fff', borderRadius: RADIUS.xl, padding: SPACING.lg, borderWidth: 1.5, borderColor: COLORS.border, ...SHADOWS.small },
+  reviewStars: { flexDirection: 'row', gap: 2, marginBottom: SPACING.sm },
+  reviewText: { fontSize: FONTS.sizes.md, color: COLORS.text, fontStyle: 'italic', lineHeight: 22 },
+  reviewName: { fontSize: FONTS.sizes.sm, color: COLORS.textSecondary, marginTop: SPACING.sm, fontWeight: FONTS.weights.semibold },
+
+  legal: { textAlign: 'center', fontSize: FONTS.sizes.xs, color: COLORS.textLight, paddingHorizontal: SPACING.xl, marginTop: SPACING.lg, lineHeight: 16 },
 });

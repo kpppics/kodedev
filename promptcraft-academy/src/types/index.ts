@@ -219,6 +219,7 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   MainTabs: undefined;
+  CosmoChat: undefined;
   TrackDetail: { trackId: TrackId };
   LessonScreen: { trackId: TrackId; lessonId: string };
   ProjectView: { projectId: string };

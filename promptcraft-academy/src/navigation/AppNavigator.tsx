@@ -45,6 +45,7 @@ import SubscriptionScreen from '../screens/profile/SubscriptionScreen';
 import PromptLibraryScreen from '../screens/profile/PromptLibraryScreen';
 
 // ---- Parent Screens ----
+import CosmoChatScreen from '../screens/cosmo/CosmoChatScreen';
 import ParentDashboardScreen from '../screens/parent/ParentDashboardScreen';
 import ProgressReportScreen from '../screens/parent/ProgressReportScreen';
 import ClassroomScreen from '../screens/parent/ClassroomScreen';
@@ -81,7 +82,7 @@ function LoadingScreen() {
         color={COLORS.primary}
         style={{ marginTop: SPACING.lg }}
       />
-      <Text style={loadingStyles.text}>Loading Promptcraft Academy...</Text>
+      <Text style={loadingStyles.text}>Loading Go Cosmo...</Text>
     </View>
   );
 }
@@ -322,6 +323,9 @@ function MainStack() {
       }}
     >
       <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+
+      {/* Cosmo Chat */}
+      <Stack.Screen name="CosmoChat" component={CosmoChatScreen} options={{ animation: 'slide_from_bottom' }} />
 
       {/* Track screens */}
       <Stack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ animation: 'slide_from_bottom', headerShown: true, headerTitle: '', headerTintColor: COLORS.primary, headerStyle: { backgroundColor: COLORS.background }, headerShadowVisible: false }} />

@@ -110,6 +110,13 @@ class ApiService {
     return this.request('POST', '/ai/modify-code', body);
   }
 
+  async cosmoChat(body: {
+    message: string;
+    history?: Array<{ role: 'user' | 'assistant'; content: string }>;
+  }): Promise<{ reply: string; mood: string }> {
+    return this.request('POST', '/ai/cosmo-chat', body);
+  }
+
   // User Profile
   async getProfile(userId: string): Promise<ChildProfile | ParentProfile> {
     return this.request('GET', `/users/${userId}`);

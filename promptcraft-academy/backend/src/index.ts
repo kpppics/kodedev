@@ -136,7 +136,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 // Start server
 // ==========================================
 app.listen(PORT, () => {
-  console.log(`PromptCraft Academy API running on port ${PORT}`);
+  console.log(`Go Cosmo API running on port ${PORT}`);
   console.log(`  Environment : ${process.env['NODE_ENV'] ?? 'development'}`);
   console.log(`  AI strategy : ${process.env['AI_STRATEGY'] ?? 'fallback'}`);
   console.log(`  Claude      : ${process.env['CLAUDE_API_KEY'] ? 'configured' : 'NOT configured'}`);

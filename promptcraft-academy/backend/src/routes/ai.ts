@@ -24,6 +24,7 @@ import {
   buildCodeModifyMessages,
   buildPromptScoreMessages,
   buildSafetyCheckMessages,
+  buildCosmoChatMessages,
 } from '../ai/prompts';
 import {
   StoryRequest,
@@ -512,6 +513,68 @@ router.post('/safety-check', async (req: Request, res: Response): Promise<void> 
     console.error('[AI/safety-check]', err);
     // Fail open for safety checks — don't block users if the check itself fails
     res.json({ safe: true, reason: 'Safety check unavailable', error: (err as Error).message });
+  }
+});
+
+// ==========================================
+// POST /api/ai/cosmo-chat
+// Kid-safe AI tutor — Cosmo persona
+// ==========================================
+const CosmoChatSchema = z.object({
+  message: z.string().min(1).max(500),
+  history: z.array(z.object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string().max(1000),
+  })).max(20).optional().default([]),
+});
+
+router.post('/cosmo-chat', async (req: Request, res: Response): Promise<void> => {
+  const parsed = CosmoChatSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: 'Validation failed', details: parsed.error.flatten() });
+    return;
+  }
+  const { message, history } = parsed.data;
+
+  // Safety check on incoming message
+  const inputSafe = await checkInputPrompt(message);
+  if (!inputSafe.safe) {
+    // Cosmo gently redirects rather than blocking harshly
+    res.json({
+      reply: "Hmm, I don't think I can help with that one! 🤔 But I bet we could make something really cool instead — want to write a story, build a game, or create some art? 🎨",
+      mood: 'thinking',
+    });
+    return;
+  }
+
+  try {
+    const { messages, systemPrompt } = buildCosmoChatMessages(message, history);
+    const aiRes = await aiRouter.complete({
+      messages,
+      systemPrompt,
+      maxTokens: 200,
+      temperature: 0.85,
+    });
+
+    let reply = aiRes.content.trim();
+
+    // Determine Cosmo's mood from the reply
+    let mood = 'happy';
+    if (reply.includes('🎉') || reply.includes('✨') || reply.includes('Wow') || reply.includes('Amazing') || reply.includes('Awesome')) {
+      mood = 'excited';
+    } else if (reply.includes('🤔') || reply.includes('Hmm') || reply.includes('Let me think')) {
+      mood = 'thinking';
+    } else if (reply.includes('⭐') || reply.includes('🏆') || reply.includes('great job') || reply.includes('well done')) {
+      mood = 'celebrating';
+    }
+
+    res.json({ reply, mood, meta: { provider: aiRes.provider, model: aiRes.model } });
+  } catch (err) {
+    console.error('[AI/cosmo-chat]', err);
+    res.json({
+      reply: "Oops, my circuits got a little tangled! 🤖 Try asking me again?",
+      mood: 'thinking',
+    });
   }
 });
 
