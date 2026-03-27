@@ -1,672 +1,667 @@
-import React, { useCallback, useRef } from 'react';
+// ==========================================
+// HOME SCREEN — PromptCraft Academy
+// Features Cosmo mascot prominently + engaging kid-friendly UI
+// ==========================================
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   Animated,
   Dimensions,
   ScrollView,
-  ImageBackground,
+  Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
-import {
-  RootStackParamList,
-  TrackId,
-  DailyQuest,
-  Project,
-  ChildProfile,
-} from '../../types';
+import { RootStackParamList, TrackId, DailyQuest } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { useGame } from '../../context/GameContext';
+import Cosmo from '../../components/mascot/Cosmo';
+import CosmoBubble from '../../components/mascot/CosmoBubble';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-// -------------------------------------------------------------------
-// Mock data -- replace with real store / API calls
-// -------------------------------------------------------------------
-const MOCK_CHILD: ChildProfile = {
-  id: '1',
-  username: 'prompt_star',
-  displayName: 'Alex',
-  avatar: 'fox',
-  role: 'child',
-  age: 10,
-  level: 7,
-  xp: 2350,
-  totalXp: 3000,
-  streak: 5,
-  badges: [],
-  promptsCreated: 42,
-  projectsCreated: 18,
-  parentId: 'p1',
-  createdAt: '2025-01-15',
-};
-
-const DAILY_QUESTS: DailyQuest[] = [
-  {
-    id: 'q1',
-    title: 'Write a Story Prompt',
-    description: 'Create a prompt that tells a fun adventure story',
-    trackId: 'story-studio',
-    xpReward: 50,
-    isCompleted: true,
-    expiresAt: '2026-03-26T23:59:59Z',
-  },
-  {
-    id: 'q2',
-    title: 'Build a Web Page',
-    description: 'Use prompts to create a colorful web page',
-    trackId: 'web-builder',
-    xpReward: 75,
-    isCompleted: false,
-    expiresAt: '2026-03-26T23:59:59Z',
-  },
-  {
-    id: 'q3',
-    title: 'Remix a Project',
-    description: 'Find a project and make it your own',
-    xpReward: 40,
-    isCompleted: false,
-    expiresAt: '2026-03-26T23:59:59Z',
-  },
-];
-
-const RECENT_PROJECTS: Project[] = [
-  {
-    id: 'p1',
-    userId: '1',
-    trackId: 'story-studio',
-    title: 'Dragon Adventure',
-    prompt: 'Write a story about a friendly dragon',
-    result: '',
-    promptScore: { clarity: 80, creativity: 90, context: 75, result: 85, overall: 82, feedback: '', suggestions: [] },
-    createdAt: '2026-03-25',
-    isPublic: true,
-    likes: 12,
-  },
-  {
-    id: 'p2',
-    userId: '1',
-    trackId: 'art-factory',
-    title: 'Space Cat',
-    prompt: 'Draw a cat astronaut',
-    result: '',
-    promptScore: { clarity: 90, creativity: 95, context: 80, result: 88, overall: 88, feedback: '', suggestions: [] },
-    createdAt: '2026-03-24',
-    isPublic: true,
-    likes: 25,
-  },
-  {
-    id: 'p3',
-    userId: '1',
-    trackId: 'game-maker',
-    title: 'Maze Runner',
-    prompt: 'Make a maze game',
-    result: '',
-    promptScore: { clarity: 70, creativity: 80, context: 70, result: 75, overall: 74, feedback: '', suggestions: [] },
-    createdAt: '2026-03-23',
-    isPublic: false,
-    likes: 0,
-  },
-];
-
-// -------------------------------------------------------------------
-// Track definitions
-// -------------------------------------------------------------------
+// ── Track definitions ──────────────────────────────────────────────
 interface TrackInfo {
   id: TrackId;
   name: string;
   icon: keyof typeof Ionicons.glyphMap;
   color: string;
+  emoji: string;
+  tagline: string;
 }
 
 const TRACKS: TrackInfo[] = [
-  { id: 'story-studio', name: 'Story Studio', icon: 'book', color: COLORS.storyStudio },
-  { id: 'web-builder', name: 'Web Builder Jr', icon: 'globe', color: COLORS.webBuilder },
-  { id: 'game-maker', name: 'Game Maker', icon: 'game-controller', color: COLORS.gameMaker },
-  { id: 'art-factory', name: 'Art Factory', icon: 'color-palette', color: COLORS.artFactory },
-  { id: 'music-maker', name: 'Music Maker', icon: 'musical-notes', color: COLORS.musicMaker },
-  { id: 'code-explainer', name: 'Code Explainer', icon: 'code-slash', color: COLORS.codeExplainer },
+  { id: 'story-studio',   name: 'Story Studio',     icon: 'book',           color: '#FF6B6B', emoji: '📖', tagline: 'Write amazing tales' },
+  { id: 'web-builder',    name: 'Web Builder',       icon: 'globe',          color: '#4ECDC4', emoji: '🌐', tagline: 'Build cool websites' },
+  { id: 'game-maker',     name: 'Game Maker',        icon: 'game-controller', color: '#FFB347', emoji: '🎮', tagline: 'Create fun games' },
+  { id: 'art-factory',    name: 'Art Factory',       icon: 'color-palette',  color: '#FF8A5C', emoji: '🎨', tagline: 'Make AI artwork' },
+  { id: 'music-maker',    name: 'Music Maker',       icon: 'musical-notes',  color: '#A29BFE', emoji: '🎵', tagline: 'Compose songs' },
+  { id: 'code-explainer', name: 'Code Explainer',    icon: 'code-slash',     color: '#6C5CE7', emoji: '💻', tagline: 'Learn to code' },
+];
+
+// Cosmo's rotating greeting messages
+const COSMO_GREETINGS = [
+  (name: string) => `Hey ${name}! Ready to create something amazing today? ✨`,
+  (name: string) => `Welcome back, ${name}! Let's build something cool! 🚀`,
+  (name: string) => `Hi ${name}! I've been waiting for you! Let's learn! 🌟`,
+  (name: string) => `${name}, you're going to do GREAT today! I believe in you! 💪`,
+  (name: string) => `Woohoo, ${name} is here! Time to make magic! 🎉`,
 ];
 
 const PROMPT_OF_THE_DAY = {
-  title: 'Prompt of the Day',
   challenge: 'Write a prompt that creates a superhero who saves animals!',
   trackId: 'story-studio' as TrackId,
   xpReward: 100,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const TRACK_CARD_WIDTH = (SCREEN_WIDTH - SPACING.lg * 2 - SPACING.md) / 2;
 
-// -------------------------------------------------------------------
-// Sub-components
-// -------------------------------------------------------------------
-
-const AvatarIcon: React.FC<{ avatar: string; size?: number }> = ({ size = 48 }) => (
-  <View style={[styles.avatarCircle, { width: size, height: size, borderRadius: size / 2 }]}>
-    <Ionicons name="happy" size={size * 0.6} color={COLORS.primary} />
-  </View>
-);
-
+// ── XP Bar ─────────────────────────────────────────────────────────
 const XpBar: React.FC<{ current: number; total: number; level: number }> = ({ current, total, level }) => {
   const progress = Math.min(current / total, 1);
+  const animWidth = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animWidth, { toValue: progress, duration: 800, useNativeDriver: false }).start();
+  }, [progress]);
+
+  const widthInterpolated = animWidth.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] });
+
   return (
-    <View style={styles.xpBarContainer}>
+    <View style={styles.xpBarWrap}>
       <View style={styles.xpLabelRow}>
-        <Text style={styles.xpLevelText}>Level {level}</Text>
-        <Text style={styles.xpNumbers}>
-          {current} / {total} XP
-        </Text>
+        <View style={styles.levelBadge}>
+          <Text style={styles.levelBadgeText}>Lv {level}</Text>
+        </View>
+        <Text style={styles.xpNumbers}>{current} / {total} XP</Text>
       </View>
-      <View style={styles.xpBarBackground}>
-        <View style={[styles.xpBarFill, { width: `${progress * 100}%` }]} />
+      <View style={styles.xpBarBg}>
+        <Animated.View style={[styles.xpBarFill, { width: widthInterpolated }]} />
+        <View style={styles.xpBarShine} />
       </View>
     </View>
   );
 };
 
-const StreakBadge: React.FC<{ streak: number }> = ({ streak }) => (
-  <View style={styles.streakBadge}>
-    <Ionicons name="flame" size={20} color={COLORS.streak} />
-    <Text style={styles.streakText}>{streak} day streak!</Text>
-  </View>
-);
+// ── Track Card ─────────────────────────────────────────────────────
+const TrackCard: React.FC<{ track: TrackInfo; onPress: () => void }> = ({ track, onPress }) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
-const QuestCard: React.FC<{ quest: DailyQuest }> = ({ quest }) => {
+  const handlePressIn = () => Animated.spring(scaleAnim, { toValue: 0.93, useNativeDriver: true }).start();
+  const handlePressOut = () => Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }).start();
+
+  return (
+    <Animated.View style={{ transform: [{ scale: scaleAnim }], width: TRACK_CARD_WIDTH, marginBottom: SPACING.md }}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.trackCard, { backgroundColor: track.color }]}
+      >
+        <Text style={styles.trackEmoji}>{track.emoji}</Text>
+        <Text style={styles.trackName}>{track.name}</Text>
+        <Text style={styles.trackTagline}>{track.tagline}</Text>
+        <View style={styles.trackArrow}>
+          <Ionicons name="arrow-forward" size={14} color="rgba(255,255,255,0.9)" />
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+};
+
+// ── Quest Row ──────────────────────────────────────────────────────
+const QuestRow: React.FC<{ quest: DailyQuest; onPress: () => void }> = ({ quest, onPress }) => {
   const trackColor = quest.trackId
     ? TRACKS.find((t) => t.id === quest.trackId)?.color ?? COLORS.primary
     : COLORS.primary;
+  const trackEmoji = quest.trackId
+    ? TRACKS.find((t) => t.id === quest.trackId)?.emoji ?? '⭐'
+    : '⭐';
 
   return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.questCard, { borderLeftColor: trackColor }]}>
-      <View style={styles.questCardContent}>
-        <View style={styles.questHeader}>
-          <Text style={styles.questTitle}>{quest.title}</Text>
-          {quest.isCompleted && <Ionicons name="checkmark-circle" size={22} color={COLORS.success} />}
-        </View>
-        <Text style={styles.questDescription}>{quest.description}</Text>
-        <View style={styles.questFooter}>
-          <Ionicons name="star" size={14} color={COLORS.xpGold} />
-          <Text style={styles.questXp}>+{quest.xpReward} XP</Text>
-        </View>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.questRow}>
+      <View style={[styles.questIcon, { backgroundColor: trackColor + '22' }]}>
+        <Text style={styles.questEmoji}>{trackEmoji}</Text>
+      </View>
+      <View style={styles.questTextWrap}>
+        <Text style={styles.questTitle} numberOfLines={1}>{quest.title}</Text>
+        <Text style={styles.questDesc} numberOfLines={1}>{quest.description}</Text>
+      </View>
+      <View style={styles.questRight}>
+        {quest.isCompleted ? (
+          <View style={styles.questDone}>
+            <Ionicons name="checkmark" size={14} color="#fff" />
+          </View>
+        ) : (
+          <View style={styles.questXpBadge}>
+            <Text style={styles.questXpText}>+{quest.xpReward}</Text>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
 };
 
-const TrackCard: React.FC<{ track: TrackInfo; onPress: () => void }> = ({ track, onPress }) => (
-  <TouchableOpacity activeOpacity={0.85} onPress={onPress} style={[styles.trackCard, { backgroundColor: track.color }]}>
-    <Ionicons name={track.icon} size={32} color="#fff" />
-    <Text style={styles.trackCardLabel}>{track.name}</Text>
-  </TouchableOpacity>
-);
-
-const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
-  const track = TRACKS.find((t) => t.id === project.trackId);
-  return (
-    <TouchableOpacity activeOpacity={0.85} style={styles.projectCard}>
-      <View style={[styles.projectCardBanner, { backgroundColor: track?.color ?? COLORS.primary }]}>
-        <Ionicons name={track?.icon ?? 'document'} size={28} color="#fff" />
-      </View>
-      <View style={styles.projectCardBody}>
-        <Text style={styles.projectCardTitle} numberOfLines={1}>
-          {project.title}
-        </Text>
-        <View style={styles.projectCardMeta}>
-          <Ionicons name="heart" size={12} color={COLORS.streak} />
-          <Text style={styles.projectLikes}>{project.likes}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-// -------------------------------------------------------------------
-// Main component
-// -------------------------------------------------------------------
-
+// ── Main Screen ────────────────────────────────────────────────────
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { user } = useAuth();
-  const { xp, xpToNext, level, streak, badges, dailyQuests: gameDailyQuests } = useGame();
+  const { xp, xpToNext, level, streak, dailyQuests } = useGame();
 
   const displayName = user?.displayName ?? user?.username ?? 'Learner';
-  const avatar = user?.avatar ?? '';
 
-  const handleTrackPress = useCallback(
-    (trackId: TrackId) => {
-      navigation.navigate('TrackDetail', { trackId });
-    },
-    [navigation],
-  );
+  const [greetingIndex] = useState(() => Math.floor(Math.random() * COSMO_GREETINGS.length));
+  const [cosmoMood, setCosmoMood] = useState<'happy' | 'waving' | 'excited'>('waving');
+  const [bubbleDismissed, setBubbleDismissed] = useState(false);
 
-  // SectionList-style data rendered via FlatList for flexible layouts
-  type SectionItem =
-    | { type: 'greeting' }
-    | { type: 'quests' }
-    | { type: 'continueLearning' }
-    | { type: 'tracks' }
-    | { type: 'promptOfDay' }
-    | { type: 'recentProjects' };
+  // Switch Cosmo to happy after initial wave
+  useEffect(() => {
+    const t = setTimeout(() => setCosmoMood('happy'), 3000);
+    return () => clearTimeout(t);
+  }, []);
 
-  const sections: SectionItem[] = [
-    { type: 'greeting' },
-    { type: 'quests' },
-    { type: 'continueLearning' },
-    { type: 'tracks' },
-    { type: 'promptOfDay' },
-    { type: 'recentProjects' },
-  ];
+  const handleTrackPress = useCallback((trackId: TrackId) => {
+    navigation.navigate('TrackDetail', { trackId });
+  }, [navigation]);
 
-  const renderItem = ({ item }: { item: SectionItem }) => {
-    switch (item.type) {
-      // ---- Greeting + XP + Streak ----
-      case 'greeting':
-        return (
-          <View style={styles.greetingSection}>
-            <View style={styles.greetingRow}>
-              <AvatarIcon avatar={avatar} size={56} />
-              <View style={styles.greetingText}>
-                <Text style={styles.greetingHello}>Hey, {displayName}!</Text>
-                <Text style={styles.greetingSub}>Ready to craft some awesome prompts?</Text>
-              </View>
-            </View>
-            <XpBar current={xp} total={xpToNext} level={level} />
-            <StreakBadge streak={streak} />
-          </View>
-        );
-
-      // ---- Daily Quests ----
-      case 'quests':
-        return (
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="compass" size={22} color={COLORS.primary} />
-              <Text style={styles.sectionTitle}>Daily Quests</Text>
-            </View>
-            {gameDailyQuests.map((q) => (
-              <QuestCard key={q.id} quest={q} />
-            ))}
-          </View>
-        );
-
-      // ---- Continue Learning ----
-      case 'continueLearning': {
-        const lastTrack = TRACKS[0]; // story-studio as mock
-        return (
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={() => handleTrackPress(lastTrack.id)}
-            style={[styles.continueCard, { backgroundColor: lastTrack.color }]}
-          >
-            <View style={styles.continueContent}>
-              <Ionicons name={lastTrack.icon} size={36} color="#fff" />
-              <View style={styles.continueText}>
-                <Text style={styles.continueLabel}>Continue Learning</Text>
-                <Text style={styles.continueName}>{lastTrack.name}</Text>
-              </View>
-            </View>
-            <Ionicons name="arrow-forward-circle" size={32} color="rgba(255,255,255,0.8)" />
-          </TouchableOpacity>
-        );
-      }
-
-      // ---- Quick Access Tracks Grid ----
-      case 'tracks':
-        return (
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="rocket" size={22} color={COLORS.primary} />
-              <Text style={styles.sectionTitle}>Learning Tracks</Text>
-            </View>
-            <View style={styles.tracksGrid}>
-              {TRACKS.map((t) => (
-                <TrackCard key={t.id} track={t} onPress={() => handleTrackPress(t.id)} />
-              ))}
-            </View>
-          </View>
-        );
-
-      // ---- Prompt of the Day ----
-      case 'promptOfDay':
-        return (
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="sparkles" size={22} color={COLORS.xpGold} />
-              <Text style={styles.sectionTitle}>Prompt of the Day</Text>
-            </View>
-            <TouchableOpacity activeOpacity={0.85} style={styles.promptOfDayCard}>
-              <Text style={styles.promptOfDayChallenge}>{PROMPT_OF_THE_DAY.challenge}</Text>
-              <View style={styles.promptOfDayFooter}>
-                <View style={styles.promptOfDayReward}>
-                  <Ionicons name="star" size={16} color={COLORS.xpGold} />
-                  <Text style={styles.promptOfDayXp}>+{PROMPT_OF_THE_DAY.xpReward} XP</Text>
-                </View>
-                <View style={styles.promptOfDayBtn}>
-                  <Text style={styles.promptOfDayBtnText}>Try it!</Text>
-                  <Ionicons name="arrow-forward" size={16} color="#fff" />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        );
-
-      // ---- Recent Projects Carousel ----
-      case 'recentProjects':
-        return (
-          <View style={[styles.section, { marginBottom: SPACING.huge }]}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="folder-open" size={22} color={COLORS.primary} />
-              <Text style={styles.sectionTitle}>Recent Projects</Text>
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.projectsScroll}>
-              {RECENT_PROJECTS.map((p) => (
-                <ProjectCard key={p.id} project={p} />
-              ))}
-            </ScrollView>
-          </View>
-        );
-
-      default:
-        return null;
-    }
-  };
+  const greeting = COSMO_GREETINGS[greetingIndex](displayName);
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={sections}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.type}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-      />
-    </View>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* ── HERO HEADER ── */}
+      <LinearGradient
+        colors={['#6C5CE7', '#A29BFE', '#C4BBFF']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.hero}
+      >
+        {/* Decorative circles */}
+        <View style={[styles.heroBubble, { top: -30, right: -20, width: 120, height: 120 }]} />
+        <View style={[styles.heroBubble, { top: 40, right: 60, width: 60, height: 60, opacity: 0.15 }]} />
+        <View style={[styles.heroBubble, { bottom: -20, left: -20, width: 100, height: 100 }]} />
+
+        {/* Top bar: name + streak */}
+        <View style={styles.heroTopBar}>
+          <View>
+            <Text style={styles.heroGreetSmall}>Good to see you,</Text>
+            <Text style={styles.heroGreetName}>{displayName}! 👋</Text>
+          </View>
+          <View style={styles.streakPill}>
+            <Ionicons name="flame" size={18} color="#FF6348" />
+            <Text style={styles.streakNum}>{streak}</Text>
+          </View>
+        </View>
+
+        {/* Cosmo + Speech Bubble */}
+        <View style={styles.cosmoRow}>
+          <View style={styles.cosmoWrap}>
+            <Cosmo mood={cosmoMood} size={130} animate />
+          </View>
+          {!bubbleDismissed && (
+            <View style={styles.bubbleWrap}>
+              <CosmoBubble
+                message={greeting}
+                delay={400}
+                onDismiss={() => setBubbleDismissed(true)}
+              />
+            </View>
+          )}
+        </View>
+
+        {/* XP Bar */}
+        <View style={styles.xpSection}>
+          <XpBar current={xp} total={xpToNext} level={level} />
+        </View>
+      </LinearGradient>
+
+      {/* ── TRACK GRID ── */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionEmoji}>🚀</Text>
+          <Text style={styles.sectionTitle}>Choose Your Adventure</Text>
+        </View>
+        <View style={styles.tracksGrid}>
+          {TRACKS.map((t) => (
+            <TrackCard key={t.id} track={t} onPress={() => handleTrackPress(t.id)} />
+          ))}
+        </View>
+      </View>
+
+      {/* ── DAILY QUESTS ── */}
+      {dailyQuests.length > 0 && (
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionEmoji}>🗺️</Text>
+            <Text style={styles.sectionTitle}>Daily Quests</Text>
+            <View style={styles.questCountBadge}>
+              <Text style={styles.questCountText}>
+                {dailyQuests.filter(q => !q.isCompleted).length} left
+              </Text>
+            </View>
+          </View>
+          <View style={styles.questsCard}>
+            {dailyQuests.map((q, i) => (
+              <React.Fragment key={q.id}>
+                {i > 0 && <View style={styles.questDivider} />}
+                <QuestRow
+                  quest={q}
+                  onPress={() => q.trackId && handleTrackPress(q.trackId as TrackId)}
+                />
+              </React.Fragment>
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* ── PROMPT OF THE DAY ── */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionEmoji}>✨</Text>
+          <Text style={styles.sectionTitle}>Prompt of the Day</Text>
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.88}
+          onPress={() => handleTrackPress(PROMPT_OF_THE_DAY.trackId)}
+          style={styles.potdCard}
+        >
+          <LinearGradient
+            colors={['#FF6B6B', '#FF8E53']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.potdGradient}
+          >
+            <View style={styles.potdTop}>
+              <Text style={styles.potdLabel}>TODAY'S CHALLENGE</Text>
+              <View style={styles.potdXp}>
+                <Ionicons name="star" size={14} color="#FFD93D" />
+                <Text style={styles.potdXpText}>+{PROMPT_OF_THE_DAY.xpReward} XP</Text>
+              </View>
+            </View>
+            <Text style={styles.potdChallenge}>{PROMPT_OF_THE_DAY.challenge}</Text>
+            <View style={styles.potdBtn}>
+              <Text style={styles.potdBtnText}>Try it now!</Text>
+              <Ionicons name="arrow-forward-circle" size={20} color="#FF6B6B" />
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+
+      {/* ── COSMO TIP ── */}
+      <View style={[styles.section, { marginBottom: SPACING.huge }]}>
+        <View style={styles.cosmoTipCard}>
+          <Cosmo mood="thinking" size={64} animate />
+          <View style={styles.cosmoTipText}>
+            <Text style={styles.cosmoTipTitle}>Cosmo's Tip 💡</Text>
+            <Text style={styles.cosmoTipBody}>
+              The more detail you put in your prompts, the better the AI understands what you want!
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 export default HomeScreen;
 
-// -------------------------------------------------------------------
-// Styles
-// -------------------------------------------------------------------
-const CARD_GAP = SPACING.md;
-
+// ── Styles ─────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: '#F0F1FF',
   },
-  listContent: {
+  scrollContent: {
+    paddingBottom: SPACING.huge,
+  },
+
+  // Hero
+  hero: {
     paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.xl,
-  },
-
-  // Greeting
-  greetingSection: {
-    marginBottom: SPACING.xl,
-  },
-  greetingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
-  },
-  avatarCircle: {
-    backgroundColor: COLORS.primaryLight + '30',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  greetingText: {
-    marginLeft: SPACING.md,
-    flex: 1,
-  },
-  greetingHello: {
-    fontSize: FONTS.sizes.xxl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-  },
-  greetingSub: {
-    fontSize: FONTS.sizes.md,
-    color: COLORS.textSecondary,
-    marginTop: 2,
-  },
-
-  // XP Bar
-  xpBarContainer: {
-    marginBottom: SPACING.sm,
-  },
-  xpLabelRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  xpLevelText: {
-    fontSize: FONTS.sizes.sm,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.primary,
-  },
-  xpNumbers: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-  },
-  xpBarBackground: {
-    height: 10,
-    backgroundColor: COLORS.border,
-    borderRadius: RADIUS.full,
+    paddingTop: Platform.OS === 'ios' ? 56 : SPACING.xl,
+    paddingBottom: SPACING.xl,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
     overflow: 'hidden',
-  },
-  xpBarFill: {
-    height: '100%',
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.full,
-  },
-
-  // Streak
-  streakBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    backgroundColor: COLORS.streak + '18',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: RADIUS.full,
-    marginTop: SPACING.sm,
-  },
-  streakText: {
-    fontSize: FONTS.sizes.sm,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.streak,
-    marginLeft: 4,
-  },
-
-  // Sections
-  section: {
     marginBottom: SPACING.xl,
   },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.md,
+  heroBubble: {
+    position: 'absolute',
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.12)',
   },
-  sectionTitle: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-    marginLeft: SPACING.sm,
-  },
-
-  // Quest cards
-  questCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
-    marginBottom: SPACING.sm,
-    borderLeftWidth: 4,
-    ...SHADOWS.small,
-  },
-  questCardContent: {
-    padding: SPACING.md,
-  },
-  questHeader: {
+  heroTopBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    marginBottom: SPACING.lg,
+    zIndex: 2,
   },
-  questTitle: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.text,
-    flex: 1,
-  },
-  questDescription: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-    marginTop: 4,
-  },
-  questFooter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: SPACING.sm,
-  },
-  questXp: {
-    fontSize: FONTS.sizes.sm,
-    fontWeight: FONTS.weights.semibold,
-    color: COLORS.xpGold,
-    marginLeft: 4,
-  },
-
-  // Continue Learning
-  continueCard: {
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: SPACING.xl,
-    ...SHADOWS.medium,
-  },
-  continueContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  continueText: {
-    marginLeft: SPACING.md,
-  },
-  continueLabel: {
-    fontSize: FONTS.sizes.sm,
-    color: 'rgba(255,255,255,0.8)',
+  heroGreetSmall: {
+    fontSize: FONTS.sizes.md,
+    color: 'rgba(255,255,255,0.85)',
     fontWeight: FONTS.weights.medium,
   },
-  continueName: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.bold,
+  heroGreetName: {
+    fontSize: FONTS.sizes.xxl,
+    fontWeight: FONTS.weights.extrabold,
     color: '#fff',
+    marginTop: 2,
   },
-
-  // Tracks grid
-  tracksGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  trackCard: {
-    width: (SCREEN_WIDTH - SPACING.lg * 2 - CARD_GAP) / 2,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: CARD_GAP,
-    minHeight: 110,
-    ...SHADOWS.small,
-  },
-  trackCardLabel: {
-    color: '#fff',
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    marginTop: SPACING.sm,
-    textAlign: 'center',
-  },
-
-  // Prompt of the Day
-  promptOfDayCard: {
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    ...SHADOWS.medium,
-  },
-  promptOfDayChallenge: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: FONTS.weights.semibold,
-    color: '#fff',
-    lineHeight: 24,
-  },
-  promptOfDayFooter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: SPACING.lg,
-  },
-  promptOfDayReward: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  promptOfDayXp: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.xpGold,
-    marginLeft: 4,
-  },
-  promptOfDayBtn: {
+  streakPill: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.25)',
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
     borderRadius: RADIUS.full,
+    gap: 4,
   },
-  promptOfDayBtnText: {
+  streakNum: {
     color: '#fff',
     fontWeight: FONTS.weights.bold,
-    marginRight: 4,
+    fontSize: FONTS.sizes.lg,
   },
 
-  // Recent projects carousel
-  projectsScroll: {
-    paddingRight: SPACING.lg,
+  // Cosmo + bubble
+  cosmoRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginBottom: SPACING.lg,
+    minHeight: 160,
+    zIndex: 2,
   },
-  projectCard: {
-    width: 150,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.surface,
-    marginRight: SPACING.md,
+  cosmoWrap: {
+    alignItems: 'center',
+  },
+  bubbleWrap: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    maxWidth: 200,
+  },
+
+  // XP
+  xpSection: {
+    zIndex: 2,
+  },
+  xpBarWrap: {
+    gap: 6,
+  },
+  xpLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  levelBadge: {
+    backgroundColor: '#FFD93D',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 2,
+    borderRadius: RADIUS.full,
+  },
+  levelBadgeText: {
+    fontSize: FONTS.sizes.sm,
+    fontWeight: FONTS.weights.bold,
+    color: '#2D3436',
+  },
+  xpNumbers: {
+    fontSize: FONTS.sizes.sm,
+    color: 'rgba(255,255,255,0.85)',
+    fontWeight: FONTS.weights.medium,
+  },
+  xpBarBg: {
+    height: 14,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    borderRadius: RADIUS.full,
+    overflow: 'hidden',
+  },
+  xpBarFill: {
+    height: '100%',
+    backgroundColor: '#FFD93D',
+    borderRadius: RADIUS.full,
+  },
+  xpBarShine: {
+    position: 'absolute',
+    top: 2,
+    left: 4,
+    right: 4,
+    height: 4,
+    borderRadius: RADIUS.full,
+    backgroundColor: 'rgba(255,255,255,0.35)',
+  },
+
+  // Sections
+  section: {
+    paddingHorizontal: SPACING.lg,
+    marginBottom: SPACING.xl,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+    gap: SPACING.xs,
+  },
+  sectionEmoji: {
+    fontSize: 20,
+  },
+  sectionTitle: {
+    fontSize: FONTS.sizes.xl,
+    fontWeight: FONTS.weights.bold,
+    color: COLORS.text,
+    flex: 1,
+  },
+
+  // Track grid
+  tracksGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  trackCard: {
+    borderRadius: RADIUS.xl,
+    padding: SPACING.lg,
+    minHeight: 130,
+    justifyContent: 'flex-end',
+    ...SHADOWS.medium,
+    overflow: 'hidden',
+  },
+  trackEmoji: {
+    fontSize: 36,
+    marginBottom: SPACING.sm,
+  },
+  trackName: {
+    color: '#fff',
+    fontSize: FONTS.sizes.lg,
+    fontWeight: FONTS.weights.bold,
+    lineHeight: 20,
+  },
+  trackTagline: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: FONTS.sizes.sm,
+    marginTop: 2,
+  },
+  trackArrow: {
+    position: 'absolute',
+    top: SPACING.md,
+    right: SPACING.md,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    borderRadius: RADIUS.full,
+    width: 26,
+    height: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Quest count badge
+  questCountBadge: {
+    backgroundColor: COLORS.primary + '20',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 3,
+    borderRadius: RADIUS.full,
+  },
+  questCountText: {
+    fontSize: FONTS.sizes.xs,
+    fontWeight: FONTS.weights.bold,
+    color: COLORS.primary,
+  },
+
+  // Quests card
+  questsCard: {
+    backgroundColor: '#fff',
+    borderRadius: RADIUS.xl,
     overflow: 'hidden',
     ...SHADOWS.small,
   },
-  projectCardBanner: {
-    height: 80,
-    justifyContent: 'center',
+  questRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.md,
+    gap: SPACING.md,
   },
-  projectCardBody: {
-    padding: SPACING.sm,
+  questDivider: {
+    height: 1,
+    backgroundColor: COLORS.border,
+    marginHorizontal: SPACING.md,
   },
-  projectCardTitle: {
+  questIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  questEmoji: {
+    fontSize: 22,
+  },
+  questTextWrap: {
+    flex: 1,
+  },
+  questTitle: {
     fontSize: FONTS.sizes.md,
     fontWeight: FONTS.weights.semibold,
     color: COLORS.text,
   },
-  projectCardMeta: {
+  questDesc: {
+    fontSize: FONTS.sizes.sm,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+  questRight: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  questDone: {
+    width: 28,
+    height: 28,
+    borderRadius: RADIUS.full,
+    backgroundColor: COLORS.success,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  questXpBadge: {
+    backgroundColor: COLORS.xpGold + '22',
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 4,
+    borderRadius: RADIUS.full,
+  },
+  questXpText: {
+    fontSize: FONTS.sizes.sm,
+    fontWeight: FONTS.weights.bold,
+    color: '#B8860B',
+  },
+
+  // Prompt of the Day
+  potdCard: {
+    borderRadius: RADIUS.xl,
+    overflow: 'hidden',
+    ...SHADOWS.medium,
+  },
+  potdGradient: {
+    padding: SPACING.xl,
+  },
+  potdTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.sm,
+  },
+  potdLabel: {
+    fontSize: FONTS.sizes.xs,
+    fontWeight: FONTS.weights.bold,
+    color: 'rgba(255,255,255,0.85)',
+    letterSpacing: 1,
+  },
+  potdXp: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
+    gap: 4,
   },
-  projectLikes: {
-    fontSize: FONTS.sizes.xs,
+  potdXpText: {
+    fontSize: FONTS.sizes.sm,
+    fontWeight: FONTS.weights.bold,
+    color: '#FFD93D',
+  },
+  potdChallenge: {
+    fontSize: FONTS.sizes.xl,
+    fontWeight: FONTS.weights.bold,
+    color: '#fff',
+    lineHeight: 28,
+    marginBottom: SPACING.lg,
+  },
+  potdBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderRadius: RADIUS.full,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.xl,
+    gap: SPACING.sm,
+    alignSelf: 'flex-start',
+  },
+  potdBtnText: {
+    fontSize: FONTS.sizes.md,
+    fontWeight: FONTS.weights.bold,
+    color: '#FF6B6B',
+  },
+
+  // Cosmo tip
+  cosmoTipCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: RADIUS.xl,
+    padding: SPACING.lg,
+    gap: SPACING.md,
+    borderWidth: 2,
+    borderColor: '#E8E4FF',
+    ...SHADOWS.small,
+  },
+  cosmoTipText: {
+    flex: 1,
+  },
+  cosmoTipTitle: {
+    fontSize: FONTS.sizes.md,
+    fontWeight: FONTS.weights.bold,
+    color: COLORS.primary,
+    marginBottom: 4,
+  },
+  cosmoTipBody: {
+    fontSize: FONTS.sizes.sm,
     color: COLORS.textSecondary,
-    marginLeft: 4,
+    lineHeight: 18,
   },
 });
