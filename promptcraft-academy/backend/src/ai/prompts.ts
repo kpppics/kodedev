@@ -113,13 +113,16 @@ export function buildGameMessages(req: GameRequest): {
   } else {
     const typeHint = req.gameType ? ` Make it a ${req.gameType} style game.` : '';
     userContent =
-      `Create a fun playable browser game: "${req.prompt ?? ''}".${typeHint}\n\n` +
-      `Requirements:\n` +
-      `- Single self-contained HTML file with inline CSS and JavaScript\n` +
-      `- Must be playable with keyboard or mouse/touch\n` +
-      `- Include score display, simple gameplay loop, and win/lose condition\n` +
-      `- Make it colourful and fun for children\n\n` +
-      `Return ONLY the complete HTML file. No explanation, no JSON, just the raw HTML starting with <!DOCTYPE html>.`;
+      `Create a fully working, fun browser game inspired by: "${req.prompt ?? ''}".${typeHint}\n\n` +
+      `STRICT requirements:\n` +
+      `- Single self-contained HTML file with ALL CSS and JavaScript inline\n` +
+      `- Use HTML5 Canvas for rendering — NOT DOM elements floating around\n` +
+      `- Must have: a game loop (requestAnimationFrame), collision detection, score counter, and game over screen with restart\n` +
+      `- Controls: spacebar or tap/click to interact\n` +
+      `- Colourful, child-friendly graphics drawn on canvas\n` +
+      `- The canvas must fill the available width and be 320px tall\n` +
+      `- NO external libraries, NO CDN links — pure vanilla JS only\n\n` +
+      `Return ONLY the complete HTML file starting with <!DOCTYPE html>. No explanation, no markdown, no code fences.`;
   }
 
   return {

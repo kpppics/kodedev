@@ -237,7 +237,7 @@ export default function GameMakerScreen() {
       {gameCreated ? (
         <Animated.View style={[styles.gameCard, { opacity: fadeAnim }]}>
           <Animated.View style={[styles.gamePreview, { transform: [{ scale: bounceAnim.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] }) }] }]}>
-            <HtmlPreview html={gameHtml} height={450} title={`${selectedType || 'Custom'} Game — tap to play!`} />
+            <HtmlPreview html={gameHtml} height={360} title={`${selectedType || 'Custom'} Game — tap to play!`} />
           </Animated.View>
 
           {/* Applied Mods */}

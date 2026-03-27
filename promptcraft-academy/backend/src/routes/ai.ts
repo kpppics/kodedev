@@ -232,7 +232,7 @@ router.post('/game', async (req: Request, res: Response): Promise<void> => {
 
   try {
     const { messages, systemPrompt } = buildGameMessages(input);
-    const aiRes = await aiRouter.complete({ messages, systemPrompt, maxTokens: 4096 });
+    const aiRes = await aiRouter.complete({ messages, systemPrompt, maxTokens: 8192 });
 
     const outputCheck = await safetyGuardOutput(res, aiRes.content);
     if (!outputCheck.safe) return;

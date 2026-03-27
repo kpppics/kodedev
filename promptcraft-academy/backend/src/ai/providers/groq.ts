@@ -12,7 +12,7 @@ import {
   AICompletionResponse,
 } from '../types';
 
-const GROQ_DEFAULT_MODEL = 'llama-3.1-8b-instant';
+const GROQ_DEFAULT_MODEL = 'llama-3.3-70b-versatile';
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
 
 interface GroqChoice {
