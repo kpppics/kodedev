@@ -56,8 +56,10 @@ app.use(cors({
 // ==========================================
 // Stripe webhook — MUST be before json()
 // Raw body required for signature verification
+// Scoped to the webhook path only so other routes still get parsed JSON
 // ==========================================
-app.use(
+app.post(
+  '/api/subscription/webhook',
   express.raw({ type: 'application/json', limit: '1mb' }),
   stripeWebhookHandler
 );
