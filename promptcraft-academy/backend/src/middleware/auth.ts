@@ -86,6 +86,17 @@ export function requireRole(...roles: Array<'child' | 'parent' | 'teacher'>) {
   };
 }
 
+/** Verify a JWT and return the payload, or null if invalid */
+export function verifyToken(token: string): JWTPayload | null {
+  const secret = process.env['JWT_SECRET'];
+  if (!secret) return null;
+  try {
+    return jwt.verify(token, secret) as JWTPayload;
+  } catch {
+    return null;
+  }
+}
+
 /** Sign a new JWT token */
 export function signToken(payload: JWTPayload, expiresIn = '7d'): string {
   const secret = process.env['JWT_SECRET'];

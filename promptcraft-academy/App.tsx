@@ -11,6 +11,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { AuthProvider } from './src/context/AuthContext';
 import { GameProvider } from './src/context/GameContext';
 import AppNavigator from './src/navigation/AppNavigator';
+import AppErrorBoundary from './src/components/common/AppErrorBoundary';
 import { COLORS } from './src/constants/theme';
 
 // Prevent the splash screen from auto-hiding until we are ready
@@ -52,19 +53,21 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <AuthProvider>
-        <GameProvider>
-          <NavigationContainer theme={navigationTheme} onReady={onReady}>
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor={COLORS.background}
-              translucent={false}
-            />
-            <AppNavigator />
-          </NavigationContainer>
-        </GameProvider>
-      </AuthProvider>
-    </SafeAreaProvider>
+    <AppErrorBoundary>
+      <SafeAreaProvider>
+        <AuthProvider>
+          <GameProvider>
+            <NavigationContainer theme={navigationTheme} onReady={onReady}>
+              <StatusBar
+                barStyle="dark-content"
+                backgroundColor={COLORS.background}
+                translucent={false}
+              />
+              <AppNavigator />
+            </NavigationContainer>
+          </GameProvider>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </AppErrorBoundary>
   );
 }

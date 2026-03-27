@@ -100,7 +100,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!mounted) return;
 
         if (storedUserVal) setUser(JSON.parse(storedUserVal) as User);
-        if (storedTokenVal) { setToken(storedTokenVal); api.setAuthToken(storedTokenVal); }
+        if (storedTokenVal) {
+          setToken(storedTokenVal);
+          api.setAuthToken(storedTokenVal);
+          // Ping streak once per app open (fire-and-forget)
+          api.streakPing().catch(() => {});
+        }
         setParentConsentGiven(storedConsentVal === 'true');
         setSafeModeState(storedSafeModeVal !== 'false');
         setHasOnboarded(storedOnboardedVal === 'true');
@@ -131,6 +136,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     store.set(STORAGE_KEYS.AUTH_TOKEN, result.token);
     setUser(userData as User);
     setToken(result.token);
+    // Ping streak on every login (fire-and-forget)
+    api.streakPing().catch(() => {});
   }, []);
 
   // ---- Signup ----

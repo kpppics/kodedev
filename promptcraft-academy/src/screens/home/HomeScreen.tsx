@@ -212,6 +212,10 @@ export default function HomeScreen() {
     (navigation as any).navigate('CosmoChat');
   };
 
+  const handleCodeAdventures = () => {
+    (navigation as any).navigate('CodeAdventures');
+  };
+
   const completedQuests = dailyQuests.filter(q => q.isCompleted).length;
   const totalQuests = dailyQuests.length;
   const questProgress = totalQuests > 0 ? completedQuests / totalQuests : 0;
@@ -270,6 +274,25 @@ export default function HomeScreen() {
           {/* XP bar */}
           <XpBar current={xp} total={xpToNext} level={level} />
         </LinearGradient>
+
+        {/* ── CODE ADVENTURES banner ── */}
+        <TouchableOpacity onPress={handleCodeAdventures} activeOpacity={0.9} style={s.adventureBanner}>
+          <LinearGradient
+            colors={['#2B0050', '#7B2FAE']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={s.cosmoBannerInner}
+          >
+            <View style={s.cosmoBannerText}>
+              <Text style={s.cosmoBannerTitle}>🚀 Code Adventures!</Text>
+              <Text style={s.cosmoBannerSub}>10 fun levels — tap to learn coding!</Text>
+            </View>
+            <Text style={{ fontSize: 48 }}>🤖</Text>
+            <View style={s.cosmoBannerArrow}>
+              <Ionicons name="arrow-forward" size={16} color="rgba(255,255,255,0.9)" />
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
 
         {/* ── TALK TO COSMO banner ── */}
         <TouchableOpacity onPress={handleCosmoChat} activeOpacity={0.9} style={s.cosmoBanner}>
@@ -426,6 +449,7 @@ const s = StyleSheet.create({
 
   // Cosmo banner
   cosmoBanner: { marginHorizontal: SPACING.lg, marginBottom: SPACING.xl, borderRadius: RADIUS.xxl, overflow: 'hidden', ...SHADOWS.medium },
+  adventureBanner: { marginHorizontal: SPACING.lg, marginBottom: SPACING.md, borderRadius: RADIUS.xxl, overflow: 'hidden', ...SHADOWS.medium },
   cosmoBannerInner: { flexDirection: 'row', alignItems: 'center', paddingLeft: SPACING.xl, paddingRight: SPACING.xl, paddingVertical: SPACING.md, overflow: 'hidden' },
   cosmoBannerText: { flex: 1 },
   cosmoBannerTitle: { fontSize: FONTS.sizes.lg, fontWeight: FONTS.weights.black, color: '#fff' },

@@ -18,6 +18,7 @@ import helmet from 'helmet';
 import { generalRateLimit } from './middleware/rateLimit';
 
 import authRouter from './routes/auth';
+import usersRouter from './routes/users';
 import projectsRouter from './routes/projects';
 import gamificationRouter from './routes/gamification';
 import parentRouter from './routes/parent';
@@ -101,6 +102,7 @@ app.use(publicSubscriptionRouter);
 // API routes
 // ==========================================
 app.use('/api/auth',          authRouter);
+app.use('/api/users',         usersRouter);
 app.use('/api/projects',      projectsRouter);
 app.use('/api/gamification',  gamificationRouter);
 app.use('/api/parent',        parentRouter);

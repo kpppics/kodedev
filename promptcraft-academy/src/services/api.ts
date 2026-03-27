@@ -154,29 +154,51 @@ class ApiService {
   }
 
   // Gamification
-  async addXP(amount: number, reason: string): Promise<{
+  async awardXp(amount: number, eventType: string, metadata?: Record<string, unknown>): Promise<{
     newXp: number;
     newLevel: number;
     leveledUp: boolean;
-    badgesEarned: Badge[];
+    badgesEarned: string[];
   }> {
-    return this.request('POST', '/gamification/xp', { amount, reason });
+    return this.request('POST', '/gamification/xp', { amount, eventType, metadata });
   }
 
-  async getBadges(userId: string): Promise<Badge[]> {
-    return this.request('GET', `/gamification/badges/${userId}`);
+  async getStats(): Promise<{ xp: number; level: number; streak: number; last_active: string | null }> {
+    return this.request('GET', '/gamification/stats');
   }
 
-  async getDailyQuests(): Promise<DailyQuest[]> {
+  async getBadges(childId?: string): Promise<{ badges: Array<{ badge_id: string; earned_at: string }> }> {
+    const query = childId ? `?childId=${childId}` : '';
+    return this.request('GET', `/gamification/badges${query}`);
+  }
+
+  async getDailyQuests(): Promise<{ quests: DailyQuest[] }> {
     return this.request('GET', '/gamification/quests');
   }
 
-  async completeQuest(questId: string): Promise<{ xpEarned: number }> {
+  async completeQuest(questId: string): Promise<{ xpEarned: number; alreadyCompleted: boolean }> {
     return this.request('POST', `/gamification/quests/${questId}/complete`);
   }
 
-  async getLeaderboard(period: 'weekly' | 'monthly' | 'alltime'): Promise<LeaderboardEntry[]> {
+  async getLeaderboard(period: 'weekly' | 'monthly' | 'alltime'): Promise<{ leaderboard: LeaderboardEntry[]; period: string }> {
     return this.request('GET', `/gamification/leaderboard?period=${period}`);
+  }
+
+  async getXpHistory(limit = 50): Promise<{ events: Array<{ id: string; event_type: string; xp_amount: number; created_at: string }> }> {
+    return this.request('GET', `/gamification/xp-history?limit=${limit}`);
+  }
+
+  // Password Reset
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    return this.request('POST', '/auth/forgot-password', { email });
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+    return this.request('POST', '/auth/reset-password', { token, newPassword });
+  }
+
+  async streakPing(): Promise<{ streak: number }> {
+    return this.request('POST', '/users/streak-ping');
   }
 
   // Prompt Battles

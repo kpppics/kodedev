@@ -16,6 +16,7 @@ import OnboardingScreen from '../screens/auth/OnboardingScreen';
 import ParentConsentScreen from '../screens/auth/ParentConsentScreen';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignupScreen from '../screens/auth/SignupScreen';
+import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
 // ---- Main/Home Screens ----
 import HomeScreen from '../screens/home/HomeScreen';
@@ -44,8 +45,9 @@ import SettingsScreen from '../screens/profile/SettingsScreen';
 import SubscriptionScreen from '../screens/profile/SubscriptionScreen';
 import PromptLibraryScreen from '../screens/profile/PromptLibraryScreen';
 
-// ---- Parent Screens ----
+// ---- Cosmo + Adventures ----
 import CosmoChatScreen from '../screens/cosmo/CosmoChatScreen';
+import CodeAdventuresScreen from '../screens/cosmo/CodeAdventuresScreen';
 import ParentDashboardScreen from '../screens/parent/ParentDashboardScreen';
 import ProgressReportScreen from '../screens/parent/ProgressReportScreen';
 import ClassroomScreen from '../screens/parent/ClassroomScreen';
@@ -303,6 +305,7 @@ function AuthStack() {
       <Stack.Screen name="ParentConsent" component={ParentConsentScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );
 }
@@ -324,8 +327,9 @@ function MainStack() {
     >
       <Stack.Screen name="MainTabs" component={MainTabNavigator} />
 
-      {/* Cosmo Chat */}
+      {/* Cosmo Chat + Adventures */}
       <Stack.Screen name="CosmoChat" component={CosmoChatScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="CodeAdventures" component={CodeAdventuresScreen} options={{ animation: 'slide_from_bottom' }} />
 
       {/* Track screens */}
       <Stack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ animation: 'slide_from_bottom', headerShown: true, headerTitle: '', headerTintColor: COLORS.primary, headerStyle: { backgroundColor: COLORS.background }, headerShadowVisible: false }} />

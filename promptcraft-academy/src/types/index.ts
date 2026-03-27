@@ -218,8 +218,10 @@ export type RootStackParamList = {
   ParentConsent: undefined;
   Login: undefined;
   Signup: undefined;
+  ForgotPassword: undefined;
   MainTabs: undefined;
   CosmoChat: undefined;
+  CodeAdventures: undefined;
   TrackDetail: { trackId: TrackId };
   LessonScreen: { trackId: TrackId; lessonId: string };
   ProjectView: { projectId: string };

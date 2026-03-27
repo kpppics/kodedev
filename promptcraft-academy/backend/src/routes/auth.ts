@@ -7,7 +7,7 @@ import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { authRateLimit } from '../middleware/rateLimit';
-import { requireAuth, signToken } from '../middleware/auth';
+import { requireAuth, signToken, verifyToken } from '../middleware/auth';
 import { getDb } from '../db/client';
 
 const router = Router();
@@ -261,6 +261,92 @@ router.post('/parent-consent', requireAuth, async (req: Request, res: Response):
   } catch (err) {
     console.error('[Auth/parent-consent]', err);
     res.status(500).json({ error: 'Failed to create child profile' });
+  }
+});
+
+// ==========================================
+// POST /api/auth/forgot-password
+// ==========================================
+// Generates a reset token and (in production) emails it.
+// For now: returns the token directly so it can be used in-app.
+// In production, replace the token response with an email send.
+const ForgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+router.post('/forgot-password', async (req: Request, res: Response): Promise<void> => {
+  const parsed = ForgotPasswordSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: 'Please enter a valid email address' });
+    return;
+  }
+
+  const db = getDb();
+  try {
+    const result = await db.query(
+      'SELECT id FROM users WHERE email = $1 LIMIT 1',
+      [parsed.data.email.toLowerCase()]
+    );
+
+    // Always return success to prevent email enumeration
+    if (!result.rows[0]) {
+      res.json({ message: 'If that email exists, a reset link has been sent' });
+      return;
+    }
+
+    const userId = (result.rows[0] as { id: string }).id;
+    // Generate a short-lived reset token (valid 1 hour)
+    const resetToken = signToken({ userId, role: 'parent', username: '' }, '1h');
+
+    // TODO: Send email with resetToken in production
+    // For now return the token so the frontend can proceed (dev mode)
+    res.json({
+      message: 'If that email exists, a reset link has been sent',
+      // Remove resetToken from the response before going to production:
+      resetToken,
+    });
+  } catch (err) {
+    console.error('[Auth/forgot-password]', err);
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+});
+
+// ==========================================
+// POST /api/auth/reset-password
+// ==========================================
+const ResetPasswordSchema = z.object({
+  token: z.string().min(1),
+  newPassword: z.string().min(8).max(128),
+});
+
+router.post('/reset-password', async (req: Request, res: Response): Promise<void> => {
+  const parsed = ResetPasswordSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: 'Validation failed', details: parsed.error.flatten() });
+    return;
+  }
+
+  const { token, newPassword } = parsed.data;
+
+  try {
+    // Verify the reset token
+    const payload = verifyToken(token);
+    if (!payload?.userId) {
+      res.status(401).json({ error: 'Invalid or expired reset link' });
+      return;
+    }
+
+    const db = getDb();
+    const newHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    await db.query(
+      'UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2',
+      [newHash, payload.userId]
+    );
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (err) {
+    console.error('[Auth/reset-password]', err);
+    res.status(401).json({ error: 'Invalid or expired reset link' });
   }
 });
 

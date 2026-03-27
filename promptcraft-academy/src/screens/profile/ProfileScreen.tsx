@@ -75,7 +75,7 @@ const sc = StyleSheet.create({
 
 export default function ProfileScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const { xp, xpToNext, level, streak, badges: earnedBadges } = useGame();
 
   const name = user?.displayName ?? user?.username ?? 'Learner';
@@ -253,7 +253,7 @@ export default function ProfileScreen() {
           ))}
         </View>
 
-        <TouchableOpacity style={s.signOutBtn} onPress={signOut}>
+        <TouchableOpacity style={s.signOutBtn} onPress={logout}>
           <Ionicons name="log-out-outline" size={18} color={COLORS.error} />
           <Text style={s.signOutText}>Sign Out</Text>
         </TouchableOpacity>
