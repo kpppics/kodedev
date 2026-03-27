@@ -67,8 +67,9 @@ export function buildStoryMessages(req: StoryRequest): {
   if (req.plotTwist) parts.push(`Include this plot twist: ${req.plotTwist}`);
   if (req.continuation) parts.push(`This continues an existing story. Previous story: ${req.continuation}`);
   parts.push(
-    `\nReturn a JSON object with this shape:\n` +
-    `{"title": "...", "story": "...", "characters": [...], "setting": "..."}`
+    `\nFormat your response exactly like this (no extra text before or after):\n` +
+    `TITLE: [story title here]\n` +
+    `STORY: [full story text here, can be multiple paragraphs]`
   );
 
   return {

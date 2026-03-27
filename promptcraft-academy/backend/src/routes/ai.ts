@@ -130,14 +130,19 @@ router.post('/story', async (req: Request, res: Response): Promise<void> => {
     const outputCheck = await safetyGuardOutput(res, aiRes.content);
     if (!outputCheck.safe) return;
 
-    const storyData = parseJSON<Omit<{ story: string; title: string; characters: string[]; setting: string }, 'score'>>(
-      outputCheck.filtered,
-      { title: 'My Story', story: outputCheck.filtered, characters: [], setting: '' }
-    );
-    const score = await scorePrompt({ userPrompt: input.prompt, trackId: 'story-studio', aiResult: storyData.story });
+    const raw = outputCheck.filtered;
+    const titleMatch = raw.match(/TITLE:\s*(.+)/i);
+    const storyMatch = raw.match(/STORY:\s*([\s\S]+)/i);
+    const title = titleMatch ? titleMatch[1].trim() : 'My Story';
+    const story = storyMatch ? storyMatch[1].trim() : raw.trim();
+
+    const score = await scorePrompt({ userPrompt: input.prompt, trackId: 'story-studio', aiResult: story });
 
     res.json({
-      ...storyData,
+      title,
+      story,
+      characters: [],
+      setting: input.setting ?? '',
       score,
       meta: { provider: aiRes.provider, model: aiRes.model, durationMs: aiRes.durationMs },
     });
