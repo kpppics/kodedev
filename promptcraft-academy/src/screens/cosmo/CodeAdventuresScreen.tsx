@@ -58,7 +58,7 @@ const LEVELS: CodeLevel[] = [
   },
   {
     id: 2, stage: 'beginner',
-    title: 'Cosmo's Robot Dance',
+    title: "Cosmo's Robot Dance",
     story: "Cosmo wants to do the robot dance! 🤖💃 But robots need instructions in ORDER. Help Cosmo!",
     task: "Put these moves in the RIGHT order: Start, Spin, Stop. What comes SECOND?",
     concept: 'Sequence', conceptEmoji: '1️⃣',
@@ -80,7 +80,7 @@ const LEVELS: CodeLevel[] = [
   },
   {
     id: 4, stage: 'beginner',
-    title: 'Cosmo's Cookie Recipe',
+    title: "Cosmo's Cookie Recipe",
     story: "🍪 Cosmo wants to bake cookies but the instructions are mixed up! Fix the recipe!",
     task: "What do you do BEFORE putting cookies in the oven?",
     concept: 'Sequence', conceptEmoji: '1️⃣',
@@ -93,7 +93,7 @@ const LEVELS: CodeLevel[] = [
   // ── Stage 2: Intermediate — Loops + Conditions ───────────────
   {
     id: 5, stage: 'intermediate',
-    title: 'Cosmo's Loop Jump',
+    title: "Cosmo's Loop Jump",
     story: "⚙️ Cosmo needs to jump 5 times! A programmer is LAZY (in a smart way) — we write less code using LOOPS!",
     task: "Which code makes Cosmo jump 5 times?",
     concept: 'Loops', conceptEmoji: '🔄',
@@ -172,7 +172,7 @@ const LEVELS: CodeLevel[] = [
   },
   {
     id: 10, stage: 'advanced',
-    title: 'Fix Cosmo's Bug!',
+    title: "Fix Cosmo's Bug!",
     story: "🐛 Oh no! Cosmo wrote some code but it has a BUG! Bugs are mistakes in code — programmers find and fix them every day!",
     task: "Cosmo wants to say hello 3 times. What's wrong?",
     concept: 'Debugging', conceptEmoji: '🐛',
