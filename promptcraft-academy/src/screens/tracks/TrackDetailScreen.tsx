@@ -11,7 +11,10 @@ import {
   Animated,
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
-import type { Track, Lesson, TrackId } from '../../types';
+import type { Lesson, TrackId, RootStackParamList } from '../../types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+type Props = NativeStackScreenProps<RootStackParamList, 'TrackDetail'>;
 
 // Simulated track data for all tracks
 const TRACK_DATA: Record<TrackId, { emoji: string; color: string; name: string; description: string }> = {
@@ -34,11 +37,8 @@ const SIMULATED_LESSONS: Lesson[] = [
   { id: 'l8', trackId: 'story-studio', title: 'Master Prompter', description: 'Put everything together in a final challenge.', difficulty: 9, xpReward: 300, challenge: 'Create a masterpiece story.', hints: ['Use everything you have learned!'] },
 ];
 
-interface TrackDetailScreenProps {
-  trackId?: TrackId;
-}
-
-export default function TrackDetailScreen({ trackId = 'story-studio' }: TrackDetailScreenProps) {
+export default function TrackDetailScreen({ route, navigation }: Props) {
+  const trackId: TrackId = route?.params?.trackId ?? 'story-studio';
   const trackInfo = TRACK_DATA[trackId];
   const trackColor = trackInfo.color;
   const lessons = SIMULATED_LESSONS;
@@ -132,6 +132,7 @@ export default function TrackDetailScreen({ trackId = 'story-studio' }: TrackDet
         <TouchableOpacity
           style={[styles.startBtn, { backgroundColor: trackColor }]}
           activeOpacity={0.8}
+          onPress={() => navigation.navigate('LessonScreen', { trackId, lessonId: nextLesson.id })}
         >
           <Text style={[styles.startBtnLabel, trackId === 'game-maker' && { color: '#5D4E00AA' }]}>
             Up Next
@@ -160,6 +161,7 @@ export default function TrackDetailScreen({ trackId = 'story-studio' }: TrackDet
             ]}
             disabled={!unlocked}
             activeOpacity={0.7}
+            onPress={() => unlocked && navigation.navigate('LessonScreen', { trackId, lessonId: lesson.id })}
           >
             <View style={styles.lessonLeft}>
               {/* Lesson Number / Status */}

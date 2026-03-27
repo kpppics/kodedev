@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import { RootStackParamList, SubscriptionTier } from '../../types';
+import { useAuth } from '../../context/AuthContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -64,6 +65,7 @@ const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
 
 const SettingsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { logout } = useAuth();
 
   // Local toggle states (replace with real state management)
   const [darkMode, setDarkMode] = useState(false);
@@ -78,9 +80,9 @@ const SettingsScreen: React.FC = () => {
   const screenTimeToday = 45; // minutes
   const screenTimeLimit = 60; // minutes
 
-  const handleLogout = () => {
-    // TODO: implement real logout
-    navigation.navigate('Login');
+  const handleLogout = async () => {
+    await logout();
+    // AppNavigator automatically routes to AuthStack
   };
 
   return (

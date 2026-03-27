@@ -7,12 +7,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import { RootStackParamList } from '../../types';
+import { useAuth } from '../../context/AuthContext';
 
 type Props = { navigation: NativeStackNavigationProp<RootStackParamList, 'Login'> };
 
 type LoginMode = 'parent' | 'child';
 
 export default function LoginScreen({ navigation }: Props) {
+  const { login, completeOnboarding } = useAuth();
   const [mode, setMode] = useState<LoginMode>('child');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,11 +24,18 @@ export default function LoginScreen({ navigation }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    const identifier = mode === 'child' ? username.trim() : email.trim();
+    const secret = mode === 'child' ? parentPin : password;
+    if (!identifier || !secret) {
+      Alert.alert('Missing details', mode === 'child' ? 'Enter your username and PIN.' : 'Enter your email and password.');
+      return;
+    }
     setLoading(true);
     try {
-      // TODO: wire up api.login / api.childLogin
-      await new Promise(r => setTimeout(r, 1000)); // stub
-    } catch (e) {
+      await login({ username: identifier, password: secret });
+      await completeOnboarding();
+      // AppNavigator automatically routes to MainStack
+    } catch {
       Alert.alert('Oops!', 'Could not log in. Please check your details.');
     } finally {
       setLoading(false);

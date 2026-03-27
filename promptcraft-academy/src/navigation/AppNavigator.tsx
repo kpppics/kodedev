@@ -7,78 +7,66 @@ import { View, Text, StyleSheet, ActivityIndicator, Platform } from 'react-nativ
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import type { RootStackParamList, MainTabParamList } from '../types';
+import type { RootStackParamList, MainTabParamList, TrackId } from '../types';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
 
-// ---- Existing Screens ----
+// ---- Auth Screens ----
 import OnboardingScreen from '../screens/auth/OnboardingScreen';
 import ParentConsentScreen from '../screens/auth/ParentConsentScreen';
-import RealSignupScreen from '../screens/auth/SignupScreen';
+import LoginScreen from '../screens/auth/LoginScreen';
+import SignupScreen from '../screens/auth/SignupScreen';
+
+// ---- Main/Home Screens ----
 import HomeScreen from '../screens/home/HomeScreen';
 import TracksScreen from '../screens/home/TracksScreen';
+import CreateScreen from '../screens/home/CreateScreen';
+
+// ---- Track Screens ----
+import TrackDetailScreen from '../screens/tracks/TrackDetailScreen';
+import StoryStudioScreen from '../screens/tracks/StoryStudioScreen';
+import WebBuilderScreen from '../screens/tracks/WebBuilderScreen';
+import GameMakerScreen from '../screens/tracks/GameMakerScreen';
+import ArtFactoryScreen from '../screens/tracks/ArtFactoryScreen';
+import MusicMakerScreen from '../screens/tracks/MusicMakerScreen';
+import CodeExplainerScreen from '../screens/tracks/CodeExplainerScreen';
+
+// ---- Gamification Screens ----
+import BattlesScreen from '../screens/gamification/BattlesScreen';
+import BattleDetailScreen from '../screens/gamification/BattleDetailScreen';
+import LeaderboardScreen from '../screens/gamification/LeaderboardScreen';
+import QuestsScreen from '../screens/gamification/QuestsScreen';
+import BadgesScreen from '../screens/gamification/BadgesScreen';
+
+// ---- Profile Screens ----
+import ProfileScreen from '../screens/profile/ProfileScreen';
+import SettingsScreen from '../screens/profile/SettingsScreen';
+import SubscriptionScreen from '../screens/profile/SubscriptionScreen';
+import PromptLibraryScreen from '../screens/profile/PromptLibraryScreen';
+
+// ---- Parent Screens ----
+import ParentDashboardScreen from '../screens/parent/ParentDashboardScreen';
+import ProgressReportScreen from '../screens/parent/ProgressReportScreen';
+import ClassroomScreen from '../screens/parent/ClassroomScreen';
 
 // ==========================================
-// Placeholder Screens
+// Lesson Screen — routes to the right studio
 // ==========================================
-// These are used for screens that haven't been built yet.
-// Each one renders a colorful placeholder with the screen name.
 
-function makePlaceholder(name: string, icon: keyof typeof Ionicons.glyphMap, color: string) {
-  return function PlaceholderScreen() {
-    return (
-      <View style={[placeholderStyles.container, { backgroundColor: COLORS.background }]}>
-        <View style={[placeholderStyles.iconCircle, { backgroundColor: color + '20' }]}>
-          <Ionicons name={icon} size={48} color={color} />
-        </View>
-        <Text style={placeholderStyles.title}>{name}</Text>
-        <Text style={placeholderStyles.subtitle}>Coming soon!</Text>
-      </View>
-    );
-  };
+const STUDIO_SCREENS: Record<TrackId, React.ComponentType<any>> = {
+  'story-studio': StoryStudioScreen,
+  'web-builder': WebBuilderScreen,
+  'game-maker': GameMakerScreen,
+  'art-factory': ArtFactoryScreen,
+  'music-maker': MusicMakerScreen,
+  'code-explainer': CodeExplainerScreen,
+};
+
+function LessonScreen({ route }: any) {
+  const trackId: TrackId = route?.params?.trackId ?? 'story-studio';
+  const Studio = STUDIO_SCREENS[trackId] ?? StoryStudioScreen;
+  return <Studio />;
 }
-
-const placeholderStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: SPACING.xl,
-  },
-  iconCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: SPACING.lg,
-  },
-  title: {
-    fontSize: FONTS.sizes.xxl,
-    fontWeight: FONTS.weights.bold,
-    color: COLORS.text,
-    marginBottom: SPACING.sm,
-  },
-  subtitle: {
-    fontSize: FONTS.sizes.lg,
-    color: COLORS.textSecondary,
-  },
-});
-
-// ---- Placeholder screen components ----
-const SignupScreen = RealSignupScreen;
-const LoginScreen = makePlaceholder('Log In', 'log-in', COLORS.primary);
-const CreateScreen = makePlaceholder('Create', 'add-circle', COLORS.artFactory);
-const BattlesScreen = makePlaceholder('Prompt Battles', 'trophy', COLORS.xpGold);
-const ProfileScreen = makePlaceholder('Profile', 'person-circle', COLORS.primaryLight);
-const TrackDetailScreen = makePlaceholder('Track Detail', 'book', COLORS.webBuilder);
-const LessonScreen = makePlaceholder('Lesson', 'school', COLORS.storyStudio);
-const ProjectViewScreen = makePlaceholder('Project', 'document', COLORS.artFactory);
-const ParentDashboardScreen = makePlaceholder('Parent Dashboard', 'shield-checkmark', COLORS.success);
-const SettingsScreen = makePlaceholder('Settings', 'settings', COLORS.textSecondary);
-const SubscriptionScreen = makePlaceholder('Subscription', 'star', COLORS.xpGold);
-const PromptLibraryScreen = makePlaceholder('Prompt Library', 'library', COLORS.codeExplainer);
-const PromptBattleScreen = makePlaceholder('Prompt Battle', 'flash', COLORS.streak);
 
 // ==========================================
 // Loading Screen
@@ -318,6 +306,12 @@ function AuthStack() {
   );
 }
 
+const headerOptions = {
+  headerTintColor: COLORS.primary,
+  headerStyle: { backgroundColor: COLORS.background },
+  headerTitleStyle: { fontWeight: FONTS.weights.bold as any, fontSize: FONTS.sizes.xl },
+};
+
 function MainStack() {
   return (
     <Stack.Navigator
@@ -328,83 +322,26 @@ function MainStack() {
       }}
     >
       <Stack.Screen name="MainTabs" component={MainTabNavigator} />
-      <Stack.Screen
-        name="TrackDetail"
-        component={TrackDetailScreen}
-        options={{ animation: 'slide_from_bottom' }}
-      />
-      <Stack.Screen
-        name="LessonScreen"
-        component={LessonScreen}
-        options={{ animation: 'slide_from_bottom' }}
-      />
-      <Stack.Screen
-        name="ProjectView"
-        component={ProjectViewScreen}
-        options={{ animation: 'fade_from_bottom' }}
-      />
-      <Stack.Screen
-        name="PromptBattle"
-        component={PromptBattleScreen}
-        options={{ animation: 'slide_from_bottom' }}
-      />
-      <Stack.Screen
-        name="ParentDashboard"
-        component={ParentDashboardScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Parent Dashboard',
-          headerTintColor: COLORS.primary,
-          headerStyle: { backgroundColor: COLORS.background },
-          headerTitleStyle: {
-            fontWeight: FONTS.weights.bold,
-            fontSize: FONTS.sizes.xl,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Settings',
-          headerTintColor: COLORS.primary,
-          headerStyle: { backgroundColor: COLORS.background },
-          headerTitleStyle: {
-            fontWeight: FONTS.weights.bold,
-            fontSize: FONTS.sizes.xl,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="Subscription"
-        component={SubscriptionScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Subscription',
-          headerTintColor: COLORS.primary,
-          headerStyle: { backgroundColor: COLORS.background },
-          headerTitleStyle: {
-            fontWeight: FONTS.weights.bold,
-            fontSize: FONTS.sizes.xl,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="PromptLibrary"
-        component={PromptLibraryScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Prompt Library',
-          headerTintColor: COLORS.primary,
-          headerStyle: { backgroundColor: COLORS.background },
-          headerTitleStyle: {
-            fontWeight: FONTS.weights.bold,
-            fontSize: FONTS.sizes.xl,
-          },
-          animation: 'slide_from_bottom',
-        }}
-      />
+
+      {/* Track screens */}
+      <Stack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="LessonScreen" component={LessonScreen} options={{ animation: 'slide_from_bottom' }} />
+
+      {/* Gamification */}
+      <Stack.Screen name="PromptBattle" component={BattleDetailScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="Leaderboard" component={LeaderboardScreen} options={{ headerShown: true, headerTitle: 'Leaderboard', ...headerOptions }} />
+      <Stack.Screen name="Quests" component={QuestsScreen} options={{ headerShown: true, headerTitle: 'Daily Quests', ...headerOptions }} />
+      <Stack.Screen name="Badges" component={BadgesScreen} options={{ headerShown: true, headerTitle: 'Badges', ...headerOptions }} />
+
+      {/* Profile */}
+      <Stack.Screen name="ProjectView" component={CreateScreen} options={{ animation: 'fade_from_bottom' }} />
+      <Stack.Screen name="ParentDashboard" component={ParentDashboardScreen} options={{ headerShown: true, headerTitle: 'Parent Dashboard', ...headerOptions }} />
+      <Stack.Screen name="ProgressReport" component={ProgressReportScreen} options={{ headerShown: true, headerTitle: 'Progress Report', ...headerOptions }} />
+      <Stack.Screen name="ClassroomView" component={ClassroomScreen} options={{ headerShown: true, headerTitle: 'Classroom', ...headerOptions }} />
+      <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: 'Settings', ...headerOptions }} />
+      <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ headerShown: true, headerTitle: 'Subscription', ...headerOptions }} />
+      <Stack.Screen name="Profile" component={ProfileScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="PromptLibrary" component={PromptLibraryScreen} options={{ headerShown: true, headerTitle: 'Prompt Library', ...headerOptions, animation: 'slide_from_bottom' as any }} />
     </Stack.Navigator>
   );
 }
@@ -420,11 +357,9 @@ export default function AppNavigator() {
     return <LoadingScreen />;
   }
 
-  // Not onboarded or not authenticated → auth flow
   if (!hasOnboarded || !isAuthenticated) {
     return <AuthStack />;
   }
 
-  // Authenticated → main app
   return <MainStack />;
 }

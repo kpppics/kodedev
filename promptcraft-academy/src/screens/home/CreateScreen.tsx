@@ -5,8 +5,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
-import { TrackId } from '../../types';
+import { TrackId, RootStackParamList } from '../../types';
 import { aiService } from '../../services/ai';
 
 interface TrackOption {
@@ -27,7 +28,7 @@ const TRACKS: TrackOption[] = [
 ];
 
 export default function CreateScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [selectedTrack, setSelectedTrack] = useState<TrackOption>(TRACKS[0]);
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
@@ -161,7 +162,7 @@ export default function CreateScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionBtn, { backgroundColor: selectedTrack.color + '20' }]}
-              onPress={() => navigation.navigate(selectedTrack.id as never)}
+              onPress={() => navigation.navigate('TrackDetail', { trackId: selectedTrack.id })}
             >
               <Ionicons name="expand-outline" size={16} color={selectedTrack.color} />
               <Text style={[styles.actionBtnText, { color: selectedTrack.color }]}>Full Studio</Text>

@@ -229,6 +229,10 @@ export type RootStackParamList = {
   Subscription: undefined;
   Profile: { userId: string };
   PromptLibrary: undefined;
+  Leaderboard: undefined;
+  Quests: undefined;
+  Badges: undefined;
+  ProgressReport: { childId: string };
 };
 
 export type MainTabParamList = {
