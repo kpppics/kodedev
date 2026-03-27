@@ -2,13 +2,22 @@
 // PROMPTCRAFT ACADEMY - API Service
 // ==========================================
 
+import { Platform } from 'react-native';
 import {
   User, ChildProfile, ParentProfile, Project, Badge,
   DailyQuest, LeaderboardEntry, PromptBattle,
   ChildActivity, ProgressReport, Classroom, TrackId
 } from '../types';
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/api';
+function resolveBaseUrl(): string {
+  if (process.env.EXPO_PUBLIC_API_URL) return process.env.EXPO_PUBLIC_API_URL;
+  if (Platform.OS === 'web' && typeof window !== 'undefined') {
+    return `http://${window.location.hostname}:3001/api`;
+  }
+  return 'http://localhost:3001/api';
+}
+
+const API_BASE_URL = resolveBaseUrl();
 
 class ApiService {
   private authToken: string | null = null;
@@ -43,30 +52,32 @@ class ApiService {
     return response.json();
   }
 
-  // Auth
-  async signup(email: string, password: string, childData: {
-    username: string;
-    displayName: string;
-    age: number;
-    avatar: string;
-  }): Promise<{ user: ParentProfile; child: ChildProfile; token: string }> {
-    return this.request('POST', '/auth/signup', { email, password, childData });
+  // ---- Auth (matches backend contract exactly) ----
+
+  /** Create a parent/teacher account */
+  async authSignup(body: {
+    email: string; password: string; username: string;
+    displayName: string; role: 'parent' | 'teacher';
+  }): Promise<{ token: string; user: { id: string; email: string; username: string; displayName: string; role: string } }> {
+    return this.request('POST', '/auth/signup', body);
   }
 
-  async login(email: string, password: string): Promise<{ user: User; token: string }> {
-    return this.request('POST', '/auth/login', { email, password });
+  /** Parent/teacher login with email + password */
+  async authLogin(body: { email: string; password: string }): Promise<{ token: string; user: User }> {
+    return this.request('POST', '/auth/login', body);
   }
 
-  async childLogin(username: string, parentPin: string): Promise<{ user: ChildProfile; token: string }> {
-    return this.request('POST', '/auth/child-login', { username, parentPin });
+  /** Child login with username + 4-digit PIN */
+  async authChildLogin(body: { username: string; pin: string }): Promise<{ token: string; user: { id: string; username: string; displayName: string; role: string; parentId: string } }> {
+    return this.request('POST', '/auth/child-login', body);
   }
 
-  async verifyParentConsent(email: string, consentData: {
-    childAge: number;
-    dataCollectionConsent: boolean;
-    termsAccepted: boolean;
-  }): Promise<{ verified: boolean }> {
-    return this.request('POST', '/auth/parent-consent', { email, consentData });
+  /** Authenticated parent creates a child profile */
+  async authParentConsent(body: {
+    childUsername: string; childDisplayName: string;
+    childAge: number; pin: string; consentGiven: true;
+  }): Promise<{ child: { id: string; username: string; displayName: string; age: number; parentId: string } }> {
+    return this.request('POST', '/auth/parent-consent', body);
   }
 
   // User Profile

@@ -17,7 +17,8 @@ const store = {
   set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch {} },
   del: (k: string) => { try { localStorage.removeItem(k); } catch {} },
 };
-import type { User, UserRole, ChildProfile, ParentProfile } from '../types';
+import type { User, UserRole, ChildProfile } from '../types';
+import { api } from '../services/api';
 
 // ---- Storage Keys ----
 const STORAGE_KEYS = {
@@ -41,12 +42,17 @@ interface AuthState {
 
 // ---- Signup Params ----
 interface SignupParams {
+  // Child info
   username: string;
   displayName: string;
   age: number;
   role: UserRole;
   avatar?: string;
+  // Parent info (required for real signup)
   parentEmail?: string;
+  parentName?: string;
+  password?: string;
+  parentPin?: string;
 }
 
 // ---- Login Params ----
@@ -94,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!mounted) return;
 
         if (storedUserVal) setUser(JSON.parse(storedUserVal) as User);
-        if (storedTokenVal) setToken(storedTokenVal);
+        if (storedTokenVal) { setToken(storedTokenVal); api.setAuthToken(storedTokenVal); }
         setParentConsentGiven(storedConsentVal === 'true');
         setSafeModeState(storedSafeModeVal !== 'false');
         setHasOnboarded(storedOnboardedVal === 'true');
@@ -113,83 +119,78 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ---- Login ----
   const login = useCallback(async (params: LoginParams) => {
-    try {
-      // In production this would call a real API.
-      // For now we simulate a successful login with a mock user.
-      const mockUser: ChildProfile = {
-        id: `user_${Date.now()}`,
-        username: params.username,
-        displayName: params.username,
-        avatar: 'robot',
-        role: 'child',
-        age: 10,
-        level: 1,
-        xp: 0,
-        totalXp: 0,
-        streak: 0,
-        badges: [],
-        promptsCreated: 0,
-        projectsCreated: 0,
-        parentId: '',
-        createdAt: new Date().toISOString(),
-      };
-      const mockToken = `token_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    // Detect child (username + PIN) vs parent (email + password) by presence of @
+    const isParent = params.username.includes('@');
+    const result = isParent
+      ? await api.authLogin({ email: params.username, password: params.password })
+      : await api.authChildLogin({ username: params.username, pin: params.password });
 
-      store.set(STORAGE_KEYS.USER, JSON.stringify(mockUser));
-      store.set(STORAGE_KEYS.AUTH_TOKEN, mockToken);
-
-      setUser(mockUser);
-      setToken(mockToken);
-    } catch (error) {
-      console.error('[AuthContext] Login failed:', error);
-      throw error;
-    }
+    api.setAuthToken(result.token);
+    const userData = { ...result.user, avatar: (result.user as any).avatar ?? 'robot' };
+    store.set(STORAGE_KEYS.USER, JSON.stringify(userData));
+    store.set(STORAGE_KEYS.AUTH_TOKEN, result.token);
+    setUser(userData as User);
+    setToken(result.token);
   }, []);
 
   // ---- Signup ----
+  // 3-step flow: create parent account → create child profile → child login
   const signup = useCallback(async (params: SignupParams) => {
-    try {
-      const newUser: ChildProfile = {
-        id: `user_${Date.now()}`,
-        username: params.username,
-        displayName: params.displayName,
-        avatar: params.avatar ?? 'robot',
-        role: 'child',
-        age: params.age,
-        level: 1,
-        xp: 0,
-        totalXp: 0,
-        streak: 0,
-        badges: [],
-        promptsCreated: 0,
-        projectsCreated: 0,
-        parentId: '',
-        createdAt: new Date().toISOString(),
-      };
-      const newToken = `token_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-
-      store.set(STORAGE_KEYS.USER, JSON.stringify(newUser));
-      store.set(STORAGE_KEYS.AUTH_TOKEN, newToken);
-
-      setUser(newUser);
-      setToken(newToken);
-    } catch (error) {
-      console.error('[AuthContext] Signup failed:', error);
-      throw error;
+    if (!params.parentEmail || !params.password || !params.parentPin) {
+      throw new Error('Missing parent credentials');
     }
+
+    // Step 1: Create parent account
+    const parentUsername = (params.parentEmail.split('@')[0] + Date.now())
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .substring(0, 30);
+
+    const parentResult = await api.authSignup({
+      email: params.parentEmail,
+      password: params.password,
+      username: parentUsername,
+      displayName: params.parentName ?? params.parentEmail.split('@')[0],
+      role: 'parent',
+    });
+
+    // Step 2: Create child profile (requires parent token)
+    api.setAuthToken(parentResult.token);
+    await api.authParentConsent({
+      childUsername: params.username,
+      childDisplayName: params.displayName,
+      childAge: params.age,
+      pin: params.parentPin,
+      consentGiven: true,
+    });
+
+    // Step 3: Log in as child to get child token
+    const childResult = await api.authChildLogin({
+      username: params.username,
+      pin: params.parentPin,
+    });
+
+    api.setAuthToken(childResult.token);
+    const childUser = {
+      ...childResult.user,
+      avatar: params.avatar ?? 'robot',
+      level: 1, xp: 0, totalXp: 0, streak: 0, badges: [],
+      promptsCreated: 0, projectsCreated: 0,
+      createdAt: new Date().toISOString(),
+    };
+
+    store.set(STORAGE_KEYS.USER, JSON.stringify(childUser));
+    store.set(STORAGE_KEYS.AUTH_TOKEN, childResult.token);
+    setUser(childUser as User);
+    setToken(childResult.token);
   }, []);
 
   // ---- Logout ----
   const logout = useCallback(async () => {
-    try {
-      store.del(STORAGE_KEYS.USER);
-      store.del(STORAGE_KEYS.AUTH_TOKEN);
-      setUser(null);
-      setToken(null);
-    } catch (error) {
-      console.error('[AuthContext] Logout failed:', error);
-      throw error;
-    }
+    store.del(STORAGE_KEYS.USER);
+    store.del(STORAGE_KEYS.AUTH_TOKEN);
+    api.clearAuthToken();
+    setUser(null);
+    setToken(null);
   }, []);
 
   // ---- Parent Consent ----

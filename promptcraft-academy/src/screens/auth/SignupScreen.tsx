@@ -172,6 +172,9 @@ export default function SignupScreen({ navigation }: Props) {
         role: 'child',
         avatar: selectedAvatar,
         parentEmail,
+        parentName,
+        password,
+        parentPin,
       });
       await completeOnboarding();
       // AppNavigator automatically switches to MainStack once authenticated + onboarded

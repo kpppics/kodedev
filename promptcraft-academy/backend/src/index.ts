@@ -38,16 +38,15 @@ app.use(helmet());
 // ==========================================
 // CORS
 // ==========================================
-const allowedOrigins = process.env['FRONTEND_URL']
-  ? process.env['FRONTEND_URL'].split(',').map(o => o.trim())
-  : ['http://localhost:3000', 'http://localhost:19006'];
-
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    callback(new Error(`CORS: origin '${origin}' not allowed`));
+    // Allow all origins — restrict in production via FRONTEND_URL env var
+    if (process.env['FRONTEND_URL'] && process.env['FRONTEND_URL'] !== '*') {
+      const allowed = process.env['FRONTEND_URL'].split(',').map(o => o.trim());
+      if (!origin || allowed.includes(origin)) return callback(null, true);
+      return callback(new Error(`CORS: origin '${origin}' not allowed`));
+    }
+    callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
