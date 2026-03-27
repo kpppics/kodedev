@@ -27,9 +27,9 @@ const TRACK_DATA: Record<TrackId, { emoji: string; color: string; name: string; 
 };
 
 const SIMULATED_LESSONS: Lesson[] = [
-  { id: 'l1', trackId: 'story-studio', title: 'Your First Prompt', description: 'Learn the basics of writing a clear prompt.', difficulty: 1, xpReward: 50, challenge: 'Write a one-sentence prompt.', hints: ['Start simple!'], completedAt: '2026-03-20' },
-  { id: 'l2', trackId: 'story-studio', title: 'Adding Details', description: 'Make your prompts more descriptive and specific.', difficulty: 2, xpReward: 75, challenge: 'Write a prompt with 3 details.', hints: ['Think about who, what, where.'], completedAt: '2026-03-22' },
-  { id: 'l3', trackId: 'story-studio', title: 'Characters & Feelings', description: 'Learn to describe characters and emotions.', difficulty: 3, xpReward: 100, challenge: 'Create a character with feelings.', hints: ['How does your character feel?'], completedAt: '2026-03-24' },
+  { id: 'l1', trackId: 'story-studio', title: 'Your First Prompt', description: 'Learn the basics of writing a clear prompt.', difficulty: 1, xpReward: 50, challenge: 'Write a one-sentence prompt.', hints: ['Start simple!'] },
+  { id: 'l2', trackId: 'story-studio', title: 'Adding Details', description: 'Make your prompts more descriptive and specific.', difficulty: 2, xpReward: 75, challenge: 'Write a prompt with 3 details.', hints: ['Think about who, what, where.'] },
+  { id: 'l3', trackId: 'story-studio', title: 'Characters & Feelings', description: 'Learn to describe characters and emotions.', difficulty: 3, xpReward: 100, challenge: 'Create a character with feelings.', hints: ['How does your character feel?'] },
   { id: 'l4', trackId: 'story-studio', title: 'Setting the Scene', description: 'Create vivid settings and environments.', difficulty: 4, xpReward: 100, challenge: 'Describe a world in detail.', hints: ['Use all 5 senses!'] },
   { id: 'l5', trackId: 'story-studio', title: 'Plot Twists & Surprises', description: 'Add unexpected turns to your stories.', difficulty: 5, xpReward: 125, challenge: 'Write a story with a twist.', hints: ['What if something unexpected happened?'] },
   { id: 'l6', trackId: 'story-studio', title: 'Dialogue & Conversation', description: 'Make characters talk to each other.', difficulty: 5, xpReward: 125, challenge: 'Write a prompt with dialogue.', hints: ['Think about how people really talk.'] },
