@@ -21,6 +21,8 @@ import {
   Project,
   ChildProfile,
 } from '../../types';
+import { useAuth } from '../../context/AuthContext';
+import { useGame } from '../../context/GameContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -230,7 +232,11 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const child = MOCK_CHILD;
+  const { user } = useAuth();
+  const { xp, xpToNext, level, streak, badges, dailyQuests: gameDailyQuests } = useGame();
+
+  const displayName = user?.displayName ?? user?.username ?? 'Learner';
+  const avatar = user?.avatar ?? '';
 
   const handleTrackPress = useCallback(
     (trackId: TrackId) => {
@@ -264,14 +270,14 @@ const HomeScreen: React.FC = () => {
         return (
           <View style={styles.greetingSection}>
             <View style={styles.greetingRow}>
-              <AvatarIcon avatar={child.avatar} size={56} />
+              <AvatarIcon avatar={avatar} size={56} />
               <View style={styles.greetingText}>
-                <Text style={styles.greetingHello}>Hey, {child.displayName}!</Text>
+                <Text style={styles.greetingHello}>Hey, {displayName}!</Text>
                 <Text style={styles.greetingSub}>Ready to craft some awesome prompts?</Text>
               </View>
             </View>
-            <XpBar current={child.xp} total={child.totalXp} level={child.level} />
-            <StreakBadge streak={child.streak} />
+            <XpBar current={xp} total={xpToNext} level={level} />
+            <StreakBadge streak={streak} />
           </View>
         );
 
@@ -283,7 +289,7 @@ const HomeScreen: React.FC = () => {
               <Ionicons name="compass" size={22} color={COLORS.primary} />
               <Text style={styles.sectionTitle}>Daily Quests</Text>
             </View>
-            {DAILY_QUESTS.map((q) => (
+            {gameDailyQuests.map((q) => (
               <QuestCard key={q.id} quest={q} />
             ))}
           </View>

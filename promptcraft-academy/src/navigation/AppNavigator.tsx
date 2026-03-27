@@ -324,8 +324,8 @@ function MainStack() {
       <Stack.Screen name="MainTabs" component={MainTabNavigator} />
 
       {/* Track screens */}
-      <Stack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ animation: 'slide_from_bottom' }} />
-      <Stack.Screen name="LessonScreen" component={LessonScreen} options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ animation: 'slide_from_bottom', headerShown: true, headerTitle: '', headerTintColor: COLORS.primary, headerStyle: { backgroundColor: COLORS.background }, headerShadowVisible: false }} />
+      <Stack.Screen name="LessonScreen" component={LessonScreen} options={{ animation: 'slide_from_bottom', headerShown: true, headerTitle: '', headerTintColor: COLORS.primary, headerStyle: { backgroundColor: COLORS.background }, headerShadowVisible: false }} />
 
       {/* Gamification */}
       <Stack.Screen name="PromptBattle" component={BattleDetailScreen} options={{ animation: 'slide_from_bottom' }} />

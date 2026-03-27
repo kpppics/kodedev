@@ -19,6 +19,8 @@ import {
   Project,
   TrackId,
 } from '../../types';
+import { useAuth } from '../../context/AuthContext';
+import { useGame } from '../../context/GameContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -231,8 +233,11 @@ const ProjectRow: React.FC<{ project: Project; onPress: () => void }> = ({ proje
 
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
-  const child = MOCK_CHILD;
-  const levelTitle = LEVEL_TITLES[child.level] ?? 'Prompt Explorer';
+  const { user } = useAuth();
+  const { xp, xpToNext, level, levelTitle, streak, badges: earnedBadges } = useGame();
+
+  const displayName = user?.displayName ?? user?.username ?? 'Learner';
+  const username = user?.username ?? '';
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -252,8 +257,8 @@ const ProfileScreen: React.FC = () => {
           <AvatarDisplay size={90} />
         </View>
 
-        <Text style={styles.displayName}>{child.displayName}</Text>
-        <Text style={styles.username}>@{child.username}</Text>
+        <Text style={styles.displayName}>{displayName}</Text>
+        <Text style={styles.username}>@{username}</Text>
 
         {/* Level badge */}
         <View style={styles.levelBadge}>
@@ -263,13 +268,13 @@ const ProfileScreen: React.FC = () => {
       </View>
 
       {/* XP Progress Ring */}
-      <XpProgressRing current={child.xp} total={child.totalXp} level={child.level} />
+      <XpProgressRing current={xp} total={xpToNext} level={level} />
 
       {/* Stats Row */}
       <View style={styles.statsRow}>
-        <StatItem icon="construct" value={child.projectsCreated} label="Projects" color={COLORS.webBuilder} />
-        <StatItem icon="create" value={child.promptsCreated} label="Prompts" color={COLORS.primary} />
-        <StatItem icon="flame" value={child.streak} label="Streak" color={COLORS.streak} />
+        <StatItem icon="construct" value={MOCK_CHILD.projectsCreated} label="Projects" color={COLORS.webBuilder} />
+        <StatItem icon="create" value={MOCK_CHILD.promptsCreated} label="Prompts" color={COLORS.primary} />
+        <StatItem icon="flame" value={streak} label="Streak" color={COLORS.streak} />
       </View>
 
       {/* Badge Showcase */}
@@ -277,10 +282,10 @@ const ProfileScreen: React.FC = () => {
         <View style={styles.sectionHeader}>
           <Ionicons name="ribbon" size={22} color={COLORS.xpGold} />
           <Text style={styles.sectionTitle}>Badge Showcase</Text>
-          <Text style={styles.sectionCount}>{child.badges.length} earned</Text>
+          <Text style={styles.sectionCount}>{earnedBadges.length} earned</Text>
         </View>
         <View style={styles.badgeGrid}>
-          {child.badges.map((badge) => (
+          {earnedBadges.map((badge) => (
             <BadgeItem key={badge.id} badge={badge} />
           ))}
         </View>

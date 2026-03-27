@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore, TrackId } from '../../types';
+import { aiService } from '../../services/ai';
 
 const TRACK_COLOR = COLORS.storyStudio;
 
@@ -54,7 +55,7 @@ export default function StoryStudioScreen() {
     }
   }, [isGenerating]);
 
-  const simulateGeneration = () => {
+  const simulateGeneration = async () => {
     if (!prompt.trim()) {
       Alert.alert('Oops!', 'Write something about your story first!');
       return;
@@ -63,25 +64,26 @@ export default function StoryStudioScreen() {
     setGeneratedStory('');
     setPromptScore(null);
     setIsSaved(false);
-
     fadeAnim.setValue(0);
     bookAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsGenerating(false);
-      setGeneratedStory(SIMULATED_STORIES.default);
+    try {
+      const fullPrompt = buildFullPrompt();
+      const result = await aiService.generateStory({ prompt: fullPrompt });
+      const story = result.title ? `${result.title}\n\n${result.story}` : result.story;
+      setGeneratedStory(story);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
-      const creativity = selectedCharacter || selectedSetting ? 75 : 50;
-      const context = selectedTwist ? 80 : 55;
-      const result = 70;
-      const overall = Math.round((clarity + creativity + context + result) / 4);
+      const creativity = selectedCharacter || selectedSetting ? 80 : 55;
+      const context = selectedTwist ? 85 : 60;
+      const resultScore = 75;
+      const overall = Math.round((clarity + creativity + context + resultScore) / 4);
 
       setPromptScore({
         clarity,
         creativity,
         context,
-        result,
+        result: resultScore,
         overall,
         feedback: overall >= 70
           ? 'Great prompt! Your story details really helped the AI.'
@@ -95,7 +97,11 @@ export default function StoryStudioScreen() {
 
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
       Animated.timing(bookAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-    }, 2500);
+    } catch (err) {
+      Alert.alert('Error', 'Could not generate story. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleTwist = () => {
@@ -255,27 +261,6 @@ export default function StoryStudioScreen() {
             <Text style={styles.storyHeaderText}>Your Story</Text>
           </View>
           <Text style={styles.storyText}>{generatedStory}</Text>
-
-          {/* Animated Preview Panel Placeholder */}
-          <Animated.View
-            style={[
-              styles.previewPanel,
-              {
-                transform: [
-                  {
-                    translateY: bookAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [30, 0],
-                    }),
-                  },
-                ],
-                opacity: bookAnim,
-              },
-            ]}
-          >
-            <Text style={styles.previewPlaceholder}>📚 Story Preview Animation</Text>
-            <Text style={styles.previewSubtext}>Animated storybook preview coming soon!</Text>
-          </Animated.View>
 
           {/* Iteration Buttons */}
           <View style={styles.iterationRow}>
@@ -447,26 +432,6 @@ const styles = StyleSheet.create({
     fontSize: FONTS.sizes.md,
     lineHeight: 24,
     color: COLORS.text,
-  },
-  previewPanel: {
-    marginTop: SPACING.xl,
-    backgroundColor: TRACK_COLOR + '10',
-    borderRadius: RADIUS.lg,
-    padding: SPACING.xxl,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: TRACK_COLOR + '30',
-    borderStyle: 'dashed',
-  },
-  previewPlaceholder: {
-    fontSize: FONTS.sizes.xl,
-    fontWeight: FONTS.weights.semibold,
-    color: TRACK_COLOR,
-  },
-  previewSubtext: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-    marginTop: SPACING.xs,
   },
   iterationRow: {
     flexDirection: 'row',
