@@ -98,7 +98,7 @@ class ApiService {
     return this.request('POST', '/ai/art', body);
   }
 
-  async aiMusic(body: { prompt: string; mood?: string; instruments?: string[]; tempo?: string }): Promise<{ description: string; tempo: string; mood: string; instrumentation: string[]; lyricsSnippet?: string }> {
+  async aiMusic(body: { prompt: string; mood?: string; instruments?: string[]; tempo?: string }): Promise<{ description: string; tempo: number | string; mood: string; instrumentation: string[]; lyricsSnippet?: string; notes?: { freq: number; duration: number; type?: string }[] }> {
     return this.request('POST', '/ai/music', body);
   }
 

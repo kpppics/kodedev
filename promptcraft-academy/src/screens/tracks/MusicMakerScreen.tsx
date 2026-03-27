@@ -40,6 +40,35 @@ const ITERATION_OPTIONS = [
   'Add clapping',
 ];
 
+type MusicNote = { freq: number; duration: number; type?: string };
+
+function playNotes(notes: MusicNote[], onProgress: (p: number) => void, onEnd: () => void) {
+  if (typeof window === 'undefined') { onEnd(); return; }
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    let time = ctx.currentTime + 0.05;
+    const totalDuration = notes.reduce((s, n) => s + n.duration, 0);
+    let elapsed = 0;
+    notes.forEach(note => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = (note.type as OscillatorType) || 'sine';
+      osc.frequency.setValueAtTime(note.freq, time);
+      gain.gain.setValueAtTime(0.3, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + note.duration - 0.01);
+      osc.start(time);
+      osc.stop(time + note.duration);
+      elapsed += note.duration;
+      const e = elapsed;
+      setTimeout(() => onProgress(Math.round((e / totalDuration) * 100)), (time - ctx.currentTime + elapsed) * 800);
+      time += note.duration;
+    });
+    setTimeout(() => { onEnd(); ctx.close(); }, (time - ctx.currentTime) * 1000 + 200);
+  } catch { onEnd(); }
+}
+
 export default function MusicMakerScreen() {
   const { addXp } = useGame();
   const [prompt, setPrompt] = useState('');
@@ -49,6 +78,7 @@ export default function MusicMakerScreen() {
   const [musicCreated, setMusicCreated] = useState(false);
   const [musicDescription, setMusicDescription] = useState('');
   const [lyricsSnippet, setLyricsSnippet] = useState('');
+  const [musicNotes, setMusicNotes] = useState<MusicNote[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playProgress, setPlayProgress] = useState(0);
   const [promptScore, setPromptScore] = useState<PromptScore | null>(null);
@@ -130,6 +160,7 @@ export default function MusicMakerScreen() {
       });
       setMusicDescription(result.description);
       setLyricsSnippet(result.lyricsSnippet ?? '');
+      setMusicNotes(result.notes ?? []);
       setMusicCreated(true);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
@@ -366,7 +397,17 @@ export default function MusicMakerScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.playPauseBtn}
-              onPress={() => setIsPlaying(!isPlaying)}
+              onPress={() => {
+                if (isPlaying) { setIsPlaying(false); return; }
+                if (musicNotes.length === 0) { Alert.alert('No notes', 'Generate a song first!'); return; }
+                setIsPlaying(true);
+                setPlayProgress(0);
+                playNotes(
+                  musicNotes,
+                  (p) => setPlayProgress(p),
+                  () => { setIsPlaying(false); setPlayProgress(0); }
+                );
+              }}
             >
               <Text style={styles.playPauseBtnText}>{isPlaying ? '⏸' : '▶️'}</Text>
             </TouchableOpacity>

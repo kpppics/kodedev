@@ -337,17 +337,18 @@ router.post('/music', async (req: Request, res: Response): Promise<void> => {
 
   try {
     const { messages, systemPrompt } = buildMusicMessages(input);
-    const aiRes = await aiRouter.complete({ messages, systemPrompt, maxTokens: 512 });
+    const aiRes = await aiRouter.complete({ messages, systemPrompt, maxTokens: 1024 });
 
     const outputCheck = await safetyGuardOutput(res, aiRes.content);
     if (!outputCheck.safe) return;
 
     const data = parseJSON<{
-      description: string; tempo: string; mood: string;
+      description: string; tempo: number | string; mood: string;
       instrumentation: string[]; lyricsSnippet?: string;
+      notes?: { freq: number; duration: number; type?: string }[];
     }>(
       outputCheck.filtered,
-      { description: outputCheck.filtered, tempo: 'moderate', mood: input.mood ?? 'happy', instrumentation: [] }
+      { description: outputCheck.filtered, tempo: 120, mood: input.mood ?? 'happy', instrumentation: [], notes: [] }
     );
     const score = await scorePrompt({ userPrompt: input.prompt, trackId: 'music-maker', aiResult: data.description });
 

@@ -167,14 +167,28 @@ export function buildMusicMessages(req: MusicRequest): {
   systemPrompt: string;
 } {
   const parts: string[] = [
-    `Help me create a piece of music based on: "${req.prompt}"`,
+    `Create a piece of music based on: "${req.prompt}"`,
   ];
   if (req.mood) parts.push(`Mood: ${req.mood}`);
   if (req.instruments?.length) parts.push(`Instruments: ${req.instruments.join(', ')}`);
-  if (req.tempo) parts.push(`Tempo: ${req.tempo}`);
+  if (req.tempo) parts.push(`Tempo hint: ${req.tempo}`);
   parts.push(
-    `\nReturn JSON:\n` +
-    `{"description": "...", "tempo": "...", "mood": "...", "instrumentation": [...], "lyricsSnippet": "..."}`
+    `\nReturn a JSON object with this exact shape (no other text):\n` +
+    `{\n` +
+    `  "description": "A short description of the music",\n` +
+    `  "tempo": 120,\n` +
+    `  "mood": "happy",\n` +
+    `  "instrumentation": ["piano", "drums"],\n` +
+    `  "lyricsSnippet": "Optional short lyric line",\n` +
+    `  "notes": [\n` +
+    `    {"freq": 523, "duration": 0.3, "type": "sine"},\n` +
+    `    {"freq": 659, "duration": 0.3, "type": "sine"}\n` +
+    `  ]\n` +
+    `}\n` +
+    `The "notes" array should have 16-32 notes representing the melody.\n` +
+    `Use standard frequencies: C4=261, D4=294, E4=330, F4=349, G4=392, A4=440, B4=494, C5=523, D5=587, E5=659, G5=784.\n` +
+    `Oscillator types: "sine" (soft), "square" (retro), "sawtooth" (bright), "triangle" (mellow).\n` +
+    `Duration is in seconds (0.1 to 0.6). Return ONLY valid JSON, no markdown.`
   );
 
   return {
