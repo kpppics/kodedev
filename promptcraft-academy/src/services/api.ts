@@ -86,6 +86,10 @@ class ApiService {
     return this.request('POST', '/ai/story', body);
   }
 
+  async aiWebpage(body: { prompt?: string; previousHtml?: string; modification?: string }): Promise<{ html: string; explanation: string }> {
+    return this.request('POST', '/ai/webpage', body);
+  }
+
   // User Profile
   async getProfile(userId: string): Promise<ChildProfile | ParentProfile> {
     return this.request('GET', `/users/${userId}`);

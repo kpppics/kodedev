@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
+import { api } from '../../services/api';
+import { useGame } from '../../context/GameContext';
 
 const TRACK_COLOR = COLORS.webBuilder;
 
@@ -63,6 +65,7 @@ const SIMULATED_HTML = `<!DOCTYPE html>
 </html>`;
 
 export default function WebBuilderScreen() {
+  const { addXp } = useGame();
   const [prompt, setPrompt] = useState('');
   const [iterationPrompt, setIterationPrompt] = useState('');
   const [isBuilding, setIsBuilding] = useState(false);
@@ -88,7 +91,7 @@ export default function WebBuilderScreen() {
     }
   }, [isBuilding]);
 
-  const simulateBuild = () => {
+  const simulateBuild = async () => {
     if (!prompt.trim()) {
       Alert.alert('Oops!', 'Describe what webpage you want to build first!');
       return;
@@ -100,21 +103,21 @@ export default function WebBuilderScreen() {
     fadeAnim.setValue(0);
     slideAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsBuilding(false);
-      setGeneratedCode(SIMULATED_HTML);
+    try {
+      const result = await api.aiWebpage({ prompt });
+      setGeneratedCode(result.html);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
       const creativity = 65;
       const context = prompt.toLowerCase().includes('color') || prompt.toLowerCase().includes('button') ? 80 : 55;
-      const result = 72;
-      const overall = Math.round((clarity + creativity + context + result) / 4);
+      const score = 72;
+      const overall = Math.round((clarity + creativity + context + score) / 4);
 
       setPromptScore({
         clarity,
         creativity,
         context,
-        result,
+        result: score,
         overall,
         feedback: overall >= 70
           ? 'Nice prompt! You described your webpage well.'
@@ -128,20 +131,33 @@ export default function WebBuilderScreen() {
 
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
       Animated.timing(slideAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-    }, 2500);
+
+      const xpAmount = 40 + Math.round(overall / 2);
+      const { leveledUp, newLevel } = await addXp(xpAmount);
+      if (leveledUp) {
+        Alert.alert('Level Up!', `You reached level ${newLevel}!`);
+      } else {
+        Alert.alert('Built!', `You earned ${xpAmount} XP!`);
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Could not build webpage. Please try again.');
+    } finally {
+      setIsBuilding(false);
+    }
   };
 
-  const handleIteration = () => {
+  const handleIteration = async () => {
     if (!iterationPrompt.trim()) return;
     setIsBuilding(true);
-    setTimeout(() => {
-      setGeneratedCode(
-        prev =>
-          prev.replace('</body>', `  <!-- Updated: ${iterationPrompt} -->\n  <div style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.2);border-radius:12px;">\n    <p>Change applied: ${iterationPrompt}</p>\n  </div>\n</body>`),
-      );
+    try {
+      const result = await api.aiWebpage({ prompt: iterationPrompt, previousHtml: generatedCode, modification: iterationPrompt });
+      setGeneratedCode(result.html);
       setIterationPrompt('');
+    } catch {
+      Alert.alert('Error', 'Could not apply changes. Please try again.');
+    } finally {
       setIsBuilding(false);
-    }, 2000);
+    }
   };
 
   const addSuggestion = (suggestion: string) => {
