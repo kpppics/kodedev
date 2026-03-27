@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
+import { api } from '../../services/api';
+import { useGame } from '../../context/GameContext';
 
 const TRACK_COLOR = COLORS.artFactory;
 
@@ -37,7 +39,10 @@ const GALLERY_PLACEHOLDERS = [
 ];
 
 export default function ArtFactoryScreen() {
+  const { addXp } = useGame();
   const [prompt, setPrompt] = useState('');
+  const [artDescription, setArtDescription] = useState('');
+  const [artImagePrompt, setArtImagePrompt] = useState('');
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [selectedPalette, setSelectedPalette] = useState<string | null>(null);
@@ -69,7 +74,7 @@ export default function ArtFactoryScreen() {
     }
   }, [isCreating]);
 
-  const simulateCreation = () => {
+  const simulateCreation = async () => {
     if (!prompt.trim()) {
       Alert.alert('Oops!', 'Describe the artwork you want to create!');
       return;
@@ -81,43 +86,58 @@ export default function ArtFactoryScreen() {
     fadeAnim.setValue(0);
     scaleAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsCreating(false);
+    try {
+      const palette = COLOR_PALETTES.find(p => p.name === selectedPalette);
+      const result = await api.aiArt({
+        prompt,
+        style: selectedStyle ?? undefined,
+        mood: selectedMood ?? undefined,
+        colors: palette?.colors,
+      });
+      setArtDescription(result.description);
+      setArtImagePrompt(result.imagePrompt);
       setArtCreated(true);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
       const creativity = selectedStyle ? 80 : 55;
-      const context = (selectedMood ? 15 : 0) + (selectedPalette ? 15 : 0) + 50;
-      const result = 72;
-      const overall = Math.round((clarity + creativity + context + result) / 4);
+      const context = Math.min(100, (selectedMood ? 15 : 0) + (selectedPalette ? 15 : 0) + 50);
+      const score = 72;
+      const overall = Math.round((clarity + creativity + context + score) / 4);
 
       setPromptScore({
-        clarity,
-        creativity,
-        context: Math.min(100, context),
-        result,
-        overall,
-        feedback: overall >= 70
-          ? 'Beautiful prompt! Your art details are very descriptive.'
-          : 'Try adding a style, mood, or color palette for better results!',
-        suggestions: [
-          'Describe the lighting (sunset glow, moonlight, etc.)',
-          'Add texture details (smooth, rough, sparkly)',
-          'Mention the composition (close-up, wide shot, from above)',
-        ],
+        clarity, creativity, context, result: score, overall,
+        feedback: overall >= 70 ? 'Beautiful prompt! Your art details are very descriptive.' : 'Try adding a style, mood, or color palette for better results!',
+        suggestions: ['Describe the lighting (sunset glow, moonlight, etc.)', 'Add texture details (smooth, rough, sparkly)', 'Mention the composition (close-up, wide shot, from above)'],
       });
 
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
       Animated.spring(scaleAnim, { toValue: 1, friction: 5, tension: 40, useNativeDriver: true }).start();
-    }, 3000);
+
+      const xpAmount = 40 + Math.round(overall / 2);
+      const { leveledUp, newLevel } = await addXp(xpAmount);
+      if (leveledUp) Alert.alert('Level Up!', `You reached level ${newLevel}!`);
+      else Alert.alert('Art Created!', `You earned ${xpAmount} XP!`);
+    } catch {
+      Alert.alert('Error', 'Could not create artwork. Please try again.');
+    } finally {
+      setIsCreating(false);
+    }
   };
 
-  const handleRemix = () => {
+  const handleRemix = async () => {
+    if (!artImagePrompt) return;
     setIsCreating(true);
-    setTimeout(() => {
+    try {
+      const result = await api.aiArt({ prompt: `${prompt} with a unique twist`, style: selectedStyle ?? undefined, mood: selectedMood ?? undefined });
+      setArtDescription(result.description);
+      setArtImagePrompt(result.imagePrompt);
+      await addXp(20);
+      Alert.alert('Remixed!', 'Your artwork has been given a fresh twist! +20 XP');
+    } catch {
+      Alert.alert('Error', 'Could not remix artwork.');
+    } finally {
       setIsCreating(false);
-      Alert.alert('Remixed!', 'Your artwork has been given a fresh twist!');
-    }, 2000);
+    }
   };
 
   const handleSave = () => {
@@ -292,11 +312,20 @@ export default function ArtFactoryScreen() {
                 },
               ]}>
                 <Text style={styles.artPlaceholderEmoji}>🖼️</Text>
-                <Text style={styles.artPlaceholderText}>AI Generated Artwork</Text>
+                <Text style={styles.artPlaceholderText}>{selectedStyle || 'AI'} Artwork</Text>
                 <Text style={styles.artPlaceholderSubtext}>
                   {selectedStyle || 'Custom'} | {selectedMood || 'Any Mood'}
                 </Text>
-                <Text style={styles.artPlaceholderNote}>Image generation placeholder</Text>
+                {!!artDescription && (
+                  <Text style={[styles.artPlaceholderNote, { marginTop: 8, textAlign: 'center', fontSize: 13 }]}>
+                    {artDescription}
+                  </Text>
+                )}
+                {!!artImagePrompt && (
+                  <Text style={[styles.artPlaceholderNote, { marginTop: 4, fontStyle: 'italic', textAlign: 'center' }]}>
+                    Image prompt: {artImagePrompt}
+                  </Text>
+                )}
               </View>
             </View>
           </Animated.View>

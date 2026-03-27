@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
+import { api } from '../../services/api';
+import { useGame } from '../../context/GameContext';
 
 const TRACK_COLOR = COLORS.gameMaker;
 const TRACK_TEXT = '#5D4E00'; // Dark text for yellow backgrounds
@@ -38,10 +40,12 @@ const ITERATION_OPTIONS = [
 ];
 
 export default function GameMakerScreen() {
+  const { addXp } = useGame();
   const [prompt, setPrompt] = useState('');
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [gameCreated, setGameCreated] = useState(false);
+  const [gameHtml, setGameHtml] = useState('');
   const [promptScore, setPromptScore] = useState<PromptScore | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [appliedMods, setAppliedMods] = useState<string[]>([]);
@@ -63,7 +67,7 @@ export default function GameMakerScreen() {
     }
   }, [isCreating]);
 
-  const simulateCreation = () => {
+  const simulateCreation = async () => {
     if (!prompt.trim()) {
       Alert.alert('Oops!', 'Describe what kind of game you want to make!');
       return;
@@ -76,44 +80,50 @@ export default function GameMakerScreen() {
     fadeAnim.setValue(0);
     bounceAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsCreating(false);
+    try {
+      const result = await api.aiGame({ prompt, gameType: selectedType ?? undefined });
+      setGameHtml(result.html);
       setGameCreated(true);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
       const creativity = selectedType ? 75 : 55;
       const context = prompt.toLowerCase().includes('player') || prompt.toLowerCase().includes('score') ? 80 : 60;
-      const result = 70;
-      const overall = Math.round((clarity + creativity + context + result) / 4);
+      const score = 70;
+      const overall = Math.round((clarity + creativity + context + score) / 4);
 
       setPromptScore({
-        clarity,
-        creativity,
-        context,
-        result,
-        overall,
-        feedback: overall >= 70
-          ? 'Awesome game prompt! You described the gameplay well.'
-          : 'Try adding details like scoring, difficulty, or character abilities!',
-        suggestions: [
-          'Describe what the player controls',
-          'Mention how to win or score points',
-          'Add details about obstacles or enemies',
-        ],
+        clarity, creativity, context, result: score, overall,
+        feedback: overall >= 70 ? 'Awesome game prompt! You described the gameplay well.' : 'Try adding details like scoring, difficulty, or character abilities!',
+        suggestions: ['Describe what the player controls', 'Mention how to win or score points', 'Add details about obstacles or enemies'],
       });
 
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
       Animated.spring(bounceAnim, { toValue: 1, friction: 4, tension: 50, useNativeDriver: true }).start();
-    }, 3000);
+
+      const xpAmount = 45 + Math.round(overall / 2);
+      const { leveledUp, newLevel } = await addXp(xpAmount);
+      if (leveledUp) Alert.alert('Level Up!', `You reached level ${newLevel}!`);
+      else Alert.alert('Game Created!', `You earned ${xpAmount} XP!`);
+    } catch {
+      Alert.alert('Error', 'Could not create game. Please try again.');
+    } finally {
+      setIsCreating(false);
+    }
   };
 
-  const applyMod = (mod: string) => {
-    if (appliedMods.includes(mod)) return;
+  const applyMod = async (mod: string) => {
+    if (appliedMods.includes(mod) || !gameHtml) return;
     setIsCreating(true);
-    setTimeout(() => {
+    try {
+      const result = await api.aiGame({ modification: mod, previousCode: gameHtml });
+      setGameHtml(result.html);
       setAppliedMods(prev => [...prev, mod]);
+      await addXp(15);
+    } catch {
+      Alert.alert('Error', 'Could not apply modification.');
+    } finally {
       setIsCreating(false);
-    }, 1500);
+    }
   };
 
   const handleSave = () => {

@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
+import { api } from '../../services/api';
+import { useGame } from '../../context/GameContext';
 
 const TRACK_COLOR = COLORS.musicMaker;
 
@@ -39,11 +41,14 @@ const ITERATION_OPTIONS = [
 ];
 
 export default function MusicMakerScreen() {
+  const { addXp } = useGame();
   const [prompt, setPrompt] = useState('');
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [selectedInstruments, setSelectedInstruments] = useState<string[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [musicCreated, setMusicCreated] = useState(false);
+  const [musicDescription, setMusicDescription] = useState('');
+  const [lyricsSnippet, setLyricsSnippet] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [playProgress, setPlayProgress] = useState(0);
   const [promptScore, setPromptScore] = useState<PromptScore | null>(null);
@@ -104,7 +109,7 @@ export default function MusicMakerScreen() {
     );
   };
 
-  const simulateCreation = () => {
+  const simulateCreation = async () => {
     if (!prompt.trim()) {
       Alert.alert('Oops!', 'Describe the song you want to create!');
       return;
@@ -117,42 +122,54 @@ export default function MusicMakerScreen() {
     setIsPlaying(false);
     fadeAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsCreating(false);
+    try {
+      const result = await api.aiMusic({
+        prompt,
+        mood: selectedMood ?? undefined,
+        instruments: selectedInstruments.length ? selectedInstruments : undefined,
+      });
+      setMusicDescription(result.description);
+      setLyricsSnippet(result.lyricsSnippet ?? '');
       setMusicCreated(true);
 
       const clarity = Math.min(100, 40 + prompt.length * 2);
       const creativity = selectedMood ? 75 : 55;
       const context = Math.min(100, 50 + selectedInstruments.length * 10);
-      const result = 70;
-      const overall = Math.round((clarity + creativity + context + result) / 4);
+      const score = 70;
+      const overall = Math.round((clarity + creativity + context + score) / 4);
 
       setPromptScore({
-        clarity,
-        creativity,
-        context,
-        result,
-        overall,
-        feedback: overall >= 70
-          ? 'Great musical prompt! Your description helped create a unique tune.'
-          : 'Try selecting instruments and a mood for better results!',
-        suggestions: [
-          'Describe the tempo (fast, slow, medium)',
-          'Mention a music genre you like',
-          'Add details about the feeling you want',
-        ],
+        clarity, creativity, context, result: score, overall,
+        feedback: overall >= 70 ? 'Great musical prompt! Your description helped create a unique tune.' : 'Try selecting instruments and a mood for better results!',
+        suggestions: ['Describe the tempo (fast, slow, medium)', 'Mention a music genre you like', 'Add details about the feeling you want'],
       });
 
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
-    }, 3000);
+
+      const xpAmount = 40 + Math.round(overall / 2);
+      const { leveledUp, newLevel } = await addXp(xpAmount);
+      if (leveledUp) Alert.alert('Level Up!', `You reached level ${newLevel}!`);
+      else Alert.alert('Song Created!', `You earned ${xpAmount} XP!`);
+    } catch {
+      Alert.alert('Error', 'Could not create song. Please try again.');
+    } finally {
+      setIsCreating(false);
+    }
   };
 
-  const handleIteration = (mod: string) => {
+  const handleIteration = async (mod: string) => {
     setIsCreating(true);
-    setTimeout(() => {
+    try {
+      const result = await api.aiMusic({ prompt: `${prompt}. Modification: ${mod}`, mood: selectedMood ?? undefined, instruments: selectedInstruments.length ? selectedInstruments : undefined });
+      setMusicDescription(result.description);
+      setLyricsSnippet(result.lyricsSnippet ?? '');
+      await addXp(15);
+      Alert.alert('Updated!', `Applied: ${mod} +15 XP`);
+    } catch {
+      Alert.alert('Error', 'Could not apply modification.');
+    } finally {
       setIsCreating(false);
-      Alert.alert('Updated!', `Applied: ${mod}`);
-    }, 1500);
+    }
   };
 
   const handleSave = () => {
@@ -320,6 +337,12 @@ export default function MusicMakerScreen() {
             <Text style={styles.playerMeta}>
               {selectedMood || 'Custom'} | {selectedInstruments.join(', ') || 'Auto-selected'}
             </Text>
+            {!!musicDescription && (
+              <Text style={{ marginTop: 8, fontSize: 13, color: COLORS.textLight, textAlign: 'center' }}>{musicDescription}</Text>
+            )}
+            {!!lyricsSnippet && (
+              <Text style={{ marginTop: 6, fontSize: 13, fontStyle: 'italic', color: COLORS.text, textAlign: 'center' }}>"{lyricsSnippet}"</Text>
+            )}
           </View>
 
           {/* Waveform Visualization */}

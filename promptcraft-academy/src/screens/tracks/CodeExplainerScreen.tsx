@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../../constants/theme';
 import type { PromptScore } from '../../types';
+import { api } from '../../services/api';
+import { useGame } from '../../context/GameContext';
 
 const TRACK_COLOR = COLORS.codeExplainer;
 
@@ -67,6 +69,7 @@ const SIMULATED_MODIFIED_CODE = `function greetUser(name) {
 greetUser("Alex");`;
 
 export default function CodeExplainerScreen() {
+  const { addXp } = useGame();
   const [currentCode, setCurrentCode] = useState(SAMPLE_CODE);
   const [explanation, setExplanation] = useState('');
   const [isExplaining, setIsExplaining] = useState(false);
@@ -80,35 +83,31 @@ export default function CodeExplainerScreen() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
 
-  const handleExplain = () => {
+  const handleExplain = async () => {
     setIsExplaining(true);
     setExplanation('');
     setPromptScore(null);
     fadeAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsExplaining(false);
-      setExplanation(SIMULATED_EXPLANATION);
-
+    try {
+      const result = await api.aiExplain({ code: currentCode });
+      setExplanation(result.explanation);
       setPromptScore({
-        clarity: 85,
-        creativity: 70,
-        context: 80,
-        result: 90,
-        overall: 81,
+        clarity: 85, creativity: 70, context: 80, result: 90, overall: 81,
         feedback: 'The code was explained clearly! Understanding code is a great skill.',
-        suggestions: [
-          'Try asking about specific lines',
-          'Ask "what would happen if..." questions',
-          'Try modifying the code with English words',
-        ],
+        suggestions: ['Try asking about specific lines', 'Ask "what would happen if..." questions', 'Try modifying the code with English words'],
       });
-
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
-    }, 2500);
+      const { leveledUp, newLevel } = await addXp(35);
+      if (leveledUp) Alert.alert('Level Up!', `You reached level ${newLevel}!`);
+    } catch {
+      Alert.alert('Error', 'Could not explain code. Please try again.');
+    } finally {
+      setIsExplaining(false);
+    }
   };
 
-  const handleAskQuestion = () => {
+  const handleAskQuestion = async () => {
     if (!question.trim()) {
       Alert.alert('Oops!', 'Type a question about the code!');
       return;
@@ -116,40 +115,27 @@ export default function CodeExplainerScreen() {
     setIsExplaining(true);
     setQuestionAnswer('');
 
-    setTimeout(() => {
-      setIsExplaining(false);
-      setQuestionAnswer(
-        `Great question! "${question}"\n\n` +
-        'The function takes whatever name you give it and creates a personalized greeting. ' +
-        'If you change "Alex" to your own name, it will greet YOU instead! ' +
-        'The toUpperCase() part is like pressing CAPS LOCK on your keyboard — ' +
-        'it makes all the letters big and bold. Try thinking of it like a name tag maker! 🏷️',
-      );
+    try {
+      const result = await api.aiExplain({ code: currentCode, question });
+      setQuestionAnswer(result.explanation);
       setQuestion('');
-
       const clarity = Math.min(100, 40 + question.length * 3);
       const overall = Math.round((clarity + 70 + 75 + 80) / 4);
       setPromptScore({
-        clarity,
-        creativity: 70,
-        context: 75,
-        result: 80,
-        overall,
-        feedback: clarity >= 70
-          ? 'Great question! Being curious about code helps you learn faster.'
-          : 'Try asking more specific questions about what the code does!',
-        suggestions: [
-          'Ask what a specific word or symbol means',
-          'Ask what happens if you change a value',
-          'Ask why the code is written a certain way',
-        ],
+        clarity, creativity: 70, context: 75, result: 80, overall,
+        feedback: clarity >= 70 ? 'Great question! Being curious about code helps you learn faster.' : 'Try asking more specific questions about what the code does!',
+        suggestions: ['Ask what a specific word or symbol means', 'Ask what happens if you change a value', 'Ask why the code is written a certain way'],
       });
-
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
-    }, 2000);
+      await addXp(25);
+    } catch {
+      Alert.alert('Error', 'Could not answer question. Please try again.');
+    } finally {
+      setIsExplaining(false);
+    }
   };
 
-  const handleModify = () => {
+  const handleModify = async () => {
     if (!modifyPrompt.trim()) {
       Alert.alert('Oops!', 'Describe what you want to change in English!');
       return;
@@ -158,30 +144,28 @@ export default function CodeExplainerScreen() {
     setModifiedCode('');
     slideAnim.setValue(0);
 
-    setTimeout(() => {
-      setIsExplaining(false);
-      setModifiedCode(SIMULATED_MODIFIED_CODE);
+    try {
+      const result = await api.aiModifyCode({ code: currentCode, instruction: modifyPrompt });
+      setModifiedCode(result.modifiedCode);
       setModifyPrompt('');
-
       const clarity = Math.min(100, 40 + modifyPrompt.length * 3);
       const overall = Math.round((clarity + 75 + 80 + 72) / 4);
       setPromptScore({
-        clarity,
-        creativity: 75,
-        context: 80,
-        result: 72,
-        overall,
+        clarity, creativity: 75, context: 80, result: 72, overall,
         feedback: 'You modified code using plain English — that is prompt engineering!',
-        suggestions: [
-          'Be specific about what part to change',
-          'Describe the end result you want',
-          'Mention both what to remove and what to add',
-        ],
+        suggestions: ['Be specific about what part to change', 'Describe the end result you want', 'Mention both what to remove and what to add'],
       });
-
       Animated.timing(fadeAnim, { toValue: 1, duration: 800, useNativeDriver: true }).start();
       Animated.timing(slideAnim, { toValue: 1, duration: 600, useNativeDriver: true }).start();
-    }, 2500);
+      const xpAmount = 30 + Math.round(overall / 3);
+      const { leveledUp, newLevel } = await addXp(xpAmount);
+      if (leveledUp) Alert.alert('Level Up!', `You reached level ${newLevel}!`);
+      else Alert.alert('Code Modified!', `You earned ${xpAmount} XP!`);
+    } catch {
+      Alert.alert('Error', 'Could not modify code. Please try again.');
+    } finally {
+      setIsExplaining(false);
+    }
   };
 
   const handleSave = () => {

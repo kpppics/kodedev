@@ -90,6 +90,26 @@ class ApiService {
     return this.request('POST', '/ai/webpage', body);
   }
 
+  async aiGame(body: { prompt?: string; gameType?: string; modification?: string; previousCode?: string }): Promise<{ html: string; gameType: string; description: string }> {
+    return this.request('POST', '/ai/game', body);
+  }
+
+  async aiArt(body: { prompt: string; style?: string; mood?: string; colors?: string[] }): Promise<{ imagePrompt: string; description: string; styleApplied: string }> {
+    return this.request('POST', '/ai/art', body);
+  }
+
+  async aiMusic(body: { prompt: string; mood?: string; instruments?: string[]; tempo?: string }): Promise<{ description: string; tempo: string; mood: string; instrumentation: string[]; lyricsSnippet?: string }> {
+    return this.request('POST', '/ai/music', body);
+  }
+
+  async aiExplain(body: { code: string; question?: string }): Promise<{ explanation: string; concepts: string[]; analogies: string[] }> {
+    return this.request('POST', '/ai/explain', body);
+  }
+
+  async aiModifyCode(body: { code: string; instruction: string }): Promise<{ modifiedCode: string; explanation: string; changesDescription: string }> {
+    return this.request('POST', '/ai/modify-code', body);
+  }
+
   // User Profile
   async getProfile(userId: string): Promise<ChildProfile | ParentProfile> {
     return this.request('GET', `/users/${userId}`);
