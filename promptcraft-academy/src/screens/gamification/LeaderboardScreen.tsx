@@ -56,7 +56,7 @@ const PodiumSpot: React.FC<{ entry: LeaderboardEntry; position: 1 | 2 | 3 }> = (
   const c = config[position];
 
   return (
-    <View style={[styles.podiumSpot, { order: position === 1 ? 0 : position === 2 ? -1 : 1 }]}>
+    <View style={[styles.podiumSpot, position === 1 && styles.podiumSpotCenter]}>
       {/* Crown for 1st */}
       {position === 1 && (
         <Ionicons name="trophy" size={28} color={COLORS.xpGold} style={styles.crown} />
@@ -242,6 +242,10 @@ const styles = StyleSheet.create({
   podiumSpot: {
     alignItems: 'center',
     flex: 1,
+    justifyContent: 'flex-end',
+  },
+  podiumSpotCenter: {
+    marginTop: -24,  // 1st place raised above 2nd and 3rd
   },
   crown: {
     marginBottom: SPACING.xs,

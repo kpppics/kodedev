@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
   scoreValue: {
     fontSize: FONTS.sizes.xxl,
     fontWeight: FONTS.weights.bold,
-    color: '#D4A800',
+    color: COLORS.xpGold,
   },
   scoreLabel: {
     fontSize: FONTS.sizes.xs,
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#D4A800',
+    borderColor: COLORS.xpGold,
   },
   overallValue: {
     fontSize: FONTS.sizes.xl,

@@ -26,12 +26,14 @@ export const COLORS = {
   codeExplainer:  '#F7B731',  // Bright amber
 
   // ── Gamification ──────────────────────────────────────
-  xpGold:  '#FFD60A',
-  streak:  '#FF6348',
-  levelUp: '#00E5FF',
-  success: '#00C897',
-  error:   '#FF3860',
-  warning: '#FFAA00',
+  xpGold:   '#FFD60A',
+  xpSilver: '#C0C8D8',
+  xpBronze: '#CD7F32',
+  streak:   '#FF6348',
+  levelUp:  '#00E5FF',
+  success:  '#00C897',
+  error:    '#FF3860',
+  warning:  '#FFAA00',
 
   // ── UI Surfaces ───────────────────────────────────────
   background:    '#FDF4FF',   // Warm near-white with pink tint

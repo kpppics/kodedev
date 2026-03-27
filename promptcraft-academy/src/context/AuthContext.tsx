@@ -179,6 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     api.setAuthToken(childResult.token);
     const childUser = {
       ...childResult.user,
+      age: params.age,
       avatar: params.avatar ?? 'robot',
       level: 1, xp: 0, totalXp: 0, streak: 0, badges: [],
       promptsCreated: 0, projectsCreated: 0,

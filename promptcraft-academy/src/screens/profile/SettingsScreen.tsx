@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -100,20 +101,20 @@ const SettingsScreen: React.FC = () => {
           icon="person-circle"
           label="Edit Profile"
           subtitle="Change name, avatar, and username"
-          onPress={() => {}}
+          onPress={() => Alert.alert('Edit Profile 🎨', 'Display name changes coming soon! For now, your username is set when you create your account.', [{ text: 'Got it!' }])}
         />
         <View style={styles.divider} />
         <SettingsRow
           icon="key"
           label="Change Password"
-          onPress={() => {}}
+          onPress={() => navigation.navigate('ForgotPassword')}
         />
         <View style={styles.divider} />
         <SettingsRow
           icon="mail"
           label="Email & Account"
           subtitle="Linked to parent account"
-          onPress={() => {}}
+          onPress={() => Alert.alert('Email & Account 📧', 'Your account is managed by a parent. Ask your parent to update account details.', [{ text: 'OK' }])}
         />
       </View>
 
@@ -278,27 +279,27 @@ const SettingsScreen: React.FC = () => {
           iconColor={COLORS.webBuilder}
           label="Help Center"
           subtitle="FAQs, tutorials, and support"
-          onPress={() => {}}
+          onPress={() => Alert.alert('Help Center 🤖', 'Need help?\n\n• Talk to Cosmo — your AI buddy can answer most questions!\n• Email us: hello@gocosmo.ai\n• Visit: gocosmo.ai/help', [{ text: 'Got it!' }])}
         />
         <View style={styles.divider} />
         <SettingsRow
           icon="document-text"
           label="Terms of Service"
-          onPress={() => {}}
+          onPress={() => Alert.alert('Terms of Service 📄', 'By using Go Cosmo, you agree to our Terms of Service. This app is designed for children aged 6-16 with parental consent.\n\nFull terms: gocosmo.ai/terms', [{ text: 'OK' }])}
         />
         <View style={styles.divider} />
         <SettingsRow
           icon="shield-checkmark"
           iconColor={COLORS.success}
           label="Privacy Policy"
-          onPress={() => {}}
+          onPress={() => Alert.alert('Privacy Policy 🔒', 'Go Cosmo is COPPA compliant. We never sell your data, never show ads, and all AI interactions are strictly kid-safe.\n\nFull policy: gocosmo.ai/privacy', [{ text: 'OK' }])}
         />
         <View style={styles.divider} />
         <SettingsRow
           icon="information-circle"
-          label="About Promptcraft Academy"
+          label="About Go Cosmo"
           subtitle="Version 1.0.0"
-          onPress={() => {}}
+          onPress={() => Alert.alert('Go Cosmo 🚀', 'Go Cosmo v1.0.0\nThe AI learning adventure for kids aged 6-16!\n\nMade with ❤️ for curious young minds.', [{ text: 'Awesome!' }])}
         />
       </View>
 

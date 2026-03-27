@@ -12,6 +12,7 @@ import {
   Animated,
   Platform,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -235,10 +236,10 @@ export default function ProfileScreen() {
         <Text style={s.sectionTitle}>⚙️ Account</Text>
         <View style={s.menuCard}>
           {[
-            { icon: 'person-outline', label: 'Edit Profile', action: () => {} },
+            { icon: 'person-outline', label: 'Edit Profile', action: () => navigation.navigate('Settings') },
             { icon: 'shield-checkmark-outline', label: 'Parent Dashboard', action: () => navigation.navigate('ParentDashboard') },
             { icon: 'rocket-outline', label: 'Upgrade to Premium', action: () => navigation.navigate('Subscription') },
-            { icon: 'help-circle-outline', label: 'Help & Support', action: () => {} },
+            { icon: 'help-circle-outline', label: 'Help & Support', action: () => Alert.alert('Help & Support 🤖', 'Need help? Ask Cosmo anything in the chat! For account issues, email us at hello@gocosmo.ai', [{ text: 'Got it!' }]) },
           ].map((item, i, arr) => (
             <React.Fragment key={item.label}>
               <TouchableOpacity style={s.menuRow} onPress={item.action} activeOpacity={0.7}>

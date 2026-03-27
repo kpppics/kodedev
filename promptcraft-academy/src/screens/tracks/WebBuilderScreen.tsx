@@ -542,7 +542,6 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   previewContent: {
-    background: 'linear-gradient(135deg, #667eea, #764ba2)',
     backgroundColor: '#764ba2',
     padding: SPACING.xxl,
     alignItems: 'center',
