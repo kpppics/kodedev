@@ -111,7 +111,6 @@ export function buildGameMessages(req: GameRequest): {
       `Please update it: ${req.modification}\n\n` +
       `Return ONLY the updated complete HTML file. No explanation, no JSON, just the raw HTML.`;
   } else {
-    const typeHint = req.gameType ? ` Make it a ${req.gameType} style game.` : '';
     const themeDesc = req.prompt ?? 'a fun adventure';
     const typeHintStr = req.gameType ? ` The game style is: ${req.gameType}.` : '';
     userContent =
