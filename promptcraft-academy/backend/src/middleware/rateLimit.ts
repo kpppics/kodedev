@@ -5,19 +5,24 @@
 // AI:       10 req / min  (expensive API calls)
 // Auth:      5 req / min  (brute-force protection)
 
-import rateLimit, { RateLimitRequestHandler } from 'express-rate-limit';
-import { Request, Response } from 'express';
+import rateLimit, { Options } from 'express-rate-limit';
+import { Request, Response, NextFunction } from 'express';
 
+// express-rate-limit's RateLimitExceededEventHandler signature:
+// (request, response, next, optionsUsed) => void
 function rateLimitHandler(
   _req: Request,
   res: Response,
-  _next: Parameters<RateLimitRequestHandler>[2],
-  options: { windowMs: number; limit: number }
+  _next: NextFunction,
+  optionsUsed: Options
 ): void {
-  const windowSecs = Math.round(options.windowMs / 1000);
+  const windowMs = typeof optionsUsed.windowMs === 'number' ? optionsUsed.windowMs : 60_000;
+  const limit = typeof optionsUsed.limit === 'number' ? optionsUsed.limit : 60;
+  const windowSecs = Math.round(windowMs / 1000);
+
   res.status(429).json({
     error: 'Too many requests',
-    message: `Rate limit exceeded. Max ${options.limit} requests per ${windowSecs}s window.`,
+    message: `Rate limit exceeded. Max ${limit} requests per ${windowSecs}s window.`,
     retryAfter: windowSecs,
   });
 }

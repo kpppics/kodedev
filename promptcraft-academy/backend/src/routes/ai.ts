@@ -165,7 +165,11 @@ router.post('/webpage', async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const input: WebpageRequest = parsed.data;
+  const input: WebpageRequest = {
+    prompt: parsed.data.prompt ?? '',
+    previousHtml: parsed.data.previousHtml,
+    modification: parsed.data.modification,
+  };
   const checkText = input.modification ?? input.prompt ?? '';
   if (!(await safetyGuard(res, checkText))) return;
 
@@ -212,7 +216,12 @@ router.post('/game', async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const input: GameRequest = parsed.data;
+  const input: GameRequest = {
+    prompt: parsed.data.prompt ?? '',
+    gameType: parsed.data.gameType,
+    modification: parsed.data.modification,
+    previousCode: parsed.data.previousCode,
+  };
   const checkText = input.modification ?? input.prompt ?? '';
   if (!(await safetyGuard(res, checkText))) return;
 

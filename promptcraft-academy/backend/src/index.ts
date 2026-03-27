@@ -1,72 +1,162 @@
 // ==========================================
-// PROMPTCRAFT ACADEMY — Backend Server
+// PROMPTCRAFT ACADEMY — Express Backend
 // ==========================================
+// Startup order:
+//   1. Load env vars
+//   2. Apply security middleware (helmet, cors)
+//   3. Stripe webhook route (needs raw body — BEFORE json parser)
+//   4. Body parsing
+//   5. General rate limiter
+//   6. Route handlers
+//   7. 404 + global error handler
 
-import express from 'express';
+import 'dotenv/config';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import 'dotenv/config';
 
-import { generalLimiter } from './middleware/rateLimit';
-import { authRoutes } from './routes/auth';
-import { projectRoutes } from './routes/projects';
-import { gamificationRoutes } from './routes/gamification';
-import { parentRoutes } from './routes/parent';
-import { subscriptionRoutes } from './routes/subscription';
+import { generalRateLimit } from './middleware/rateLimit';
 
-// Conditionally import ai routes (may be created by another process)
-let aiRoutes: express.Router | null = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  aiRoutes = require('./routes/ai').aiRoutes;
-} catch {
-  console.warn('[Server] AI routes not loaded — /api/ai endpoints unavailable');
-}
+import authRouter from './routes/auth';
+import projectsRouter from './routes/projects';
+import gamificationRouter from './routes/gamification';
+import parentRouter from './routes/parent';
+import subscriptionRouter, {
+  stripeWebhookHandler,
+  publicSubscriptionRouter,
+} from './routes/subscription';
+import aiRouter from './routes/ai';
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '3001', 10);
+const PORT = parseInt(process.env['PORT'] ?? '3001', 10);
 
-// ---- Security ----
+// ==========================================
+// Security headers
+// ==========================================
 app.use(helmet());
+
+// ==========================================
+// CORS
+// ==========================================
+const allowedOrigins = process.env['FRONTEND_URL']
+  ? process.env['FRONTEND_URL'].split(',').map(o => o.trim())
+  : ['http://localhost:3000', 'http://localhost:19006'];
+
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin '${origin}' not allowed`));
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// ---- Body parsing ----
+// ==========================================
+// Stripe webhook — MUST be before json()
+// Raw body required for signature verification
+// ==========================================
+app.use(
+  express.raw({ type: 'application/json', limit: '1mb' }),
+  stripeWebhookHandler
+);
+
+// ==========================================
+// Body parsing (after webhook route)
+// ==========================================
 app.use(express.json({ limit: '512kb' }));
+app.use(express.urlencoded({ extended: false, limit: '512kb' }));
 
-// ---- Rate limiting ----
-app.use(generalLimiter);
+// ==========================================
+// Rate limiting (general — AI/auth have their own)
+// ==========================================
+app.use(generalRateLimit);
 
-// ---- Health check ----
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+// ==========================================
+// Health check (no auth required)
+// ==========================================
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    version: process.env['npm_package_version'] ?? '1.0.0',
+    ai: {
+      primaryProvider: process.env['AI_PRIMARY_PROVIDER'] ?? 'claude',
+      strategy: process.env['AI_STRATEGY'] ?? 'fallback',
+      claudeConfigured: Boolean(process.env['CLAUDE_API_KEY']),
+      groqConfigured: Boolean(process.env['GROQ_API_KEY']),
+    },
+  });
 });
 
-// ---- Routes ----
-app.use('/api/auth',         authRoutes);
-app.use('/api/projects',     projectRoutes);
-app.use('/api/gamification', gamificationRoutes);
-app.use('/api/parent',       parentRoutes);
-app.use('/api/subscription', subscriptionRoutes);
-if (aiRoutes) app.use('/api/ai', aiRoutes);
+// ==========================================
+// Public endpoints (no auth)
+// ==========================================
+app.use(publicSubscriptionRouter);
 
-// ---- 404 handler ----
-app.use((_req, res) => {
+// ==========================================
+// API routes
+// ==========================================
+app.use('/api/auth',          authRouter);
+app.use('/api/projects',      projectsRouter);
+app.use('/api/gamification',  gamificationRouter);
+app.use('/api/parent',        parentRouter);
+app.use('/api/subscription',  subscriptionRouter);
+app.use('/api/ai',            aiRouter);
+
+// ==========================================
+// 404 — unmatched routes
+// ==========================================
+app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-// ---- Global error handler ----
-app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error('[Server Error]', err);
-  res.status(500).json({ error: 'Internal server error' });
+// ==========================================
+// Global error handler
+// ==========================================
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  // CORS errors
+  if (err.message.startsWith('CORS:')) {
+    res.status(403).json({ error: err.message });
+    return;
+  }
+
+  console.error('[Server Error]', err.stack ?? err.message);
+  res.status(500).json({
+    error: 'Internal server error',
+    // Only expose error message in development
+    ...(process.env['NODE_ENV'] === 'development' && { message: err.message }),
+  });
 });
 
+// ==========================================
+// Start server
+// ==========================================
 app.listen(PORT, () => {
-  console.log(`🚀 PromptCraft API running on port ${PORT}`);
-  console.log(`   AI providers: ${process.env.CLAUDE_API_KEY ? 'Claude ✓' : 'Claude ✗'} | ${process.env.GROQ_API_KEY ? 'Groq ✓' : 'Groq ✗'}`);
-  console.log(`   Strategy: ${process.env.AI_STRATEGY || 'fallback'}`);
+  console.log(`PromptCraft Academy API running on port ${PORT}`);
+  console.log(`  Environment : ${process.env['NODE_ENV'] ?? 'development'}`);
+  console.log(`  AI strategy : ${process.env['AI_STRATEGY'] ?? 'fallback'}`);
+  console.log(`  Claude      : ${process.env['CLAUDE_API_KEY'] ? 'configured' : 'NOT configured'}`);
+  console.log(`  Groq        : ${process.env['GROQ_API_KEY'] ? 'configured' : 'NOT configured'}`);
+  console.log(`  Child safe  : ${process.env['CHILD_SAFE_MODE'] !== 'false' ? 'enabled' : 'DISABLED'}`);
+  console.log(`  Stripe      : ${process.env['STRIPE_SECRET_KEY'] ? 'configured' : 'not configured (mock mode)'}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('[Server] SIGTERM received — shutting down gracefully');
+  const { closeDb } = await import('./db/client');
+  await closeDb();
+  process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+  console.log('[Server] SIGINT received — shutting down gracefully');
+  const { closeDb } = await import('./db/client');
+  await closeDb();
+  process.exit(0);
 });
 
 export default app;
