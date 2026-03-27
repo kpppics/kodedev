@@ -11,7 +11,7 @@ import React, {
   useMemo,
   type ReactNode,
 } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage as AsyncStorage } from '../utils/storage';
 import type { Badge, DailyQuest, BadgeCategory } from '../types';
 
 // ---- Storage Keys ----
