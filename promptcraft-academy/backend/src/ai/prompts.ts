@@ -112,17 +112,28 @@ export function buildGameMessages(req: GameRequest): {
       `Return ONLY the updated complete HTML file. No explanation, no JSON, just the raw HTML.`;
   } else {
     const typeHint = req.gameType ? ` Make it a ${req.gameType} style game.` : '';
+    const themeDesc = req.prompt ?? 'a fun adventure';
+    const typeHintStr = req.gameType ? ` The game style is: ${req.gameType}.` : '';
     userContent =
-      `Create a fully working, fun browser game inspired by: "${req.prompt ?? ''}".${typeHint}\n\n` +
-      `STRICT requirements:\n` +
-      `- Single self-contained HTML file with ALL CSS and JavaScript inline\n` +
-      `- Use HTML5 Canvas for rendering — NOT DOM elements floating around\n` +
-      `- Must have: a game loop (requestAnimationFrame), collision detection, score counter, and game over screen with restart\n` +
-      `- Controls: spacebar or tap/click to interact\n` +
-      `- Colourful, child-friendly graphics drawn on canvas\n` +
-      `- The canvas must fill the available width and be 320px tall\n` +
-      `- NO external libraries, NO CDN links — pure vanilla JS only\n\n` +
-      `Return ONLY the complete HTML file starting with <!DOCTYPE html>. No explanation, no markdown, no code fences.`;
+      `Create a complete, fully working HTML5 canvas game. Theme: "${themeDesc}".${typeHintStr}\n\n` +
+      `VISUAL THEME (CRITICAL — everything must match the theme):\n` +
+      `- Player character: draw something that matches the theme (e.g. if dragon theme, draw a dragon with wings, body, tail using canvas shapes/arcs)\n` +
+      `- Obstacles: themed to match (e.g. castle towers, stone pillars, fire walls — not plain rectangles)\n` +
+      `- Background: themed sky/environment with scrolling parallax layers\n` +
+      `- Colours, fonts, and UI all match the theme\n\n` +
+      `GAMEPLAY (CRITICAL — must feel like a real game):\n` +
+      `- Smooth 60fps game loop using requestAnimationFrame\n` +
+      `- The world SCROLLS — obstacles move from right to left continuously\n` +
+      `- Player has gravity and jumps/flaps on spacebar or tap/click\n` +
+      `- Obstacles spawn at random heights with a gap the player flies through\n` +
+      `- Speed increases gradually as score goes up\n` +
+      `- Collision detection triggers game over screen with final score and restart button\n` +
+      `- Score shown in top corner throughout\n\n` +
+      `TECHNICAL (CRITICAL):\n` +
+      `- One self-contained HTML file, inline CSS and JS, NO external libraries\n` +
+      `- Canvas width: 100vw, height: 320px\n` +
+      `- Works on both desktop (spacebar) and mobile (tap)\n\n` +
+      `Return ONLY the raw HTML starting with <!DOCTYPE html>. No markdown, no code fences, no explanation.`;
   }
 
   return {
