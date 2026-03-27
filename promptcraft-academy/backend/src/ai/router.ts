@@ -190,7 +190,8 @@ export class AIRouter {
 function buildRouter(): AIRouter {
   const claudeKey = process.env['CLAUDE_API_KEY'] ?? '';
   const groqKey = process.env['GROQ_API_KEY'] ?? '';
-  const primaryEnv = (process.env['AI_PRIMARY_PROVIDER'] ?? 'claude').toLowerCase();
+  // Groq is the default primary (cheaper); Claude is the quality fallback
+  const primaryEnv = (process.env['AI_PRIMARY_PROVIDER'] ?? 'groq').toLowerCase();
   const strategyEnv = (process.env['AI_STRATEGY'] ?? 'fallback').toLowerCase();
 
   const providers: AIProvider[] = [];

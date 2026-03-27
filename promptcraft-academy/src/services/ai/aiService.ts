@@ -70,15 +70,15 @@ function buildRouter(): AIRouter {
     console.warn(
       '[AIService] No API keys set. Add EXPO_PUBLIC_CLAUDE_API_KEY or EXPO_PUBLIC_GROQ_API_KEY to .env'
     );
-    providers.push(new ClaudeProvider({ apiKey: 'no-key-set' }));
+    providers.push(new GroqProvider({ apiKey: 'no-key-set' }));
   }
 
-  // Determine primary provider
+  // Groq is primary (cheaper/faster); Claude is the fallback for quality
   const hasGroq = Boolean(groqKey);
   const hasClaude = Boolean(claudeKey);
 
-  const primary: AIProviderName = hasClaude ? 'claude' : 'groq';
-  const secondary: AIProviderName | undefined = hasGroq && hasClaude ? 'groq' : undefined;
+  const primary: AIProviderName = hasGroq ? 'groq' : 'claude';
+  const secondary: AIProviderName | undefined = hasGroq && hasClaude ? 'claude' : undefined;
 
   return new AIRouter(providers, {
     strategy: 'fallback',  // can be changed at runtime via setStrategy()
