@@ -237,15 +237,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
           storedStreak,
           storedLastActive,
           storedQuests,
-        ] = await AsyncStorage.multiGet([
-          STORAGE_KEYS.XP,
-          STORAGE_KEYS.TOTAL_XP,
-          STORAGE_KEYS.LEVEL,
-          STORAGE_KEYS.BADGES,
-          STORAGE_KEYS.STREAK,
-          STORAGE_KEYS.LAST_ACTIVE,
-          STORAGE_KEYS.DAILY_QUESTS,
+        const [
+          storedXpVal,
+          storedTotalXpVal,
+          storedLevelVal,
+          storedBadgesVal,
+          storedStreakVal,
+          storedLastActiveVal,
+          storedQuestsVal,
+        ] = await Promise.all([
+          AsyncStorage.getItem(STORAGE_KEYS.XP),
+          AsyncStorage.getItem(STORAGE_KEYS.TOTAL_XP),
+          AsyncStorage.getItem(STORAGE_KEYS.LEVEL),
+          AsyncStorage.getItem(STORAGE_KEYS.BADGES),
+          AsyncStorage.getItem(STORAGE_KEYS.STREAK),
+          AsyncStorage.getItem(STORAGE_KEYS.LAST_ACTIVE),
+          AsyncStorage.getItem(STORAGE_KEYS.DAILY_QUESTS),
         ]);
+
+        // alias to match the rest of the function
+        const storedXp = [null, storedXpVal];
+        const storedTotalXp = [null, storedTotalXpVal];
+        const storedLevel = [null, storedLevelVal];
+        const storedBadges = [null, storedBadgesVal];
+        const storedStreak = [null, storedStreakVal];
+        const storedLastActive = [null, storedLastActiveVal];
+        const storedQuests = [null, storedQuestsVal];
 
         if (!mounted) return;
 
@@ -330,10 +347,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setTotalXp(currentTotalXp);
       setLevel(currentLevel);
 
-      await AsyncStorage.multiSet([
-        [STORAGE_KEYS.XP, String(currentXp)],
-        [STORAGE_KEYS.TOTAL_XP, String(currentTotalXp)],
-        [STORAGE_KEYS.LEVEL, String(currentLevel)],
+      await Promise.all([
+        AsyncStorage.setItem(STORAGE_KEYS.XP, String(currentXp)),
+        AsyncStorage.setItem(STORAGE_KEYS.TOTAL_XP, String(currentTotalXp)),
+        AsyncStorage.setItem(STORAGE_KEYS.LEVEL, String(currentLevel)),
       ]);
 
       return { leveledUp, newLevel: currentLevel };
@@ -425,9 +442,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
 
     setStreak(newStreak);
-    await AsyncStorage.multiSet([
-      [STORAGE_KEYS.STREAK, String(newStreak)],
-      [STORAGE_KEYS.LAST_ACTIVE, now.toISOString()],
+    await Promise.all([
+      AsyncStorage.setItem(STORAGE_KEYS.STREAK, String(newStreak)),
+      AsyncStorage.setItem(STORAGE_KEYS.LAST_ACTIVE, now.toISOString()),
     ]);
   }, [streak]);
 
@@ -440,14 +457,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setStreak(0);
     setDailyQuests(generateDailyQuests());
 
-    await AsyncStorage.multiRemove([
-      STORAGE_KEYS.XP,
-      STORAGE_KEYS.TOTAL_XP,
-      STORAGE_KEYS.LEVEL,
-      STORAGE_KEYS.BADGES,
-      STORAGE_KEYS.STREAK,
-      STORAGE_KEYS.LAST_ACTIVE,
-      STORAGE_KEYS.DAILY_QUESTS,
+    await Promise.all([
+      AsyncStorage.removeItem(STORAGE_KEYS.XP),
+      AsyncStorage.removeItem(STORAGE_KEYS.TOTAL_XP),
+      AsyncStorage.removeItem(STORAGE_KEYS.LEVEL),
+      AsyncStorage.removeItem(STORAGE_KEYS.BADGES),
+      AsyncStorage.removeItem(STORAGE_KEYS.STREAK),
+      AsyncStorage.removeItem(STORAGE_KEYS.LAST_ACTIVE),
+      AsyncStorage.removeItem(STORAGE_KEYS.DAILY_QUESTS),
     ]);
   }, []);
 

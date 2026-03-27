@@ -86,25 +86,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           storedConsent,
           storedSafeMode,
           storedOnboarded,
-        ] = await AsyncStorage.multiGet([
-          STORAGE_KEYS.USER,
-          STORAGE_KEYS.AUTH_TOKEN,
-          STORAGE_KEYS.PARENT_CONSENT,
-          STORAGE_KEYS.SAFE_MODE,
-          STORAGE_KEYS.HAS_ONBOARDED,
+        const [
+          storedUserVal,
+          storedTokenVal,
+          storedConsentVal,
+          storedSafeModeVal,
+          storedOnboardedVal,
+        ] = await Promise.all([
+          AsyncStorage.getItem(STORAGE_KEYS.USER),
+          AsyncStorage.getItem(STORAGE_KEYS.AUTH_TOKEN),
+          AsyncStorage.getItem(STORAGE_KEYS.PARENT_CONSENT),
+          AsyncStorage.getItem(STORAGE_KEYS.SAFE_MODE),
+          AsyncStorage.getItem(STORAGE_KEYS.HAS_ONBOARDED),
         ]);
 
         if (!mounted) return;
 
-        if (storedUser[1]) {
-          setUser(JSON.parse(storedUser[1]) as User);
-        }
-        if (storedToken[1]) {
-          setToken(storedToken[1]);
-        }
-        setParentConsentGiven(storedConsent[1] === 'true');
-        setSafeModeState(storedSafeMode[1] !== 'false'); // default true
-        setHasOnboarded(storedOnboarded[1] === 'true');
+        if (storedUserVal) setUser(JSON.parse(storedUserVal) as User);
+        if (storedTokenVal) setToken(storedTokenVal);
+        setParentConsentGiven(storedConsentVal === 'true');
+        setSafeModeState(storedSafeModeVal !== 'false');
+        setHasOnboarded(storedOnboardedVal === 'true');
       } catch (error) {
         console.error('[AuthContext] Failed to hydrate auth state:', error);
       } finally {
@@ -142,9 +144,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       const mockToken = `token_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
-      await AsyncStorage.multiSet([
-        [STORAGE_KEYS.USER, JSON.stringify(mockUser)],
-        [STORAGE_KEYS.AUTH_TOKEN, mockToken],
+      await Promise.all([
+        AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(mockUser)),
+        AsyncStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, mockToken),
       ]);
 
       setUser(mockUser);
@@ -177,9 +179,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       const newToken = `token_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
-      await AsyncStorage.multiSet([
-        [STORAGE_KEYS.USER, JSON.stringify(newUser)],
-        [STORAGE_KEYS.AUTH_TOKEN, newToken],
+      await Promise.all([
+        AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser)),
+        AsyncStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, newToken),
       ]);
 
       setUser(newUser);
@@ -193,9 +195,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // ---- Logout ----
   const logout = useCallback(async () => {
     try {
-      await AsyncStorage.multiRemove([
-        STORAGE_KEYS.USER,
-        STORAGE_KEYS.AUTH_TOKEN,
+      await Promise.all([
+        AsyncStorage.removeItem(STORAGE_KEYS.USER),
+        AsyncStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN),
       ]);
       setUser(null);
       setToken(null);
