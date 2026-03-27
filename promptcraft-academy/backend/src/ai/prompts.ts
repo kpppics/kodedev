@@ -109,13 +109,17 @@ export function buildGameMessages(req: GameRequest): {
     userContent =
       `Here is a game I made:\n\`\`\`html\n${req.previousCode}\n\`\`\`\n\n` +
       `Please update it: ${req.modification}\n\n` +
-      `Return JSON: {"html": "...", "gameType": "...", "description": "..."}`;
+      `Return ONLY the updated complete HTML file. No explanation, no JSON, just the raw HTML.`;
   } else {
     const typeHint = req.gameType ? ` Make it a ${req.gameType} style game.` : '';
     userContent =
-      `Create a simple browser game: "${req.prompt ?? ''}".${typeHint}\n\n` +
-      `The game must be a single self-contained HTML file.\n` +
-      `Return JSON: {"html": "...", "gameType": "...", "description": "..."}`;
+      `Create a fun playable browser game: "${req.prompt ?? ''}".${typeHint}\n\n` +
+      `Requirements:\n` +
+      `- Single self-contained HTML file with inline CSS and JavaScript\n` +
+      `- Must be playable with keyboard or mouse/touch\n` +
+      `- Include score display, simple gameplay loop, and win/lose condition\n` +
+      `- Make it colourful and fun for children\n\n` +
+      `Return ONLY the complete HTML file. No explanation, no JSON, just the raw HTML starting with <!DOCTYPE html>.`;
   }
 
   return {

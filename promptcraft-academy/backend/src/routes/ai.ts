@@ -237,14 +237,31 @@ router.post('/game', async (req: Request, res: Response): Promise<void> => {
     const outputCheck = await safetyGuardOutput(res, aiRes.content);
     if (!outputCheck.safe) return;
 
-    const data = parseJSON<{ html: string; gameType: string; description: string }>(
-      outputCheck.filtered,
-      { html: '<p>Game loading...</p>', gameType: 'unknown', description: outputCheck.filtered }
-    );
-    const score = await scorePrompt({ userPrompt: checkText, trackId: 'game-maker', aiResult: data.description });
+    const raw = outputCheck.filtered;
+    // Try JSON first, then fall back to extracting raw HTML from code blocks
+    let html = '';
+    let gameType = input.gameType ?? 'custom';
+    let description = '';
+    try {
+      const jsonData = parseJSON<{ html: string; gameType: string; description: string }>(raw, { html: '', gameType: '', description: '' });
+      if (jsonData.html) {
+        html = jsonData.html;
+        gameType = jsonData.gameType || gameType;
+        description = jsonData.description || '';
+      }
+    } catch { /* fall through */ }
+    if (!html) {
+      // Extract from ```html...``` or <!DOCTYPE/```
+      const htmlMatch = raw.match(/```html\s*([\s\S]*?)```/i) || raw.match(/(<!DOCTYPE[\s\S]*?<\/html>)/i) || raw.match(/```\s*(<![\s\S]*?)```/);
+      html = htmlMatch ? htmlMatch[1].trim() : raw.trim();
+    }
+    if (!description) description = `A ${gameType} game`;
+    const score = await scorePrompt({ userPrompt: checkText, trackId: 'game-maker', aiResult: description });
 
     res.json({
-      ...data,
+      html,
+      gameType,
+      description,
       score,
       meta: { provider: aiRes.provider, model: aiRes.model, durationMs: aiRes.durationMs },
     });
