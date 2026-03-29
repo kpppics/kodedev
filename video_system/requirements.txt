@@ -1,0 +1,18 @@
+# Video Generation System Dependencies
+
+# Telegram Bot
+python-telegram-bot==20.7
+httpx==0.24.1
+
+# AI/ML
+google-generativeai==0.7.2
+
+# Video Processing
+yt-dlp==2024.3.10
+
+# FFmpeg is required but installed separately on the system
+# System requirement: ffmpeg, ffprobe
+
+# Utilities
+requests==2.31.0
+urllib3==2.1.0
