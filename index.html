@@ -776,17 +776,45 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
   successEl.classList.remove('show');
   errorEl.classList.remove('show');
 
-  // Convert FormData to JSON
+  // Convert FormData to JSON - compatible with all browsers
   var formData = new FormData(formEl);
   var jsonData = {};
-  for (var pair of formData.entries()) {
-    if (pair[0] === 'pages[]') {
-      if (!jsonData.pages) jsonData.pages = [];
-      jsonData.pages.push(pair[1]);
+
+  try {
+    if (typeof formData.entries === 'function') {
+      // Modern browsers
+      var iter = formData.entries();
+      var item;
+      while (!(item = iter.next()).done) {
+        var pair = item.value;
+        if (pair[0] === 'pages[]') {
+          if (!jsonData.pages) jsonData.pages = [];
+          jsonData.pages.push(pair[1]);
+        } else {
+          jsonData[pair[0]] = pair[1];
+        }
+      }
     } else {
-      jsonData[pair[0]] = pair[1];
+      // Fallback - manually parse form inputs
+      var inputs = formEl.querySelectorAll('input[name], textarea[name], select[name]');
+      for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.type === 'checkbox' && !input.checked) continue;
+        if (input.type === 'radio' && !input.checked) continue;
+
+        if (input.name === 'pages[]') {
+          if (!jsonData.pages) jsonData.pages = [];
+          jsonData.pages.push(input.value);
+        } else {
+          jsonData[input.name] = input.value;
+        }
+      }
     }
+  } catch (e) {
+    console.error('FormData parsing error:', e);
   }
+
+  console.log('Sending to', endpoint, ':', jsonData);
 
   fetch(endpoint, {
     method: 'POST',
