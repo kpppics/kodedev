@@ -542,7 +542,7 @@
               <button id="sample-btn" type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
                 Get My Free Sample
               </button>
-              <div id="sample-success" class="form-msg success-white">Thanks! I'll send your free sample within 24 hours.</div>
+              <div id="sample-success" class="form-msg success-white">Your sample is being generated! Check your email in 2–3 minutes.</div>
               <div id="sample-error" class="form-msg error-white">Something went wrong. Please try again.</div>
             </div>
           </form>
@@ -766,7 +766,7 @@ setTimeout(typeWriter, 1400);
 // 2. Click "New Form" → set recipient email to karl@kodedev.co.uk
 // 3. Copy the form ID (e.g. xwkgvnzl)
 // 4. Replace YOUR_FORMSPREE_ID on the two lines below
-var SAMPLE_ENDPOINT  = 'https://formspree.io/f/xreozjpb';
+var SAMPLE_ENDPOINT  = 'https://api.kodedev.co.uk/api/sample';
 var CONTACT_ENDPOINT = 'https://formspree.io/f/xreozjpb';
 
 function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText) {
