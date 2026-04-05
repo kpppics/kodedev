@@ -815,6 +815,8 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
   }
 
   console.log('Sending to', endpoint, ':', jsonData);
+  errorEl.textContent = 'Sending request...';
+  errorEl.classList.add('show');
 
   fetch(endpoint, {
     method: 'POST',
@@ -846,7 +848,9 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
     }
   }).catch(function (err) {
     console.error('Fetch error:', err);
-    errorEl.textContent = 'Network error. Check your connection.';
+    // Show what we tried to send
+    var debugMsg = 'Failed to send. Data: ' + JSON.stringify(jsonData).substring(0, 50);
+    errorEl.textContent = debugMsg;
     errorEl.classList.add('show');
     btn.disabled = false;
     btn.textContent = defaultBtnText;
