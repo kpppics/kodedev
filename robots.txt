@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://kodedev.co.uk/sitemap.xml
