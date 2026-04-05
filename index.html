@@ -796,18 +796,25 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
       'Content-Type': 'application/json'
     }
   }).then(function (res) {
-    if (res.ok) {
-      formEl.reset();
-      successEl.classList.add('show');
-      btn.textContent = 'Sent!';
-      setTimeout(function() {
+    return res.json().then(function(data) {
+      if (res.ok) {
+        formEl.reset();
+        successEl.classList.add('show');
+        btn.textContent = 'Sent!';
+        setTimeout(function() {
+          btn.disabled = false;
+          btn.textContent = defaultBtnText;
+        }, 3000);
+      } else {
+        errorEl.textContent = data.message || 'Something went wrong. Please try again.';
+        errorEl.classList.add('show');
         btn.disabled = false;
         btn.textContent = defaultBtnText;
-      }, 3000);
-    } else {
-      throw new Error('error');
-    }
-  }).catch(function () {
+      }
+    });
+  }).catch(function (err) {
+    console.error('Form error:', err);
+    errorEl.textContent = 'Network error. Please try again.';
     errorEl.classList.add('show');
     btn.disabled = false;
     btn.textContent = defaultBtnText;
