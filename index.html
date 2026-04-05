@@ -816,14 +816,20 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
 
   console.log('Sending to', endpoint, ':', jsonData);
 
+  // Create abort controller with 30s timeout
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
+
   fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify(jsonData),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    }
+    },
+    signal: controller.signal
   }).then(function (res) {
+    clearTimeout(timeoutId);
     console.log('Response status:', res.status);
     var contentType = res.headers.get('content-type');
     console.log('Content-Type:', contentType);
