@@ -779,15 +779,34 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
   successEl.classList.remove('show');
   errorEl.classList.remove('show');
 
+  // Convert FormData to JSON
+  var formData = new FormData(formEl);
+  var jsonData = {};
+  for (var pair of formData.entries()) {
+    if (pair[0] === 'pages[]') {
+      if (!jsonData.pages) jsonData.pages = [];
+      jsonData.pages.push(pair[1]);
+    } else {
+      jsonData[pair[0]] = pair[1];
+    }
+  }
+
   fetch(endpoint, {
     method: 'POST',
-    body: new FormData(formEl),
-    headers: { 'Accept': 'application/json' }
+    body: JSON.stringify(jsonData),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
   }).then(function (res) {
     if (res.ok) {
       formEl.reset();
       successEl.classList.add('show');
       btn.textContent = 'Sent!';
+      setTimeout(function() {
+        btn.disabled = false;
+        btn.textContent = defaultBtnText;
+      }, 3000);
     } else {
       throw new Error('error');
     }
