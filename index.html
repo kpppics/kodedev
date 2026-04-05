@@ -816,9 +816,9 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
 
   console.log('Sending to', endpoint, ':', jsonData);
 
-  // Create abort controller with 30s timeout
+  // Create abort controller with 60s timeout (API takes time to generate samples)
   var controller = new AbortController();
-  var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
+  var timeoutId = setTimeout(function() { controller.abort(); }, 60000);
 
   fetch(endpoint, {
     method: 'POST',
