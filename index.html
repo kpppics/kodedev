@@ -828,45 +828,52 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
 
   console.log('Sending to', endpoint, ':', jsonData);
 
-  fetch(endpoint, {
-    method: 'POST',
-    body: JSON.stringify(jsonData),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(function (res) {
-    if (res.ok) {
-      formEl.reset();
-      successEl.classList.add('show');
-      btn.textContent = 'Sent!';
-      setTimeout(function() {
-        btn.disabled = false;
-        btn.textContent = defaultBtnText;
-      }, 3000);
-    } else {
-      return res.json().then(function(data) {
-        errorEl.textContent = data.message || 'Error ' + res.status;
-        errorEl.classList.add('show');
-        btn.disabled = false;
-        btn.textContent = defaultBtnText;
-      }).catch(function() {
-        errorEl.textContent = 'Server error. Please try again.';
-        errorEl.classList.add('show');
-        btn.disabled = false;
-        btn.textContent = defaultBtnText;
-      });
-    }
-  }).catch(function (err) {
-    console.error('Fetch failed:', err);
-    console.error('Error name:', err.name);
-    console.error('Error message:', err.message);
-    console.error('Endpoint was:', endpoint);
-    console.error('Data was:', jsonData);
-    errorEl.textContent = 'Error: ' + err.name + ' - ' + err.message;
+  try {
+    fetch(endpoint, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'omit',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    }).then(function (res) {
+      if (res.ok) {
+        formEl.reset();
+        successEl.classList.add('show');
+        btn.textContent = 'Sent!';
+        setTimeout(function() {
+          btn.disabled = false;
+          btn.textContent = defaultBtnText;
+        }, 3000);
+      } else {
+        return res.json().then(function(data) {
+          errorEl.textContent = data.message || 'Error ' + res.status;
+          errorEl.classList.add('show');
+          btn.disabled = false;
+          btn.textContent = defaultBtnText;
+        }).catch(function() {
+          errorEl.textContent = 'Server error. Please try again.';
+          errorEl.classList.add('show');
+          btn.disabled = false;
+          btn.textContent = defaultBtnText;
+        });
+      }
+    }).catch(function (err) {
+      console.error('Fetch failed:', err);
+      errorEl.textContent = 'Request failed: ' + err.message;
+      errorEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = defaultBtnText;
+    });
+  } catch (e) {
+    console.error('Fetch exception:', e);
+    errorEl.textContent = 'Error: ' + e.message;
     errorEl.classList.add('show');
     btn.disabled = false;
     btn.textContent = defaultBtnText;
-  });
+  }
 }
 
 document.getElementById('sample-form').addEventListener('submit', function (e) {
