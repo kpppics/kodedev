@@ -828,49 +828,37 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
 
   console.log('Sending to', endpoint, ':', jsonData);
 
-  // Add timeout handling
-  var timeoutId = setTimeout(function() {
-    errorEl.textContent = 'Request taking longer than expected. Still generating your sample...';
-    errorEl.classList.add('show');
-  }, 30000);
-
   fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify(jsonData),
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   }).then(function (res) {
-    clearTimeout(timeoutId);
     if (res.ok) {
-      return res.json().then(function(data) {
-        formEl.reset();
-        successEl.classList.add('show');
-        btn.textContent = 'Sent!';
+      formEl.reset();
+      successEl.classList.add('show');
+      btn.textContent = 'Sent!';
+      setTimeout(function() {
         btn.disabled = false;
-        setTimeout(function() {
-          btn.textContent = defaultBtnText;
-        }, 3000);
-      });
+        btn.textContent = defaultBtnText;
+      }, 3000);
     } else {
-      // Try to get error message from response
       return res.json().then(function(data) {
-        errorEl.textContent = data.message || ('Error ' + res.status + ': ' + res.statusText);
+        errorEl.textContent = data.message || 'Error ' + res.status;
         errorEl.classList.add('show');
         btn.disabled = false;
         btn.textContent = defaultBtnText;
       }).catch(function() {
-        errorEl.textContent = 'Server error ' + res.status + '. Please try again.';
+        errorEl.textContent = 'Server error. Please try again.';
         errorEl.classList.add('show');
         btn.disabled = false;
         btn.textContent = defaultBtnText;
       });
     }
   }).catch(function (err) {
-    clearTimeout(timeoutId);
-    console.error('Fetch error:', err);
-    errorEl.textContent = 'Network error: ' + err.message + '. Check your connection.';
+    console.error('Fetch failed:', err);
+    errorEl.textContent = 'Unable to reach server. Try again.';
     errorEl.classList.add('show');
     btn.disabled = false;
     btn.textContent = defaultBtnText;
