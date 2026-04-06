@@ -858,7 +858,11 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
     }
   }).catch(function (err) {
     console.error('Fetch failed:', err);
-    errorEl.textContent = 'Unable to reach server. Try again.';
+    console.error('Error name:', err.name);
+    console.error('Error message:', err.message);
+    console.error('Endpoint was:', endpoint);
+    console.error('Data was:', jsonData);
+    errorEl.textContent = 'Error: ' + err.name + ' - ' + err.message;
     errorEl.classList.add('show');
     btn.disabled = false;
     btn.textContent = defaultBtnText;
