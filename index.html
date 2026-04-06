@@ -800,7 +800,15 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
     console.error('FormData parsing error:', e);
   }
 
+  // DEBUG: Check if reference_url is present
   console.log('Sending to', endpoint, ':', jsonData);
+  if (!jsonData.reference_url) {
+    var refField = document.querySelector('input[name="reference_url"]');
+    if (refField && refField.value) {
+      jsonData.reference_url = refField.value;
+      console.log('Added reference_url manually:', refField.value);
+    }
+  }
 
   // Create abort controller with 60 second timeout
   var controller = new AbortController();
