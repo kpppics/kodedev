@@ -828,6 +828,12 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
 
   console.log('Sending to', endpoint, ':', jsonData);
 
+  // Add timeout handling
+  var timeoutId = setTimeout(function() {
+    errorEl.textContent = 'Request taking longer than expected. Still generating your sample...';
+    errorEl.classList.add('show');
+  }, 30000);
+
   fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify(jsonData),
@@ -836,6 +842,7 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
       'Content-Type': 'application/json'
     }
   }).then(function (res) {
+    clearTimeout(timeoutId);
     if (res.ok) {
       return res.json().then(function(data) {
         formEl.reset();
@@ -861,6 +868,7 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
       });
     }
   }).catch(function (err) {
+    clearTimeout(timeoutId);
     console.error('Fetch error:', err);
     errorEl.textContent = 'Network error: ' + err.message + '. Check your connection.';
     errorEl.classList.add('show');
