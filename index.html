@@ -510,42 +510,16 @@
             </div>
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">info</span> Tell Us About Your Business
+                <span class="material-symbols-outlined text-xl">category</span> Your Industry
               </h3>
-              <textarea name="existing_website" placeholder="What do you do? Who are your customers? Any current website we should know about?" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all" rows="3"></textarea>
+              <input name="industry" required placeholder="E.g., Photography, Consulting, E-commerce, Healthcare, etc." type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"/>
             </div>
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">link</span> Websites You Like <span class="text-xs font-normal text-white/60">(optional)</span>
+                <span class="material-symbols-outlined text-xl">link</span> Website You'd Like Us to Clone
               </h3>
-              <textarea name="inspiration" placeholder="Share links or describe styles you like. E.g., 'love the layout of example.com' or 'prefer minimalist design with bold colors'" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all" rows="2"></textarea>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 class="font-headline text-lg font-bold mb-4">Design Style</h3>
-                <div class="space-y-3">
-                  <label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
-                    <input name="style" value="Modern &amp; Clean" type="radio" class="accent-white"/> <span>Modern &amp; Clean</span>
-                  </label>
-                  <label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
-                    <input name="style" value="Bold &amp; Techy" type="radio" class="accent-white"/> <span>Bold &amp; Techy</span>
-                  </label>
-                  <label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
-                    <input name="style" value="Warm &amp; Friendly" type="radio" class="accent-white"/> <span>Warm &amp; Friendly</span>
-                  </label>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-headline text-lg font-bold mb-4">Required Pages</h3>
-                <div class="grid grid-cols-2 gap-2 text-sm">
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Services" type="checkbox" class="accent-white rounded"/> Services</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Portfolio" type="checkbox" class="accent-white rounded"/> Portfolio</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Blog" type="checkbox" class="accent-white rounded"/> Blog</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Shop" type="checkbox" class="accent-white rounded"/> Shop</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Contact" type="checkbox" class="accent-white rounded"/> Contact</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Booking" type="checkbox" class="accent-white rounded"/> Booking</label>
-                </div>
-              </div>
+              <input name="reference_url" required placeholder="E.g., kodedev.co.uk or https://example.com" type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"/>
+              <p class="text-white/60 text-sm mt-2">Share a website design you love. We'll adapt it for your business — same beautiful design, your unique content.</p>
             </div>
             <div>
               <button id="sample-btn" type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
@@ -828,25 +802,85 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
 
   console.log('Sending to', endpoint, ':', jsonData);
 
+  // Create abort controller with 60 second timeout
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function() {
+    controller.abort();
+  }, 60000);
+
   try {
     fetch(endpoint, {
       method: 'POST',
       mode: 'cors',
       credentials: 'omit',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify(jsonData)
     }).then(function (res) {
+      clearTimeout(timeoutId);
       if (res.ok) {
-        formEl.reset();
-        successEl.classList.add('show');
-        btn.textContent = 'Sent!';
-        setTimeout(function() {
-          btn.disabled = false;
-          btn.textContent = defaultBtnText;
-        }, 3000);
+        return res.json().then(function(data) {
+          if (data.status === 'processing') {
+            // Sample is generating in background - show waiting message and poll
+            btn.textContent = 'Generating sample... please wait';
+            successEl.textContent = 'Your sample is being generated! This may take 30-60 seconds. You\'ll receive an email when it\'s ready.';
+            successEl.classList.add('show');
+            formEl.reset();
+
+            // Poll for completion every 3 seconds
+            var pollCount = 0;
+            var maxPolls = 100; // 5 minutes max
+            var pollInterval = setInterval(function() {
+              pollCount++;
+              if (pollCount > maxPolls) {
+                clearInterval(pollInterval);
+                btn.disabled = false;
+                btn.textContent = defaultBtnText;
+                successEl.textContent = 'Generation took longer than expected. Check your email for the sample link.';
+                return;
+              }
+
+              var statusUrl = data.token ? '/api/sample/' + data.token + '/status' : null;
+              if (!statusUrl) {
+                clearInterval(pollInterval);
+                return;
+              }
+
+              fetch(statusUrl, {
+                method: 'GET',
+                mode: 'cors',
+                credentials: 'omit',
+                headers: { 'Accept': 'application/json' }
+              })
+              .then(function(statusRes) {
+                if (statusRes.ok) {
+                  return statusRes.json().then(function(statusData) {
+                    if (statusData.ready) {
+                      // Generation complete!
+                      clearInterval(pollInterval);
+                      btn.disabled = false;
+                      btn.textContent = defaultBtnText;
+                      successEl.textContent = 'Done! Your sample is ready. Check your email for the link, or <a href="' + data.token + '" target="_blank">view it now</a>.';
+                      successEl.classList.add('show');
+                    }
+                  });
+                }
+              })
+              .catch(function(err) {
+                console.log('Poll error (expected during generation):', err);
+              });
+            }, 3000);
+          } else {
+            // Unexpected response
+            errorEl.textContent = data.message || 'Unexpected response';
+            errorEl.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = defaultBtnText;
+          }
+        });
       } else {
         return res.json().then(function(data) {
           errorEl.textContent = data.message || 'Error ' + res.status;
