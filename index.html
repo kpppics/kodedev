@@ -508,6 +508,18 @@
                 <input name="phone" required placeholder="Phone Number" type="tel" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
               </div>
             </div>
+            <div>
+              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">info</span> Tell Us About Your Business
+              </h3>
+              <textarea name="existing_website" placeholder="What do you do? Who are your customers? Any current website we should know about?" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all" rows="3"></textarea>
+            </div>
+            <div>
+              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">link</span> Website You Like the Look Of
+              </h3>
+              <textarea name="inspiration" placeholder="Share links or describe styles you like. E.g., 'love the layout of example.com' or 'prefer minimalist design with bold colors'" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all" rows="3"></textarea>
+            </div>
             <div class="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 class="font-headline text-lg font-bold mb-4">Design Style</h3>
@@ -534,18 +546,6 @@
                   <label class="flex items-center gap-2"><input name="pages[]" value="Booking" type="checkbox" class="accent-white rounded"/> Booking</label>
                 </div>
               </div>
-            </div>
-            <div>
-              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">link</span> Websites You Like
-              </h3>
-              <textarea name="inspiration" placeholder="Share links or describe styles you like. E.g., 'love the layout of example.com' or 'prefer minimalist design with bold colors'" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all" rows="3"></textarea>
-            </div>
-            <div>
-              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">info</span> Tell Us About Your Business
-              </h3>
-              <textarea name="existing_website" placeholder="What do you do? Who are your customers? Any current website we should know about?" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all" rows="3"></textarea>
             </div>
             <div>
               <button id="sample-btn" type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
