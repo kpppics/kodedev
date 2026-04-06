@@ -489,45 +489,44 @@
             <h2 class="font-headline text-4xl md:text-5xl font-bold mb-4">Get My Free Sample</h2>
             <p class="text-indigo-100 text-lg max-w-xl mx-auto">See what your business could look like with KODEDEV before you commit. No strings attached.</p>
           </div>
-          <form id="sample-form" class="space-y-8">
+          <form action="https://formspree.io/f/xyzabjkg" method="POST" class="space-y-8">
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">person</span> Basic Info
+                <span class="material-symbols-outlined text-xl">person</span> Your Details
               </h3>
               <div class="grid md:grid-cols-2 gap-4">
-                <input name="full_name" required placeholder="Full Name" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
+                <input name="name" required placeholder="Full Name" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
                 <input name="email" required placeholder="Email Address" type="email" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
               </div>
             </div>
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">business</span> Business Details
+                <span class="material-symbols-outlined text-xl">business</span> Business Name
               </h3>
-              <div class="space-y-4">
-                <input name="business_name" required placeholder="Business Name" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
-                <input name="phone" required placeholder="Phone Number" type="tel" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
+              <input name="business_name" required placeholder="What's your business called?" type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"/>
+            </div>
+            <div>
+              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">pages</span> Pages You Need
+              </h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Home"/> Home</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="About"/> About</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Services"/> Services</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Portfolio"/> Portfolio</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Blog"/> Blog</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Contact"/> Contact</label>
               </div>
             </div>
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">category</span> Your Industry
+                <span class="material-symbols-outlined text-xl">info</span> Tell Us More
               </h3>
-              <input name="industry" required placeholder="E.g., Photography, Consulting, E-commerce, Healthcare, etc." type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"/>
+              <textarea name="message" placeholder="What do you do? Any design preferences? Website inspiration?" rows="4" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"></textarea>
             </div>
-            <div>
-              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">link</span> Website You'd Like Us to Clone
-              </h3>
-              <input name="reference_url" required placeholder="E.g., kodedev.co.uk or https://example.com" type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"/>
-              <p class="text-white/60 text-sm mt-2">Share a website design you love. We'll adapt it for your business — same beautiful design, your unique content.</p>
-            </div>
-            <div>
-              <button id="sample-btn" type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
-                Get My Free Sample
-              </button>
-              <div id="sample-success" class="form-msg success-white">Your sample is being generated! Check your email in 2–3 minutes.</div>
-              <div id="sample-error" class="form-msg error-white">Something went wrong. Please try again.</div>
-            </div>
+            <button type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
+              Request Your Sample
+            </button>
           </form>
         </div>
       </div>
@@ -800,15 +799,7 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
     console.error('FormData parsing error:', e);
   }
 
-  // DEBUG: Check if reference_url is present
-  console.log('Sending to', endpoint, ':', jsonData);
-  if (!jsonData.reference_url) {
-    var refField = document.querySelector('input[name="reference_url"]');
-    if (refField && refField.value) {
-      jsonData.reference_url = refField.value;
-      console.log('Added reference_url manually:', refField.value);
-    }
-  }
+  console.log('Sending:', jsonData);
 
   // Create abort controller with 60 second timeout
   var controller = new AbortController();
