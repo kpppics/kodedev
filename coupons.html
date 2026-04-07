@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deal Scanner - KODEDEV</title>
-  <meta name="description" content="Find the best free coffee, restaurant deals, and discount coupons from Starbucks, Costa, McDonald's, Nando's and more. Updated regularly."/>
+  <title>Free US Deals &amp; Coupons | Pizza Hut, McDonald's, Dunkin' &amp; More</title>
+  <meta name="description" content="Find free food, app-signup rewards, and verified promo codes from major US chains including Starbucks, McDonald's, Dunkin', Pizza Hut, Domino's and more."/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://kodedev.co.uk/coupons.html"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -157,10 +157,11 @@
   <section class="pt-32 pb-16 md:pt-40 md:pb-20 bg-slate-900 min-h-[60vh] flex flex-col justify-center">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text">Deal Scanner</h1>
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text">US Deal Scanner</h1>
         <p class="text-lg md:text-xl text-slate-300 font-body max-w-2xl mx-auto">
-          Discover exclusive coupon codes and free deals from your favorite UK & US restaurants, coffee shops, and fast food chains.
+          Real deals, free food, and verified promo codes from your favorite US restaurants and coffee shops. Scan codes at the till or claim online.
         </p>
+        <p class="text-xs text-slate-500 font-body mt-3">Last updated: <span id="last-updated">just now</span></p>
       </div>
 
       <!-- Scanner Overlay -->
@@ -216,6 +217,7 @@
           <button class="category-filter active px-4 py-2 rounded-full text-sm font-body font-medium bg-primary text-white transition-colors" data-category="all">All</button>
           <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="coffee">Coffee</button>
           <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="fastfood">Fast Food</button>
+          <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="pizza">Pizza</button>
           <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="restaurant">Restaurants</button>
         </div>
       </div>
@@ -310,29 +312,8 @@
   </footer>
 
   <script>
-    // Deals Data Array
-    var DEALS = [
-      { id: 1, store: "Starbucks", category: "coffee", dealType: "free", title: "Free First Drink", description: "Join Starbucks Rewards via the app and get your first handcrafted drink completely free.", discount: "FREE", icon: "local_cafe", brandColor: "#00704A", expiry: "Ongoing", region: "UK & US", verified: true },
-      { id: 2, store: "Costa Coffee", category: "coffee", dealType: "free", title: "Free Welcome Drink", description: "Download the Costa Club app and receive a free drink of your choice as a welcome gift.", discount: "FREE", icon: "local_cafe", brandColor: "#6F1E34", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 3, store: "Greggs", category: "coffee", dealType: "free", title: "Free Hot Drink", description: "Download the Greggs app and claim a free hot drink on your first visit.", discount: "FREE", icon: "local_cafe", brandColor: "#0051A8", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 4, store: "Pret A Manger", category: "coffee", dealType: "free", title: "First Month Free - Club Pret", description: "Subscribe to Club Pret and get your first month free with up to 5 barista-made drinks per day.", discount: "FREE MONTH", icon: "local_cafe", brandColor: "#6E2B2C", expiry: "Ongoing", region: "UK & US", verified: true },
-      { id: 5, store: "Caffe Nero", category: "coffee", dealType: "free", title: "Every 10th Coffee Free", description: "Collect digital stamps in the Caffe Nero app. Every 10th coffee is on the house.", discount: "FREE", icon: "local_cafe", brandColor: "#1B365D", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 6, store: "Dunkin'", category: "coffee", dealType: "free", title: "Free Drink on Signup", description: "Join Dunkin Rewards and get a free drink of any size when you sign up through the app.", discount: "FREE", icon: "local_cafe", brandColor: "#FF671F", expiry: "Ongoing", region: "US", verified: true },
-      { id: 7, store: "Panera Bread", category: "coffee", dealType: "free", title: "Free Pastry or Coffee", description: "Join MyPanera Rewards and receive a free pastry or coffee with your first order.", discount: "FREE", icon: "local_cafe", brandColor: "#4D7C3A", expiry: "Ongoing", region: "US", verified: true },
-      { id: 8, store: "McDonald's", category: "fastfood", dealType: "free", title: "Free McCafe Drink", description: "Download the McDonalds app and claim a free McCafe drink on your first mobile order.", discount: "FREE", icon: "fastfood", brandColor: "#FFC72C", expiry: "Ongoing", region: "UK & US", verified: true },
-      { id: 9, store: "Burger King", category: "fastfood", dealType: "free", title: "Free Whopper on Signup", description: "Create a Burger King Royal Perks account and get a free Whopper with your first purchase.", discount: "FREE", icon: "fastfood", brandColor: "#D62300", expiry: "Ongoing", region: "UK & US", verified: true },
-      { id: 10, store: "KFC", category: "fastfood", dealType: "free", title: "App-Exclusive Deals", description: "Download the KFC app for exclusive Colonels Club offers including free sides and upgrades.", discount: "VARIOUS", icon: "fastfood", brandColor: "#E4002B", expiry: "Ongoing", region: "UK & US", verified: true },
-      { id: 11, store: "Subway", category: "fastfood", dealType: "free", title: "Free 6-Inch Sub", description: "Join Subway MVP Rewards and receive a free 6-inch sub when you make your first purchase via the app.", discount: "FREE", icon: "fastfood", brandColor: "#008742", expiry: "Ongoing", region: "UK & US", verified: true },
-      { id: 12, store: "Chick-fil-A", category: "fastfood", dealType: "free", title: "Free Chicken Sandwich", description: "Download the Chick-fil-A app and receive a free original chicken sandwich as a welcome reward.", discount: "FREE", icon: "fastfood", brandColor: "#E51636", expiry: "Ongoing", region: "US", verified: true },
-      { id: 13, store: "Chipotle", category: "fastfood", dealType: "free", title: "Free Chips & Guac", description: "Join Chipotle Rewards and get free chips and guacamole after your first purchase.", discount: "FREE", icon: "fastfood", brandColor: "#A81612", expiry: "Ongoing", region: "US", verified: true },
-      { id: 14, store: "Wendy's", category: "fastfood", dealType: "free", title: "Free Dave's Single", description: "Download the Wendys app and claim a free Daves Single burger with any purchase.", discount: "FREE", icon: "fastfood", brandColor: "#E2203A", expiry: "Ongoing", region: "US", verified: true },
-      { id: 15, store: "Nando's", category: "restaurant", dealType: "free", title: "Free Quarter Chicken", description: "Sign up for Nandos Rewards and enjoy a free quarter chicken after your first three visits.", discount: "FREE", icon: "restaurant", brandColor: "#C8102E", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 16, store: "Pizza Express", category: "restaurant", dealType: "percent", title: "25% Off First Online Order", description: "Sign up for Pizza Express Club and get 25% off your first online order.", discount: "25% OFF", icon: "restaurant", brandColor: "#00457C", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 17, store: "Wagamama", category: "restaurant", dealType: "percent", title: "20% Off First Order", description: "Join Wagamamas Soul Club and receive 20% off your first order when you sign up.", discount: "20% OFF", icon: "restaurant", brandColor: "#C41230", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 18, store: "Zizzi", category: "restaurant", dealType: "free", title: "Free Main on Birthday", description: "Sign up for Zizzi loyalty and receive a free main course on your birthday every year.", discount: "FREE", icon: "restaurant", brandColor: "#2B2D42", expiry: "Ongoing", region: "UK", verified: true },
-      { id: 19, store: "Olive Garden", category: "restaurant", dealType: "free", title: "Free Appetiser on Signup", description: "Join the Olive Garden eClub and receive a free appetiser or dessert with your next meal.", discount: "FREE", icon: "restaurant", brandColor: "#6B2D5B", expiry: "Ongoing", region: "US", verified: true },
-      { id: 20, store: "TGI Friday's", category: "restaurant", dealType: "free", title: "Free Appetiser & Dessert", description: "Join TGI Fridays Rewards and get a free appetiser on signup plus free dessert on your birthday.", discount: "FREE", icon: "restaurant", brandColor: "#CC0000", expiry: "Ongoing", region: "UK & US", verified: true }
-    ];
+    // Deals Data (loaded from deals.json)
+    var DEALS = [];
 
     // Filter state
     var activeCategory = 'all';
@@ -392,9 +373,20 @@
       var colors = {
         'coffee': 'bg-emerald-100 text-emerald-700',
         'fastfood': 'bg-amber-100 text-amber-700',
+        'pizza': 'bg-orange-100 text-orange-700',
         'restaurant': 'bg-violet-100 text-violet-700'
       };
       return colors[category] || 'bg-slate-100 text-slate-700';
+    }
+
+    function getCategoryLabel(category) {
+      var labels = {
+        'coffee': 'Coffee',
+        'fastfood': 'Fast Food',
+        'pizza': 'Pizza',
+        'restaurant': 'Restaurant'
+      };
+      return labels[category] || category;
     }
 
     function getDealTypeColor(dealType) {
@@ -415,42 +407,79 @@
       return labels[dealType] || dealType;
     }
 
+    function escapeHtml(s) {
+      if (s == null) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     function renderDeals(deals) {
       var grid = document.getElementById('deals-grid');
       grid.innerHTML = '';
 
       deals.forEach(function(deal, index) {
-        var categoryTag = deal.category.charAt(0).toUpperCase() + deal.category.slice(1);
+        var categoryTag = getCategoryLabel(deal.category);
         var dealTypeLabel = getDealTypeLabel(deal.dealType);
         var categoryColor = getCategoryColor(deal.category);
         var dealTypeColor = getDealTypeColor(deal.dealType);
+        var ctaText = deal.ctaText || 'Claim Deal';
+        var safeStore = escapeHtml(deal.store);
+        var safeCode = deal.code ? escapeHtml(deal.code) : '';
+
+        var codeBlockHtml = '';
+        if (deal.code) {
+          var barcodeUrl = 'https://barcode.tec-it.com/barcode.ashx?data=' + encodeURIComponent(deal.code) + '&code=Code128&dpi=96&imagetype=Png';
+          codeBlockHtml =
+            '<div class="mb-4 p-4 border-2 border-dashed border-slate-300 rounded-xl">' +
+              '<div class="flex items-center justify-between mb-3">' +
+                '<div>' +
+                  '<p class="text-xs text-slate-500 font-body">Promo Code</p>' +
+                  '<p class="font-headline font-bold text-slate-900 tracking-wider text-lg">' + safeCode + '</p>' +
+                '</div>' +
+                '<button onclick="copyCode(\'' + safeCode + '\', this)" class="text-primary hover:text-indigo-700 p-2" aria-label="Copy code">' +
+                  '<span class="material-symbols-outlined">content_copy</span>' +
+                '</button>' +
+              '</div>' +
+              '<div class="bg-white p-2 rounded-lg flex justify-center border border-slate-200">' +
+                '<img src="' + barcodeUrl + '" alt="Scannable barcode for ' + safeCode + '" class="max-w-full h-auto" loading="lazy"/>' +
+              '</div>' +
+              '<button onclick="saveBarcode(\'' + safeCode + '\', \'' + safeStore + '\')" class="mt-3 w-full text-xs text-slate-600 hover:text-primary font-body flex items-center justify-center gap-1">' +
+                '<span class="material-symbols-outlined text-sm">download</span>' +
+                'Save to Phone' +
+              '</button>' +
+            '</div>';
+        }
 
         var card = document.createElement('div');
-        card.className = 'reveal reveal-delay-' + ((index % 4) + 1) + ' white bg-white rounded-[2rem] border border-slate-200 overflow-hidden card-hover';
-        card.innerHTML = '' +
+        card.className = 'reveal reveal-delay-' + ((index % 4) + 1) + ' bg-white rounded-[2rem] border border-slate-200 overflow-hidden card-hover';
+        card.innerHTML =
           '<div class="p-6">' +
             '<div class="flex items-start justify-between mb-4">' +
               '<div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-headline font-bold text-lg" style="background-color: ' + deal.brandColor + '">' +
-                deal.store.charAt(0) +
+                escapeHtml(deal.store.charAt(0)) +
               '</div>' +
               (deal.verified ? '<div class="flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded-full"><span class="material-symbols-outlined text-sm">verified</span><span class="font-body text-xs font-semibold">Verified</span></div>' : '') +
             '</div>' +
             '<div class="mb-4">' +
-              '<p class="font-headline font-semibold text-slate-900 mb-1">' + deal.store + '</p>' +
-              '<p class="font-body text-xs text-slate-500">' + deal.region + '</p>' +
+              '<p class="font-headline font-semibold text-slate-900 mb-1">' + safeStore + '</p>' +
+              '<p class="font-body text-xs text-slate-500">' + escapeHtml(deal.region) + '</p>' +
             '</div>' +
-            '<div class="flex gap-2 mb-4">' +
+            '<div class="flex gap-2 mb-4 flex-wrap">' +
               '<span class="font-body text-xs font-medium px-3 py-1 rounded-full ' + categoryColor + '">' + categoryTag + '</span>' +
               '<span class="font-body text-xs font-medium px-3 py-1 rounded-full ' + dealTypeColor + '">' + dealTypeLabel + '</span>' +
             '</div>' +
-            '<h3 class="font-headline font-semibold text-slate-900 text-base mb-2">' + deal.title + '</h3>' +
-            '<p class="font-body text-sm text-slate-600 mb-4">' + deal.description + '</p>' +
-            '<div class="mb-4 pb-4 border-b border-slate-200">' +
-              '<p class="font-headline font-bold text-lg gradient-text">' + deal.discount + '</p>' +
+            '<h3 class="font-headline font-semibold text-slate-900 text-base mb-2">' + escapeHtml(deal.title) + '</h3>' +
+            '<p class="font-body text-sm text-slate-600 mb-4">' + escapeHtml(deal.description) + '</p>' +
+            '<div class="mb-4">' +
+              '<p class="font-headline font-bold text-2xl gradient-text">' + escapeHtml(deal.discount) + '</p>' +
             '</div>' +
-            '<div class="flex items-center gap-2 text-slate-600">' +
+            codeBlockHtml +
+            '<a href="' + escapeHtml(deal.link) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-primary hover:bg-indigo-700 text-white font-headline font-semibold py-3 rounded-xl transition-colors mb-3">' +
+              escapeHtml(ctaText) +
+              ' <span class="material-symbols-outlined text-sm align-middle ml-1">open_in_new</span>' +
+            '</a>' +
+            '<div class="flex items-center gap-2 text-slate-600 pt-3 border-t border-slate-100">' +
               '<span class="material-symbols-outlined text-base">schedule</span>' +
-              '<span class="font-body text-xs">' + deal.expiry + '</span>' +
+              '<span class="font-body text-xs">' + escapeHtml(deal.expiry) + '</span>' +
             '</div>' +
           '</div>';
 
@@ -460,6 +489,35 @@
           card.classList.add('active');
         }, 50);
       });
+    }
+
+    function copyCode(code, btn) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(function() {
+          var icon = btn.querySelector('.material-symbols-outlined');
+          var orig = icon.textContent;
+          icon.textContent = 'check';
+          setTimeout(function() { icon.textContent = orig; }, 1500);
+        });
+      }
+    }
+
+    function saveBarcode(code, store) {
+      var url = 'https://barcode.tec-it.com/barcode.ashx?data=' + encodeURIComponent(code) +
+                '&code=Code128&dpi=150&imagetype=Png';
+      fetch(url)
+        .then(function(res) { return res.blob(); })
+        .then(function(blob) {
+          var link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = store.replace(/\s+/g, '-').toLowerCase() + '-' + code + '.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        })
+        .catch(function() {
+          window.open(url, '_blank');
+        });
     }
 
     function filterDeals() {
@@ -551,9 +609,27 @@
       }, 30);
     }
 
-    // Initialize page
+    // Initialize page - fetch deals.json then run scanner
     document.addEventListener('DOMContentLoaded', function() {
-      runScan();
+      fetch('deals.json')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          DEALS = data.deals || [];
+          var lastUpdatedEl = document.getElementById('last-updated');
+          if (lastUpdatedEl && data.lastUpdated) {
+            lastUpdatedEl.textContent = data.lastUpdated;
+          }
+          runScan();
+        })
+        .catch(function(err) {
+          console.error('Failed to load deals.json:', err);
+          var grid = document.getElementById('deals-grid');
+          if (grid) {
+            grid.innerHTML = '<p class="col-span-full text-center text-slate-500 font-body">Unable to load deals. Please try again later.</p>';
+          }
+          var overlay = document.getElementById('scanner-overlay');
+          if (overlay) overlay.style.display = 'none';
+        });
     });
   </script>
 </body>
