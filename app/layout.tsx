@@ -2,26 +2,22 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'KODEDEV | Professional Websites & Apps for Small Businesses UK',
-  description: 'KODEDEV builds professional websites and custom apps for small businesses across the UK. Affordable, fast, and built to convert — get a free sample today.',
-  keywords: 'web design UK, small business website, affordable web design, custom website UK, web developer UK, website for small business, professional web design',
-  authors: [{ name: 'Karl, KODEDEV' }],
+  title: 'GoHoliday | Compare Every Holiday Deal in One Search',
+  description: 'GoHoliday searches Booking.com, Airbnb, Vrbo, Expedia, Skyscanner, Kayak and 15+ more sites in one place. Compare flights, hotels, villas, apartments and houses worldwide — find the cheapest deal in seconds.',
+  keywords: 'holiday comparison, compare hotels, compare flights, booking.com alternative, airbnb compare, villa search, apartment rental, cheap flights, travel deals, holiday aggregator',
+  authors: [{ name: 'GoHoliday' }],
   robots: 'index, follow',
-  alternates: { canonical: 'https://kodedev.co.uk/' },
   openGraph: {
     type: 'website',
-    url: 'https://kodedev.co.uk/',
-    title: 'KODEDEV | Professional Websites & Apps for Small Businesses',
-    description: 'Affordable, premium websites and custom apps for UK small businesses. See a free sample of your site before you commit.',
-    images: [{ url: 'https://kodedev.co.uk/og-image.jpg' }],
+    title: 'GoHoliday | One search, every holiday deal',
+    description: 'Compare flights, hotels, villas, apartments and houses from 20+ sites in one place.',
     locale: 'en_GB',
-    siteName: 'KODEDEV',
+    siteName: 'GoHoliday',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KODEDEV | Professional Websites & Apps for Small Businesses',
-    description: 'Affordable, premium websites and custom apps for UK small businesses. See a free sample of your site before you commit.',
-    images: ['https://kodedev.co.uk/og-image.jpg'],
+    title: 'GoHoliday | One search, every holiday deal',
+    description: 'Compare flights, hotels, villas, apartments and houses from 20+ sites in one place.',
   },
 }
 

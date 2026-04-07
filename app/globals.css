@@ -108,6 +108,17 @@ body {
 .counter-num { font-variant-numeric: tabular-nums; }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #e2e8f0; }
 ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 3px; }
+
+/* Hide scrollbar utility (for horizontal tab nav) */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* date input calendar icon subtle tint */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.55;
+  cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
