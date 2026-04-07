@@ -492,59 +492,42 @@
           <form id="sample-form" class="space-y-8">
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">person</span> Basic Info
+                <span class="material-symbols-outlined text-xl">person</span> Your Details
               </h3>
               <div class="grid md:grid-cols-2 gap-4">
-                <input name="full_name" required placeholder="Full Name" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
+                <input name="name" required placeholder="Full Name" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
                 <input name="email" required placeholder="Email Address" type="email" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
               </div>
             </div>
             <div>
               <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-xl">business</span> Business Details
+                <span class="material-symbols-outlined text-xl">business</span> Business Name
               </h3>
-              <div class="space-y-4">
-                <input name="business_name" required placeholder="Business Name" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
-                <div class="grid md:grid-cols-2 gap-4">
-                  <input name="existing_website" placeholder="Existing Website (if any)" type="url" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
-                  <input name="inspiration" placeholder="Site you like the look of (optional)" type="text" class="bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 w-full transition-all"/>
-                </div>
-              </div>
+              <input name="business_name" required placeholder="What's your business called?" type="text" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"/>
             </div>
-            <div class="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 class="font-headline text-lg font-bold mb-4">Design Style</h3>
-                <div class="space-y-3">
-                  <label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
-                    <input name="style" value="Modern &amp; Clean" type="radio" class="accent-white"/> <span>Modern &amp; Clean</span>
-                  </label>
-                  <label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
-                    <input name="style" value="Bold &amp; Techy" type="radio" class="accent-white"/> <span>Bold &amp; Techy</span>
-                  </label>
-                  <label class="flex items-center gap-3 p-3 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all border border-white/10">
-                    <input name="style" value="Warm &amp; Friendly" type="radio" class="accent-white"/> <span>Warm &amp; Friendly</span>
-                  </label>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-headline text-lg font-bold mb-4">Required Pages</h3>
-                <div class="grid grid-cols-2 gap-2 text-sm">
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Services" type="checkbox" class="accent-white rounded"/> Services</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Portfolio" type="checkbox" class="accent-white rounded"/> Portfolio</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Blog" type="checkbox" class="accent-white rounded"/> Blog</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Shop" type="checkbox" class="accent-white rounded"/> Shop</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Contact" type="checkbox" class="accent-white rounded"/> Contact</label>
-                  <label class="flex items-center gap-2"><input name="pages[]" value="Booking" type="checkbox" class="accent-white rounded"/> Booking</label>
-                </div>
+            <div>
+              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">pages</span> Pages You Need
+              </h3>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Home"/> Home</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="About"/> About</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Services"/> Services</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Portfolio"/> Portfolio</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Blog"/> Blog</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Contact"/> Contact</label>
+                <label class="flex items-center gap-2 text-white/80"><input type="checkbox" name="pages" value="Other"/> Other</label>
               </div>
             </div>
             <div>
-              <button id="sample-btn" type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
-                Get My Free Sample
-              </button>
-              <div id="sample-success" class="form-msg success-white">Thanks! I'll send your free sample within 24 hours.</div>
-              <div id="sample-error" class="form-msg error-white">Something went wrong. Email me directly: karl@kodedev.co.uk</div>
+              <h3 class="font-headline text-lg font-bold mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-xl">info</span> Tell Us More
+              </h3>
+              <textarea name="message" placeholder="What do you do? Any design preferences? Website inspiration?" rows="4" class="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"></textarea>
             </div>
+            <button type="submit" class="w-full bg-white text-primary font-headline font-bold text-lg py-5 rounded-full shadow-2xl hover:bg-slate-50 active:scale-95 transition-all">
+              Request Your Sample
+            </button>
           </form>
         </div>
       </div>
@@ -568,9 +551,6 @@
             <p>Hi, I'm Karl — the human behind KODEDEV. I started this in <span class="text-primary font-bold">2026</span> because too many small businesses were being overcharged by agencies or stuck with DIY builders that never quite look right.</p>
             <p>I believe code is a craft, but service is about people. I speak plain English, no technical jargon, and focus on making your digital life easier and your business more profitable.</p>
           </div>
-          <a href="mailto:karl@kodedev.co.uk" class="inline-flex items-center gap-3 mt-8 bg-primary/8 text-primary font-bold font-headline px-6 py-3 rounded-full hover:bg-primary/15 transition-all border border-primary/15">
-            <span class="material-symbols-outlined">mail</span> karl@kodedev.co.uk
-          </a>
         </div>
       </div>
     </div>
@@ -613,7 +593,7 @@
               Send Message
             </button>
             <div id="contact-success" class="form-msg success-dark">Message sent! I'll be in touch within 24 hours.</div>
-            <div id="contact-error" class="form-msg error-dark">Something went wrong. Email me directly: karl@kodedev.co.uk</div>
+            <div id="contact-error" class="form-msg error-dark">Something went wrong. Please try again.</div>
           </div>
         </form>
       </div>
@@ -629,7 +609,6 @@
       <div class="max-w-sm">
         <div class="text-xl font-bold text-white mb-3 font-headline">KODEDEV <span class="text-[10px] align-top font-body font-normal text-slate-500 tracking-normal ml-1">est. 2026</span></div>
         <p class="text-slate-400 text-sm leading-relaxed mb-4">Professional websites, redesigns, and custom apps for small businesses. Affordable, human, and built to grow.</p>
-        <a href="mailto:karl@kodedev.co.uk" class="text-primary hover:text-indigo-300 transition-colors text-sm font-medium">karl@kodedev.co.uk</a>
       </div>
       <div class="flex flex-wrap gap-16">
         <div>
@@ -769,7 +748,7 @@ setTimeout(typeWriter, 1400);
 // 2. Click "New Form" → set recipient email to karl@kodedev.co.uk
 // 3. Copy the form ID (e.g. xwkgvnzl)
 // 4. Replace YOUR_FORMSPREE_ID on the two lines below
-var SAMPLE_ENDPOINT  = 'https://formspree.io/f/xreozjpb';
+var SAMPLE_ENDPOINT  = 'https://api.kodedev.co.uk/api/sample';
 var CONTACT_ENDPOINT = 'https://formspree.io/f/xreozjpb';
 
 function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText) {
@@ -782,23 +761,152 @@ function submitForm(formEl, endpoint, btnId, successId, errorId, defaultBtnText)
   successEl.classList.remove('show');
   errorEl.classList.remove('show');
 
-  fetch(endpoint, {
-    method: 'POST',
-    body: new FormData(formEl),
-    headers: { 'Accept': 'application/json' }
-  }).then(function (res) {
-    if (res.ok) {
-      formEl.reset();
-      successEl.classList.add('show');
-      btn.textContent = 'Sent!';
+  // Convert FormData to JSON - compatible with all browsers
+  var formData = new FormData(formEl);
+  var jsonData = {};
+
+  try {
+    if (typeof formData.entries === 'function') {
+      // Modern browsers
+      var iter = formData.entries();
+      var item;
+      while (!(item = iter.next()).done) {
+        var pair = item.value;
+        if (pair[0] === 'pages[]') {
+          if (!jsonData.pages) jsonData.pages = [];
+          jsonData.pages.push(pair[1]);
+        } else {
+          jsonData[pair[0]] = pair[1];
+        }
+      }
     } else {
-      throw new Error('error');
+      // Fallback - manually parse form inputs
+      var inputs = formEl.querySelectorAll('input[name], textarea[name], select[name]');
+      for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.type === 'checkbox' && !input.checked) continue;
+        if (input.type === 'radio' && !input.checked) continue;
+
+        if (input.name === 'pages[]') {
+          if (!jsonData.pages) jsonData.pages = [];
+          jsonData.pages.push(input.value);
+        } else {
+          jsonData[input.name] = input.value;
+        }
+      }
     }
-  }).catch(function () {
+  } catch (e) {
+    console.error('FormData parsing error:', e);
+  }
+
+  console.log('Sending:', jsonData);
+
+  // Create abort controller with 60 second timeout
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function() {
+    controller.abort();
+  }, 60000);
+
+  try {
+    fetch(endpoint, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'omit',
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    }).then(function (res) {
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        return res.json().then(function(data) {
+          if (data.status === 'processing') {
+            // Sample is generating in background - show waiting message and poll
+            btn.textContent = 'Generating sample... please wait';
+            successEl.textContent = 'Your sample is being generated! This may take 30-60 seconds. You\'ll receive an email when it\'s ready.';
+            successEl.classList.add('show');
+            formEl.reset();
+
+            // Poll for completion every 3 seconds
+            var pollCount = 0;
+            var maxPolls = 100; // 5 minutes max
+            var pollInterval = setInterval(function() {
+              pollCount++;
+              if (pollCount > maxPolls) {
+                clearInterval(pollInterval);
+                btn.disabled = false;
+                btn.textContent = defaultBtnText;
+                successEl.textContent = 'Generation took longer than expected. Check your email for the sample link.';
+                return;
+              }
+
+              var statusUrl = data.token ? '/api/sample/' + data.token + '/status' : null;
+              if (!statusUrl) {
+                clearInterval(pollInterval);
+                return;
+              }
+
+              fetch(statusUrl, {
+                method: 'GET',
+                mode: 'cors',
+                credentials: 'omit',
+                headers: { 'Accept': 'application/json' }
+              })
+              .then(function(statusRes) {
+                if (statusRes.ok) {
+                  return statusRes.json().then(function(statusData) {
+                    if (statusData.ready) {
+                      // Generation complete!
+                      clearInterval(pollInterval);
+                      btn.disabled = false;
+                      btn.textContent = defaultBtnText;
+                      successEl.textContent = 'Done! Your sample is ready. Check your email for the link, or <a href="' + data.token + '" target="_blank">view it now</a>.';
+                      successEl.classList.add('show');
+                    }
+                  });
+                }
+              })
+              .catch(function(err) {
+                console.log('Poll error (expected during generation):', err);
+              });
+            }, 3000);
+          } else {
+            // Unexpected response
+            errorEl.textContent = data.message || 'Unexpected response';
+            errorEl.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = defaultBtnText;
+          }
+        });
+      } else {
+        return res.json().then(function(data) {
+          errorEl.textContent = data.message || 'Error ' + res.status;
+          errorEl.classList.add('show');
+          btn.disabled = false;
+          btn.textContent = defaultBtnText;
+        }).catch(function() {
+          errorEl.textContent = 'Server error. Please try again.';
+          errorEl.classList.add('show');
+          btn.disabled = false;
+          btn.textContent = defaultBtnText;
+        });
+      }
+    }).catch(function (err) {
+      console.error('Fetch failed:', err);
+      errorEl.textContent = 'Request failed: ' + err.message;
+      errorEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = defaultBtnText;
+    });
+  } catch (e) {
+    console.error('Fetch exception:', e);
+    errorEl.textContent = 'Error: ' + e.message;
     errorEl.classList.add('show');
     btn.disabled = false;
     btn.textContent = defaultBtnText;
-  });
+  }
 }
 
 document.getElementById('sample-form').addEventListener('submit', function (e) {
