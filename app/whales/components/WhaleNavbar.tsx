@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import ThemeControls from './ThemeControls'
 
 const LINKS = [
   { href: '#perfect-records', label: 'Whales' },
@@ -43,7 +44,7 @@ export default function WhaleNavbar() {
           </div>
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {LINKS.map(l => (
             <a
               key={l.href}
@@ -53,6 +54,7 @@ export default function WhaleNavbar() {
               {l.label}
             </a>
           ))}
+          <ThemeControls />
           <a
             href="https://t.me/polylerts_bot"
             target="_blank"
@@ -63,15 +65,18 @@ export default function WhaleNavbar() {
           </a>
         </nav>
 
-        <button
-          onClick={() => setOpen(o => !o)}
-          aria-label="Toggle menu"
-          className="md:hidden w-10 h-10 grid place-items-center rounded-lg bg-white/5 border border-white/10"
-        >
-          <span className="material-symbols-outlined text-slate-200">
-            {open ? 'close' : 'menu'}
-          </span>
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeControls />
+          <button
+            onClick={() => setOpen(o => !o)}
+            aria-label="Toggle menu"
+            className="w-10 h-10 grid place-items-center rounded-lg bg-white/5 border border-white/10"
+          >
+            <span className="material-symbols-outlined text-slate-200">
+              {open ? 'close' : 'menu'}
+            </span>
+          </button>
+        </div>
       </div>
 
       {open && (

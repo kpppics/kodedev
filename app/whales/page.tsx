@@ -9,6 +9,7 @@ import ApiSection from './components/ApiSection'
 import PlaybookSection from './components/PlaybookSection'
 import WhaleNavbar from './components/WhaleNavbar'
 import WhaleFooter from './components/WhaleFooter'
+import ThemeProvider from './components/ThemeProvider'
 import { ALGO_MONSTERS, PERFECT_RECORDS } from './data'
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function WhalesPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-body">
+    <ThemeProvider>
       <WhaleNavbar />
       <main className="pt-20">
         <WhaleHero />
@@ -49,6 +50,6 @@ export default function WhalesPage() {
         <PlaybookSection />
       </main>
       <WhaleFooter />
-    </div>
+    </ThemeProvider>
   )
 }
