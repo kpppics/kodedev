@@ -111,3 +111,139 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #e2e8f0; }
 ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 3px; }
+
+/* ============================================================
+   WHALE TRACKER — themeable design tokens
+   ============================================================ */
+
+.whale-app {
+  /* User-controlled accent (text & highlight color) */
+  --whale-accent:        #34d399; /* emerald-400 default */
+  --whale-accent-strong: #6ee7b7; /* lighter shade */
+  --whale-accent-deep:   #10b981; /* darker shade */
+}
+
+/* Dark theme — current default look */
+.whale-app[data-theme="dark"] {
+  --whale-bg:           #020617; /* slate-950 */
+  --whale-bg-elev:      #0f172a; /* slate-900 */
+  --whale-text:         #f1f5f9;
+  --whale-text-muted:   #94a3b8;
+  --whale-text-faint:   #64748b;
+  --whale-border:       rgba(255,255,255,0.10);
+  --whale-border-soft:  rgba(255,255,255,0.05);
+  --whale-surface:      rgba(255,255,255,0.04);
+  --whale-surface-hi:   rgba(255,255,255,0.06);
+  background: var(--whale-bg);
+  color: var(--whale-text);
+}
+
+/* Light theme — clean, glassy */
+.whale-app[data-theme="light"] {
+  --whale-bg:           #f8fafc;
+  --whale-bg-elev:      #ffffff;
+  --whale-text:         #0f172a;
+  --whale-text-muted:   #475569;
+  --whale-text-faint:   #94a3b8;
+  --whale-border:       rgba(15,23,42,0.10);
+  --whale-border-soft:  rgba(15,23,42,0.05);
+  --whale-surface:      rgba(15,23,42,0.03);
+  --whale-surface-hi:   rgba(15,23,42,0.06);
+  background: var(--whale-bg);
+  color: var(--whale-text);
+}
+
+/* Light theme — override the slate/white utility classes used by components */
+.whale-app[data-theme="light"] .bg-slate-950           { background-color: var(--whale-bg); }
+.whale-app[data-theme="light"] .bg-slate-950\/85       { background-color: rgba(248,250,252,0.85); }
+.whale-app[data-theme="light"] .bg-slate-950\/95       { background-color: rgba(248,250,252,0.95); }
+.whale-app[data-theme="light"] .bg-slate-900\/60       { background-color: rgba(241,245,249,0.85); }
+.whale-app[data-theme="light"] .bg-slate-900\/80       { background-color: rgba(241,245,249,0.95); }
+.whale-app[data-theme="light"] .bg-slate-800           { background-color: #e2e8f0; }
+
+.whale-app[data-theme="light"] .text-white             { color: var(--whale-text); }
+.whale-app[data-theme="light"] .text-slate-100         { color: var(--whale-text); }
+.whale-app[data-theme="light"] .text-slate-200         { color: #1e293b; }
+.whale-app[data-theme="light"] .text-slate-300         { color: #334155; }
+.whale-app[data-theme="light"] .text-slate-400         { color: var(--whale-text-muted); }
+.whale-app[data-theme="light"] .text-slate-500         { color: var(--whale-text-faint); }
+
+.whale-app[data-theme="light"] .border-white\/5        { border-color: var(--whale-border-soft); }
+.whale-app[data-theme="light"] .border-white\/10       { border-color: var(--whale-border); }
+.whale-app[data-theme="light"] .bg-white\/5            { background-color: rgba(15,23,42,0.03); }
+.whale-app[data-theme="light"] .bg-white\/10           { background-color: rgba(15,23,42,0.06); }
+.whale-app[data-theme="light"] .bg-white\/\[0\.02\]    { background-color: rgba(15,23,42,0.02); }
+.whale-app[data-theme="light"] .bg-white\/\[0\.03\]    { background-color: rgba(15,23,42,0.03); }
+.whale-app[data-theme="light"] .bg-white\/\[0\.04\]    { background-color: rgba(15,23,42,0.04); }
+.whale-app[data-theme="light"] .bg-white\/\[0\.06\]    { background-color: rgba(15,23,42,0.06); }
+.whale-app[data-theme="light"] .hover\:bg-white\/5:hover  { background-color: rgba(15,23,42,0.04); }
+.whale-app[data-theme="light"] .hover\:bg-white\/10:hover { background-color: rgba(15,23,42,0.07); }
+.whale-app[data-theme="light"] .hover\:bg-white\/\[0\.06\]:hover { background-color: rgba(15,23,42,0.06); }
+
+/* Light theme — gradient panels: kill the white-overlay gradients used in cards */
+.whale-app[data-theme="light"] .from-white\/\[0\.04\]  { --tw-gradient-from: rgba(15,23,42,0.04); }
+.whale-app[data-theme="light"] .from-white\/\[0\.06\]  { --tw-gradient-from: rgba(15,23,42,0.06); }
+.whale-app[data-theme="light"] .to-white\/\[0\.01\]    { --tw-gradient-to: rgba(15,23,42,0.01); }
+
+/* Light theme — hero radial / blob backgrounds get inverted */
+.whale-app[data-theme="light"] .from-emerald-900\/30   { --tw-gradient-from: rgba(16,185,129,0.10); }
+.whale-app[data-theme="light"] .via-slate-950          { --tw-gradient-via: #f8fafc; }
+.whale-app[data-theme="light"] .to-slate-950          { --tw-gradient-to: #f8fafc; }
+
+/* ============================================================
+   ACCENT — user-pickable text/highlight color (overrides emerald)
+   Applies in both light and dark themes via .whale-app scope.
+   ============================================================ */
+.whale-app .text-emerald-200,
+.whale-app .text-emerald-300,
+.whale-app .text-emerald-400 { color: var(--whale-accent); }
+
+.whale-app .bg-emerald-300         { background-color: var(--whale-accent-strong); }
+.whale-app .bg-emerald-400         { background-color: var(--whale-accent); }
+.whale-app .hover\:bg-emerald-300:hover { background-color: var(--whale-accent-strong); }
+
+.whale-app .bg-emerald-400\/10  { background-color: color-mix(in srgb, var(--whale-accent) 10%, transparent); }
+.whale-app .bg-emerald-400\/15  { background-color: color-mix(in srgb, var(--whale-accent) 15%, transparent); }
+.whale-app .bg-emerald-400\/20  { background-color: color-mix(in srgb, var(--whale-accent) 20%, transparent); }
+.whale-app .bg-emerald-500\/5   { background-color: color-mix(in srgb, var(--whale-accent) 5%,  transparent); }
+.whale-app .bg-emerald-500\/10  { background-color: color-mix(in srgb, var(--whale-accent) 10%, transparent); }
+.whale-app .bg-emerald-500\/15  { background-color: color-mix(in srgb, var(--whale-accent) 15%, transparent); }
+.whale-app .bg-emerald-500\/30  { background-color: color-mix(in srgb, var(--whale-accent) 30%, transparent); }
+.whale-app .hover\:bg-emerald-400\/10:hover { background-color: color-mix(in srgb, var(--whale-accent) 10%, transparent); }
+.whale-app .hover\:bg-emerald-400\/20:hover { background-color: color-mix(in srgb, var(--whale-accent) 20%, transparent); }
+
+.whale-app .border-emerald-400\/20 { border-color: color-mix(in srgb, var(--whale-accent) 25%, transparent); }
+.whale-app .border-emerald-400\/30 { border-color: color-mix(in srgb, var(--whale-accent) 35%, transparent); }
+.whale-app .border-emerald-400\/40 { border-color: color-mix(in srgb, var(--whale-accent) 45%, transparent); }
+.whale-app .border-emerald-400\/60 { border-color: color-mix(in srgb, var(--whale-accent) 60%, transparent); }
+.whale-app .hover\:border-emerald-400\/30:hover { border-color: color-mix(in srgb, var(--whale-accent) 35%, transparent); }
+.whale-app .hover\:border-emerald-400\/40:hover { border-color: color-mix(in srgb, var(--whale-accent) 45%, transparent); }
+.whale-app .hover\:border-emerald-400\/60:hover { border-color: color-mix(in srgb, var(--whale-accent) 60%, transparent); }
+
+.whale-app .from-emerald-400      { --tw-gradient-from: var(--whale-accent); }
+.whale-app .to-emerald-400        { --tw-gradient-to:   var(--whale-accent); }
+.whale-app .via-emerald-400       { --tw-gradient-via:  var(--whale-accent); }
+.whale-app .from-emerald-300      { --tw-gradient-from: var(--whale-accent-strong); }
+.whale-app .from-emerald-500\/10  { --tw-gradient-from: color-mix(in srgb, var(--whale-accent) 10%, transparent); }
+.whale-app .via-teal-500\/5       { --tw-gradient-via:  color-mix(in srgb, var(--whale-accent) 5%, transparent); }
+
+.whale-app .hover\:text-emerald-200:hover,
+.whale-app .hover\:text-emerald-300:hover,
+.whale-app .group:hover .group-hover\:text-emerald-300 { color: var(--whale-accent-strong); }
+
+.whale-app .shadow-emerald-500\/10 { box-shadow: 0 20px 40px color-mix(in srgb, var(--whale-accent) 12%, transparent); }
+.whale-app .shadow-emerald-500\/30 { box-shadow: 0 10px 30px color-mix(in srgb, var(--whale-accent) 30%, transparent); }
+.whale-app .shadow-emerald-500\/40 { box-shadow: 0 12px 36px color-mix(in srgb, var(--whale-accent) 40%, transparent); }
+
+/* Smooth theme transitions */
+.whale-app * {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+}
+
+/* line-clamp helper used by market cards */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
