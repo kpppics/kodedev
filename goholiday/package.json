@@ -1,0 +1,26 @@
+{
+  "name": "goholiday",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GoHoliday — one search, every holiday deal. Compare flights, hotels, villas, apartments and houses from 21+ providers.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
