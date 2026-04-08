@@ -2,8 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 
 /**
  * GET /api/flights — proxies Travelpayouts' Aviasales v3 prices_for_dates
- * endpoint. Requires TRAVELPAYOUTS_TOKEN in env. Click-through links carry
- * TRAVELPAYOUTS_MARKER so bookings earn commission.
+ * endpoint. Uses MONTH format (YYYY-MM) for departure_at / return_at so
+ * we get results for any day in the requested month, not just the exact
+ * date (which often returns zero cached flights).
+ *
+ * Requires TRAVELPAYOUTS_TOKEN in env. Click-through links carry
+ * NEXT_PUBLIC_TRAVELPAYOUTS_MARKER so bookings earn commission.
  */
 
 export const runtime = 'nodejs'
@@ -152,6 +156,85 @@ function pad(n: number): string {
   return String(n).padStart(2, '0')
 }
 
+function toMonth(iso: string): string {
+  // "2026-05-15" -> "2026-05"
+  return iso.slice(0, 7)
+}
+
+async function fetchPricesForDates(params: {
+  origin: string
+  destination: string
+  departure: string
+  return_?: string
+  currency: string
+  limit: number
+  token: string
+}): Promise<AviasalesFlight[]> {
+  const url = new URL('https://api.travelpayouts.com/aviasales/v3/prices_for_dates')
+  url.searchParams.set('origin', params.origin)
+  url.searchParams.set('destination', params.destination)
+  if (params.departure) url.searchParams.set('departure_at', params.departure)
+  if (params.return_) url.searchParams.set('return_at', params.return_)
+  url.searchParams.set('unique', 'false')
+  url.searchParams.set('sorting', 'price')
+  url.searchParams.set('direct', 'false')
+  url.searchParams.set('currency', params.currency)
+  url.searchParams.set('limit', String(params.limit))
+  url.searchParams.set('token', params.token)
+
+  const res = await fetch(url.toString(), {
+    headers: { 'X-Access-Token': params.token, Accept: 'application/json' },
+    next: { revalidate: 300 },
+  })
+  if (!res.ok) throw new Error(`Aviasales ${res.status}`)
+  const body = (await res.json()) as { success?: boolean; data?: AviasalesFlight[] }
+  return body.data || []
+}
+
+async function fetchCheap(params: {
+  origin: string
+  destination: string
+  currency: string
+  token: string
+}): Promise<AviasalesFlight[]> {
+  // Fallback: v1 /prices/cheap returns cached cheapest flights regardless
+  // of exact date. Structure is slightly different so we normalise it.
+  const url = new URL('https://api.travelpayouts.com/v1/prices/cheap')
+  url.searchParams.set('origin', params.origin)
+  url.searchParams.set('destination', params.destination)
+  url.searchParams.set('currency', params.currency)
+  url.searchParams.set('token', params.token)
+
+  const res = await fetch(url.toString(), {
+    headers: { 'X-Access-Token': params.token, Accept: 'application/json' },
+    next: { revalidate: 300 },
+  })
+  if (!res.ok) throw new Error(`Aviasales cheap ${res.status}`)
+  const body = (await res.json()) as {
+    success?: boolean
+    data?: Record<string, Record<string, { price: number; airline: string; flight_number: string; departure_at: string; return_at: string; expires_at: string }>>
+  }
+
+  const dest = body.data?.[params.destination] || {}
+  return Object.entries(dest).map(([_k, v], i) => ({
+    origin: params.origin,
+    destination: params.destination,
+    origin_airport: params.origin,
+    destination_airport: params.destination,
+    price: v.price,
+    airline: v.airline,
+    flight_number: v.flight_number || String(i),
+    departure_at: v.departure_at,
+    return_at: v.return_at,
+    transfers: 0,
+    return_transfers: 0,
+    duration: 120,
+    duration_to: 120,
+    duration_back: 120,
+    link: `/search/${params.origin}${params.destination}${v.departure_at?.slice(0, 10) || ''}1`,
+  }))
+}
+
 export async function GET(req: NextRequest) {
   const token = process.env.TRAVELPAYOUTS_TOKEN
   const marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || ''
@@ -168,79 +251,111 @@ export async function GET(req: NextRequest) {
   const currency = (searchParams.get('currency') || 'gbp').toLowerCase()
   const limit = Math.min(Number(searchParams.get('limit') || '20'), 30)
 
-  const upstream = new URL('https://api.travelpayouts.com/aviasales/v3/prices_for_dates')
-  upstream.searchParams.set('origin', origin)
-  upstream.searchParams.set('destination', destination)
-  if (departure_at) upstream.searchParams.set('departure_at', departure_at)
-  if (return_at) upstream.searchParams.set('return_at', return_at)
-  upstream.searchParams.set('unique', 'false')
-  upstream.searchParams.set('sorting', 'price')
-  upstream.searchParams.set('direct', 'false')
-  upstream.searchParams.set('currency', currency)
-  upstream.searchParams.set('limit', String(limit))
-  upstream.searchParams.set('token', token)
-
+  // Try month-format first (broader window). Fall back to no-date, then
+  // to the v1 /prices/cheap cached endpoint.
+  let flights: AviasalesFlight[] = []
+  const attempts: string[] = []
   try {
-    const res = await fetch(upstream.toString(), {
-      headers: { 'X-Access-Token': token, Accept: 'application/json' },
-      next: { revalidate: 300 },
+    flights = await fetchPricesForDates({
+      origin,
+      destination,
+      departure: departure_at ? toMonth(departure_at) : '',
+      return_: return_at ? toMonth(return_at) : undefined,
+      currency,
+      limit,
+      token,
     })
-    if (!res.ok) throw new Error(`Aviasales ${res.status}`)
-    const body = (await res.json()) as { success?: boolean; data?: AviasalesFlight[] }
-    const flights = body.data || []
-
-    const currencySymbol = currency === 'gbp' ? '£' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency.toUpperCase()
-
-    const deals = flights.map((f, i) => {
-      const airline = AIRLINES[f.airline] || { name: f.airline, color: '#4F46E5' }
-      const dep = new Date(f.departure_at)
-      const depH = dep.getUTCHours()
-      const depM = dep.getUTCMinutes()
-      const durTo = f.duration_to ?? f.duration ?? 0
-      const arriveMin = depH * 60 + depM + durTo
-      const arriveH = Math.floor(arriveMin / 60) % 24
-      const arriveM = arriveMin % 60
-      const durH = Math.floor(durTo / 60)
-      const durM = durTo % 60
-      const stops = f.transfers ?? 0
-      const stopsLabel = stops === 0 ? 'Direct' : stops === 1 ? '1 stop' : `${stops} stops`
-
-      const dealUrl = `https://www.aviasales.com${f.link}${f.link.includes('?') ? '&' : '?'}marker=${marker || '516555'}`
-
-      return {
-        id: `tp-flight-${f.flight_number}-${i}`,
-        airline: airline.name,
-        airlineCode: f.airline,
-        airlineColor: airline.color,
-        from: f.origin,
-        fromCode: f.origin_airport,
-        to: f.destination,
-        toCode: f.destination_airport,
-        departTime: `${pad(depH)}:${pad(depM)}`,
-        arriveTime: `${pad(arriveH)}:${pad(arriveM)}`,
-        duration: `${durH}h ${pad(durM)}m`,
-        stops,
-        stopsLabel,
-        price: Math.round(f.price * adults),
-        currency: currencySymbol,
-        providerId: 'aviasales',
-        providerName: 'Aviasales',
-        providerColor: '#00C4AE',
-        dealUrl,
-        isOutbound: true,
-        co2kg: Math.round(durH * 85 + stops * 20),
-      }
-    })
-
-    return NextResponse.json(
-      { deals },
-      {
-        headers: {
-          'Cache-Control': 's-maxage=300, stale-while-revalidate=600',
-        },
-      },
-    )
+    attempts.push(`month:${flights.length}`)
   } catch (e) {
-    return NextResponse.json({ deals: [], error: String(e) })
+    attempts.push(`month:err(${String(e)})`)
   }
+
+  if (flights.length === 0) {
+    try {
+      flights = await fetchPricesForDates({
+        origin,
+        destination,
+        departure: '',
+        return_: undefined,
+        currency,
+        limit,
+        token,
+      })
+      attempts.push(`nodate:${flights.length}`)
+    } catch (e) {
+      attempts.push(`nodate:err(${String(e)})`)
+    }
+  }
+
+  if (flights.length === 0) {
+    try {
+      flights = await fetchCheap({ origin, destination, currency, token })
+      attempts.push(`cheap:${flights.length}`)
+    } catch (e) {
+      attempts.push(`cheap:err(${String(e)})`)
+    }
+  }
+
+  if (flights.length === 0) {
+    return NextResponse.json({
+      deals: [],
+      debug: { origin, destination, departure_at, return_at, attempts },
+    })
+  }
+
+  const currencySymbol =
+    currency === 'gbp' ? '£' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency.toUpperCase()
+
+  const deals = flights.map((f, i) => {
+    const airline = AIRLINES[f.airline] || { name: f.airline || 'Airline', color: '#4F46E5' }
+    const dep = new Date(f.departure_at)
+    const depH = dep.getUTCHours()
+    const depM = dep.getUTCMinutes()
+    const durTo = f.duration_to ?? f.duration ?? 120
+    const arriveMin = depH * 60 + depM + durTo
+    const arriveH = Math.floor(arriveMin / 60) % 24
+    const arriveM = arriveMin % 60
+    const durH = Math.floor(durTo / 60)
+    const durM = durTo % 60
+    const stops = f.transfers ?? 0
+    const stopsLabel = stops === 0 ? 'Direct' : stops === 1 ? '1 stop' : `${stops} stops`
+
+    const dealUrl =
+      `https://www.aviasales.com${f.link}` +
+      (f.link.includes('?') ? '&' : '?') +
+      `marker=${marker || '516555'}`
+
+    return {
+      id: `tp-flight-${f.flight_number}-${i}`,
+      airline: airline.name,
+      airlineCode: f.airline,
+      airlineColor: airline.color,
+      from: f.origin,
+      fromCode: f.origin_airport || origin,
+      to: f.destination,
+      toCode: f.destination_airport || destination,
+      departTime: `${pad(depH)}:${pad(depM)}`,
+      arriveTime: `${pad(arriveH)}:${pad(arriveM)}`,
+      duration: `${durH}h ${pad(durM)}m`,
+      stops,
+      stopsLabel,
+      price: Math.round(f.price * adults),
+      currency: currencySymbol,
+      providerId: 'aviasales',
+      providerName: 'Aviasales',
+      providerColor: '#00C4AE',
+      dealUrl,
+      isOutbound: true,
+      co2kg: Math.round(durH * 85 + stops * 20),
+    }
+  })
+
+  return NextResponse.json(
+    { deals, debug: { attempts } },
+    {
+      headers: {
+        'Cache-Control': 's-maxage=300, stale-while-revalidate=600',
+      },
+    },
+  )
 }
