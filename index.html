@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free US Deals &amp; Coupons | Pizza Hut, McDonald's, Dunkin' &amp; More</title>
+  <meta name="description" content="Find free food, app-signup rewards, and verified promo codes from major US chains including Starbucks, McDonald's, Dunkin', Pizza Hut, Domino's and more."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://deals.kodedev.co.uk/"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#4f46e5",
+          "secondary": "#0284c7",
+          "tertiary": "#a21caf",
+          "surface": "#f8fafc",
+          "on-surface": "#0f172a",
+          "on-primary": "#ffffff",
+          "outline": "#64748b",
+          "outline-variant": "#94a3b8",
+          "surface-variant": "#e2e8f0",
+          "on-surface-variant": "#475569",
+          "inverse-surface": "#1e293b",
+          "inverse-on-surface": "#f8fafc",
+          "error": "#dc2626",
+          "primary-container": "#4f46e5",
+          "on-primary-container": "#ffffff",
+          "secondary-container": "#0ea5e9",
+          "tertiary-container": "#d946ef"
+        },
+        fontFamily: {
+          "headline": ["Space Grotesk"],
+          "body": ["Inter"],
+          "label": ["Inter"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-hover {
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(79,70,229,0.12);
+    }
+
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    #mobile-menu.open {
+      max-height: 420px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .scanner-spin {
+      animation: spin 1.5s linear infinite;
+    }
+
+    .scanner-pulse {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-indigo-100 selection:text-indigo-900">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="/" class="font-headline font-bold text-xl text-slate-900">
+          US Deals <span class="text-sm font-body font-normal text-slate-500">by KODEDEV</span>
+        </a>
+        <a href="https://kodedev.co.uk" class="text-sm font-body text-slate-500 hover:text-primary transition-colors">kodedev.co.uk</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-16 md:pt-40 md:pb-20 bg-slate-900 min-h-[60vh] flex flex-col justify-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text">US Deal Scanner</h1>
+        <p class="text-lg md:text-xl text-slate-300 font-body max-w-2xl mx-auto">
+          Real deals, free food, and verified promo codes from your favorite US restaurants and coffee shops. Scan codes at the till or claim online.
+        </p>
+        <p class="text-xs text-slate-500 font-body mt-3">Last updated: <span id="last-updated">just now</span></p>
+      </div>
+
+      <!-- Scanner Overlay -->
+      <div id="scanner-overlay" class="max-w-2xl mx-auto mb-8 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 md:p-12 text-center">
+        <div class="mb-6">
+          <span class="material-symbols-outlined text-4xl md:text-5xl text-primary scanner-spin inline-block">radar</span>
+        </div>
+        <p class="text-slate-300 font-body mb-2 text-sm md:text-base">Scanning for deals...</p>
+        <p id="scan-store" class="text-xl md:text-2xl font-headline font-bold text-white mb-6">Starbucks</p>
+
+        <div class="w-full bg-slate-700 rounded-full h-2 mb-6 overflow-hidden">
+          <div id="scan-progress" class="bg-primary h-full transition-all duration-100" style="width: 0%"></div>
+        </div>
+
+        <p id="scan-text" class="text-slate-400 font-body text-sm">Found 0 deals...</p>
+      </div>
+
+      <!-- Stats Row (hidden initially) -->
+      <div id="stats-row" class="max-w-2xl mx-auto hidden">
+        <div class="grid grid-cols-3 gap-4 md:gap-6 text-center mb-8">
+          <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+            <div class="text-2xl md:text-3xl font-bold text-primary mb-1" id="deals-count">0</div>
+            <p class="text-slate-400 font-body text-xs md:text-sm">Deals Found</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+            <div class="text-2xl md:text-3xl font-bold text-emerald-400 mb-1" id="stores-count">0</div>
+            <p class="text-slate-400 font-body text-xs md:text-sm">Stores Scanned</p>
+          </div>
+          <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+            <div class="text-sm md:text-base font-body text-slate-300 mb-1" id="last-checked">Just now</div>
+            <p class="text-slate-400 font-body text-xs md:text-sm">Last Checked</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Check for New Freebies Button -->
+      <div class="max-w-2xl mx-auto text-center">
+        <button id="scan-btn" onclick="runScan()" class="bg-emerald-500 hover:bg-emerald-600 transition-colors text-white font-headline font-semibold px-8 md:px-12 py-3 md:py-4 rounded-xl flex items-center justify-center gap-2 mx-auto shadow-lg hover:shadow-xl">
+          <span class="material-symbols-outlined">refresh</span>
+          Check for New Freebies
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Bar -->
+  <section class="bg-slate-50 border-b border-slate-200 sticky top-16 z-40 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Category Filters -->
+      <div class="mb-6">
+        <p class="text-sm font-headline font-semibold text-slate-900 mb-3">Category</p>
+        <div class="flex flex-wrap gap-2">
+          <button class="category-filter active px-4 py-2 rounded-full text-sm font-body font-medium bg-primary text-white transition-colors" data-category="all">All</button>
+          <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="coffee">Coffee</button>
+          <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="fastfood">Fast Food</button>
+          <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="pizza">Pizza</button>
+          <button class="category-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-category="restaurant">Restaurants</button>
+        </div>
+      </div>
+
+      <!-- Deal Type Filters -->
+      <div class="mb-6">
+        <p class="text-sm font-headline font-semibold text-slate-900 mb-3">Deal Type</p>
+        <div class="flex flex-wrap gap-2">
+          <button class="dealtype-filter active px-4 py-2 rounded-full text-sm font-body font-medium bg-primary text-white transition-colors" data-dealtype="all">All</button>
+          <button class="dealtype-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-dealtype="free">Free</button>
+          <button class="dealtype-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-dealtype="percent">% Off</button>
+          <button class="dealtype-filter px-4 py-2 rounded-full text-sm font-body font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-dealtype="newcustomer">New Customer</button>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div>
+        <p class="text-sm font-headline font-semibold text-slate-900 mb-3">Search</p>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-3 text-slate-400 text-xl">search</span>
+          <input type="text" id="search-input" placeholder="Search deals..." class="w-full pl-12 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent font-body text-sm">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deals Grid -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="deals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Deals will be rendered here by JavaScript -->
+      </div>
+
+      <!-- No Results Message -->
+      <div id="no-results" class="text-center py-16 hidden">
+        <span class="material-symbols-outlined text-6xl text-slate-300 block mb-4">inbox</span>
+        <p class="text-xl font-headline font-semibold text-slate-900 mb-2">No deals found</p>
+        <p class="text-slate-600 font-body">Try adjusting your filters or search terms</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h3 class="font-headline font-bold text-lg text-white mb-2">US Deals</h3>
+      <p class="text-slate-400 font-body text-sm mb-4">Curated deals from major US food &amp; coffee chains.</p>
+      <p class="text-slate-500 font-body text-xs mb-6">A project by <a href="https://kodedev.co.uk" class="text-primary hover:text-indigo-300 transition-colors">KODEDEV</a></p>
+      <div class="border-t border-slate-800 pt-6">
+        <p class="text-slate-500 font-body text-xs">&copy; 2026 KODEDEV. Deals verified at time of publishing &mdash; always check store terms before redeeming.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Deals Data (loaded from deals.json)
+    var DEALS = [];
+
+    // Filter state
+    var activeCategory = 'all';
+    var activeDealType = 'all';
+    var searchTerm = '';
+
+    // Category filter handlers
+    var categoryFilters = document.querySelectorAll('.category-filter');
+    categoryFilters.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        categoryFilters.forEach(function(b) {
+          b.classList.remove('bg-primary', 'text-white');
+          b.classList.add('bg-slate-100', 'text-slate-600');
+        });
+        btn.classList.remove('bg-slate-100', 'text-slate-600');
+        btn.classList.add('bg-primary', 'text-white');
+        activeCategory = btn.dataset.category;
+        filterDeals();
+      });
+    });
+
+    // Deal type filter handlers
+    var dealTypeFilters = document.querySelectorAll('.dealtype-filter');
+    dealTypeFilters.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        dealTypeFilters.forEach(function(b) {
+          b.classList.remove('bg-primary', 'text-white');
+          b.classList.add('bg-slate-100', 'text-slate-600');
+        });
+        btn.classList.remove('bg-slate-100', 'text-slate-600');
+        btn.classList.add('bg-primary', 'text-white');
+        activeDealType = btn.dataset.dealtype;
+        filterDeals();
+      });
+    });
+
+    // Search input handler
+    var searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function() {
+      searchTerm = searchInput.value.toLowerCase();
+      filterDeals();
+    });
+
+    function getCategoryColor(category) {
+      var colors = {
+        'coffee': 'bg-emerald-100 text-emerald-700',
+        'fastfood': 'bg-amber-100 text-amber-700',
+        'pizza': 'bg-orange-100 text-orange-700',
+        'restaurant': 'bg-violet-100 text-violet-700'
+      };
+      return colors[category] || 'bg-slate-100 text-slate-700';
+    }
+
+    function getCategoryLabel(category) {
+      var labels = {
+        'coffee': 'Coffee',
+        'fastfood': 'Fast Food',
+        'pizza': 'Pizza',
+        'restaurant': 'Restaurant'
+      };
+      return labels[category] || category;
+    }
+
+    function getDealTypeColor(dealType) {
+      var colors = {
+        'free': 'bg-green-100 text-green-700',
+        'percent': 'bg-blue-100 text-blue-700',
+        'newcustomer': 'bg-purple-100 text-purple-700'
+      };
+      return colors[dealType] || 'bg-slate-100 text-slate-700';
+    }
+
+    function getDealTypeLabel(dealType) {
+      var labels = {
+        'free': 'Free',
+        'percent': '% Off',
+        'newcustomer': 'New Customer'
+      };
+      return labels[dealType] || dealType;
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function renderDeals(deals) {
+      var grid = document.getElementById('deals-grid');
+      grid.innerHTML = '';
+
+      deals.forEach(function(deal, index) {
+        var categoryTag = getCategoryLabel(deal.category);
+        var dealTypeLabel = getDealTypeLabel(deal.dealType);
+        var categoryColor = getCategoryColor(deal.category);
+        var dealTypeColor = getDealTypeColor(deal.dealType);
+        var ctaText = deal.ctaText || 'Claim Deal';
+        var safeStore = escapeHtml(deal.store);
+        var safeCode = deal.code ? escapeHtml(deal.code) : '';
+
+        var codeBlockHtml = '';
+        if (deal.code) {
+          var barcodeUrl = 'https://barcode.tec-it.com/barcode.ashx?data=' + encodeURIComponent(deal.code) + '&code=Code128&dpi=96&imagetype=Png';
+          codeBlockHtml =
+            '<div class="mb-4 p-4 border-2 border-dashed border-slate-300 rounded-xl">' +
+              '<div class="flex items-center justify-between mb-3">' +
+                '<div>' +
+                  '<p class="text-xs text-slate-500 font-body">Promo Code</p>' +
+                  '<p class="font-headline font-bold text-slate-900 tracking-wider text-lg">' + safeCode + '</p>' +
+                '</div>' +
+                '<button onclick="copyCode(\'' + safeCode + '\', this)" class="text-primary hover:text-indigo-700 p-2" aria-label="Copy code">' +
+                  '<span class="material-symbols-outlined">content_copy</span>' +
+                '</button>' +
+              '</div>' +
+              '<div class="bg-white p-2 rounded-lg flex justify-center border border-slate-200">' +
+                '<img src="' + barcodeUrl + '" alt="Scannable barcode for ' + safeCode + '" class="max-w-full h-auto" loading="lazy"/>' +
+              '</div>' +
+              '<button onclick="saveBarcode(\'' + safeCode + '\', \'' + safeStore + '\')" class="mt-3 w-full text-xs text-slate-600 hover:text-primary font-body flex items-center justify-center gap-1">' +
+                '<span class="material-symbols-outlined text-sm">download</span>' +
+                'Save to Phone' +
+              '</button>' +
+            '</div>';
+        }
+
+        var card = document.createElement('div');
+        card.className = 'reveal reveal-delay-' + ((index % 4) + 1) + ' bg-white rounded-[2rem] border border-slate-200 overflow-hidden card-hover';
+        card.innerHTML =
+          '<div class="p-6">' +
+            '<div class="flex items-start justify-between mb-4">' +
+              '<div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-headline font-bold text-lg" style="background-color: ' + deal.brandColor + '">' +
+                escapeHtml(deal.store.charAt(0)) +
+              '</div>' +
+              (deal.verified ? '<div class="flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded-full"><span class="material-symbols-outlined text-sm">verified</span><span class="font-body text-xs font-semibold">Verified</span></div>' : '') +
+            '</div>' +
+            '<div class="mb-4">' +
+              '<p class="font-headline font-semibold text-slate-900 mb-1">' + safeStore + '</p>' +
+              '<p class="font-body text-xs text-slate-500">' + escapeHtml(deal.region) + '</p>' +
+            '</div>' +
+            '<div class="flex gap-2 mb-4 flex-wrap">' +
+              '<span class="font-body text-xs font-medium px-3 py-1 rounded-full ' + categoryColor + '">' + categoryTag + '</span>' +
+              '<span class="font-body text-xs font-medium px-3 py-1 rounded-full ' + dealTypeColor + '">' + dealTypeLabel + '</span>' +
+            '</div>' +
+            '<h3 class="font-headline font-semibold text-slate-900 text-base mb-2">' + escapeHtml(deal.title) + '</h3>' +
+            '<p class="font-body text-sm text-slate-600 mb-4">' + escapeHtml(deal.description) + '</p>' +
+            '<div class="mb-4">' +
+              '<p class="font-headline font-bold text-2xl gradient-text">' + escapeHtml(deal.discount) + '</p>' +
+            '</div>' +
+            codeBlockHtml +
+            '<a href="' + escapeHtml(deal.link) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-primary hover:bg-indigo-700 text-white font-headline font-semibold py-3 rounded-xl transition-colors mb-3">' +
+              escapeHtml(ctaText) +
+              ' <span class="material-symbols-outlined text-sm align-middle ml-1">open_in_new</span>' +
+            '</a>' +
+            '<div class="flex items-center gap-2 text-slate-600 pt-3 border-t border-slate-100">' +
+              '<span class="material-symbols-outlined text-base">schedule</span>' +
+              '<span class="font-body text-xs">' + escapeHtml(deal.expiry) + '</span>' +
+            '</div>' +
+          '</div>';
+
+        grid.appendChild(card);
+
+        setTimeout(function() {
+          card.classList.add('active');
+        }, 50);
+      });
+    }
+
+    function copyCode(code, btn) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(function() {
+          var icon = btn.querySelector('.material-symbols-outlined');
+          var orig = icon.textContent;
+          icon.textContent = 'check';
+          setTimeout(function() { icon.textContent = orig; }, 1500);
+        });
+      }
+    }
+
+    function saveBarcode(code, store) {
+      var url = 'https://barcode.tec-it.com/barcode.ashx?data=' + encodeURIComponent(code) +
+                '&code=Code128&dpi=150&imagetype=Png';
+      fetch(url)
+        .then(function(res) { return res.blob(); })
+        .then(function(blob) {
+          var link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = store.replace(/\s+/g, '-').toLowerCase() + '-' + code + '.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        })
+        .catch(function() {
+          window.open(url, '_blank');
+        });
+    }
+
+    function filterDeals() {
+      var filtered = DEALS.filter(function(deal) {
+        var matchesCategory = activeCategory === 'all' || deal.category === activeCategory;
+        var matchesDealType = activeDealType === 'all' || deal.dealType === activeDealType;
+        var matchesSearch = searchTerm === '' ||
+          deal.store.toLowerCase().includes(searchTerm) ||
+          deal.title.toLowerCase().includes(searchTerm) ||
+          deal.description.toLowerCase().includes(searchTerm);
+
+        return matchesCategory && matchesDealType && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        document.getElementById('deals-grid').innerHTML = '';
+        document.getElementById('no-results').classList.remove('hidden');
+      } else {
+        document.getElementById('no-results').classList.add('hidden');
+        renderDeals(filtered);
+      }
+    }
+
+    function animateCounter(el, target) {
+      var current = 0;
+      var increment = Math.ceil(target / 30);
+      var interval = setInterval(function() {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
+        }
+        el.textContent = current;
+      }, 30);
+    }
+
+    function runScan() {
+      var overlay = document.getElementById('scanner-overlay');
+      var statsRow = document.getElementById('stats-row');
+      var scanBtn = document.getElementById('scan-btn');
+      var storeNames = [];
+      var scanStoreEl = document.getElementById('scan-store');
+      var scanProgressEl = document.getElementById('scan-progress');
+      var scanTextEl = document.getElementById('scan-text');
+
+      DEALS.forEach(function(deal) {
+        if (!storeNames.includes(deal.store)) {
+          storeNames.push(deal.store);
+        }
+      });
+
+      overlay.style.display = 'block';
+      statsRow.classList.add('hidden');
+
+      var storeIndex = 0;
+      var startTime = Date.now();
+      var scanDuration = 3000;
+
+      var storeInterval = setInterval(function() {
+        scanStoreEl.textContent = storeNames[storeIndex % storeNames.length];
+        storeIndex++;
+      }, 200);
+
+      var progressInterval = setInterval(function() {
+        var elapsed = Date.now() - startTime;
+        var progress = Math.min(elapsed / scanDuration * 100, 100);
+        scanProgressEl.style.width = progress + '%';
+        scanTextEl.textContent = 'Found ' + DEALS.length + ' deals...';
+
+        if (elapsed >= scanDuration) {
+          clearInterval(progressInterval);
+          clearInterval(storeInterval);
+
+          setTimeout(function() {
+            overlay.style.display = 'none';
+            statsRow.classList.remove('hidden');
+
+            var dealsCountEl = document.getElementById('deals-count');
+            var storesCountEl = document.getElementById('stores-count');
+            var lastCheckedEl = document.getElementById('last-checked');
+
+            animateCounter(dealsCountEl, DEALS.length);
+            animateCounter(storesCountEl, storeNames.length);
+            lastCheckedEl.textContent = 'Just now';
+
+            renderDeals(DEALS);
+          }, 300);
+        }
+      }, 30);
+    }
+
+    // Initialize page - fetch deals.json then run scanner
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('deals.json')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          DEALS = data.deals || [];
+          var lastUpdatedEl = document.getElementById('last-updated');
+          if (lastUpdatedEl && data.lastUpdated) {
+            lastUpdatedEl.textContent = data.lastUpdated;
+          }
+          runScan();
+        })
+        .catch(function(err) {
+          console.error('Failed to load deals.json:', err);
+          var grid = document.getElementById('deals-grid');
+          if (grid) {
+            grid.innerHTML = '<p class="col-span-full text-center text-slate-500 font-body">Unable to load deals. Please try again later.</p>';
+          }
+          var overlay = document.getElementById('scanner-overlay');
+          if (overlay) overlay.style.display = 'none';
+        });
+    });
+  </script>
+</body>
+</html>
