@@ -21,6 +21,7 @@ interface AppContextValue {
   signOut: () => void
   addSubmission: (s: Omit<Submission, 'id' | 'createdAt' | 'status' | 'earnings' | 'views' | 'authorId' | 'authorName'>) => Submission
   removeSubmission: (id: string) => void
+  updateSubmissionStatus: (id: string, status: Submission['status'], earnings?: number) => void
   setPayout: (method: 'bank' | 'paypal', detail: string) => void
   withdraw: () => number
   hydrated: boolean
@@ -131,6 +132,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return sub
       },
       removeSubmission: (id) => setSubmissions((prev) => prev.filter((s) => s.id !== id)),
+      updateSubmissionStatus: (id, status, earnings) =>
+        setSubmissions((prev) =>
+          prev.map((s) =>
+            s.id === id
+              ? { ...s, status, ...(earnings !== undefined ? { earnings } : {}) }
+              : s
+          )
+        ),
       setPayout: (method, detail) =>
         setUser((u) => (u ? { ...u, payoutMethod: method, payoutDetail: detail } : u)),
       withdraw: () => {
