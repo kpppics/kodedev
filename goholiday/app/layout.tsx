@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -40,6 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-surface font-body text-on-surface selection:bg-indigo-100 selection:text-indigo-900">
         {children}
+        <Script
+          id="travelpayouts-verify"
+          strategy="afterInteractive"
+          src="https://tp-em.com/NTE2NTU1.js?t=516555"
+        />
       </body>
     </html>
   )
