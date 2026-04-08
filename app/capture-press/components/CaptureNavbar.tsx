@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react'
 import { useApp } from '../providers'
 
 const NAV = [
-  { href: '/capture/browse', label: 'Browse' },
-  { href: '/capture/categories', label: 'Categories' },
-  { href: '/capture/how-it-works', label: 'How it works' },
-  { href: '/capture/safety', label: 'Safety' },
+  { href: '/capture-press/browse', label: 'Browse' },
+  { href: '/capture-press/categories', label: 'Categories' },
+  { href: '/capture-press/how-it-works', label: 'How it works' },
+  { href: '/capture-press/safety', label: 'Safety' },
 ]
 
 export default function Navbar() {
@@ -36,7 +36,7 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/capture" className="flex items-center gap-2 group">
+        <Link href="/capture-press" className="flex items-center gap-2 group">
           <span className="relative inline-flex h-9 w-9 rounded-xl bg-brand items-center justify-center shadow-soft">
             <span className="material-symbols-outlined text-white" style={{ fontSize: 22 }}>
               photo_camera
@@ -66,21 +66,21 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
-          <Link href="/capture/upload" className="btn btn-primary text-sm py-2 px-4">
+          <Link href="/capture-press/upload" className="btn btn-primary text-sm py-2 px-4">
             <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
               add_a_photo
             </span>
             Upload
           </Link>
           {hydrated && user ? (
-            <Link href="/capture/account" className="btn btn-ghost text-sm py-2 px-3">
+            <Link href="/capture-press/account" className="btn btn-ghost text-sm py-2 px-3">
               <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
                 account_circle
               </span>
               {user.name.split(' ')[0]}
             </Link>
           ) : (
-            <Link href="/capture/signin" className="btn btn-ghost text-sm py-2 px-4">
+            <Link href="/capture-press/signin" className="btn btn-ghost text-sm py-2 px-4">
               Sign in
             </Link>
           )}
@@ -108,15 +108,15 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="flex gap-2 pt-2">
-              <Link href="/capture/upload" className="btn btn-primary flex-1 text-sm">
+              <Link href="/capture-press/upload" className="btn btn-primary flex-1 text-sm">
                 Upload
               </Link>
               {hydrated && user ? (
-                <Link href="/capture/account" className="btn btn-ghost flex-1 text-sm">
+                <Link href="/capture-press/account" className="btn btn-ghost flex-1 text-sm">
                   Account
                 </Link>
               ) : (
-                <Link href="/capture/signin" className="btn btn-ghost flex-1 text-sm">
+                <Link href="/capture-press/signin" className="btn btn-ghost flex-1 text-sm">
                   Sign in
                 </Link>
               )}

@@ -144,7 +144,7 @@ export default function AdminDashboard() {
           <p className="text-mute text-sm mt-1">Review submissions, manage payouts and monitor the newsroom.</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/capture" className="btn btn-light text-sm">
+          <Link href="/capture-press" className="btn btn-light text-sm">
             <span className="material-symbols-outlined" style={{ fontSize: 18 }}>open_in_new</span>
             View site
           </Link>
@@ -276,7 +276,7 @@ export default function AdminDashboard() {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          href={`/capture/submission/${sub.id}`}
+                          href={`/capture-press/submission/${sub.id}`}
                           className="p-1.5 rounded-lg text-mute hover:text-ink hover:bg-paper"
                           title="View"
                         >

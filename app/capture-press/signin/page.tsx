@@ -62,7 +62,7 @@ function SignInInner() {
       </div>
       <div className="flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-md">
-          <Link href="/capture" className="text-mute text-sm hover:text-brand">
+          <Link href="/capture-press" className="text-mute text-sm hover:text-brand">
             ← Back to home
           </Link>
           <h1 className="font-display text-3xl font-bold mt-3">
@@ -140,8 +140,8 @@ function SignInInner() {
 
             <p className="text-xs text-mute text-center">
               By continuing you agree to the{' '}
-              <Link href="/capture/legal/terms" className="text-brand">terms</Link> and{' '}
-              <Link href="/capture/legal/privacy" className="text-brand">privacy policy</Link>.
+              <Link href="/capture-press/legal/terms" className="text-brand">terms</Link> and{' '}
+              <Link href="/capture-press/legal/privacy" className="text-brand">privacy policy</Link>.
             </p>
           </form>
         </div>

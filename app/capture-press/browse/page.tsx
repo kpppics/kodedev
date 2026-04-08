@@ -49,7 +49,7 @@ export default function BrowsePage() {
             selling.
           </p>
         </div>
-        <Link href="/capture/upload" className="btn btn-primary">
+        <Link href="/capture-press/upload" className="btn btn-primary">
           <span className="material-symbols-outlined" style={{ fontSize: 20 }}>add_a_photo</span>
           Upload yours
         </Link>

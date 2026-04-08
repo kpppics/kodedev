@@ -65,7 +65,7 @@ export default function SafetyPage() {
           If you're witnessing a crime in progress or anyone is hurt, dial <strong>999</strong> first.
           Your safety and the safety of those around you is more important than the story.
         </p>
-        <Link href="/capture/upload" className="btn btn-primary mt-5">
+        <Link href="/capture-press/upload" className="btn btn-primary mt-5">
           I understand — take me to upload
         </Link>
       </div>

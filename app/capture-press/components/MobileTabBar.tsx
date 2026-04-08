@@ -4,11 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const TABS = [
-  { href: '/capture', label: 'Home', icon: 'home' },
-  { href: '/capture/browse', label: 'Browse', icon: 'explore' },
-  { href: '/capture/upload', label: 'Upload', icon: 'add_a_photo', primary: true },
-  { href: '/capture/categories', label: 'Topics', icon: 'category' },
-  { href: '/capture/account', label: 'Me', icon: 'person' },
+  { href: '/capture-press', label: 'Home', icon: 'home' },
+  { href: '/capture-press/browse', label: 'Browse', icon: 'explore' },
+  { href: '/capture-press/upload', label: 'Upload', icon: 'add_a_photo', primary: true },
+  { href: '/capture-press/categories', label: 'Topics', icon: 'category' },
+  { href: '/capture-press/account', label: 'Me', icon: 'person' },
 ]
 
 export default function MobileTabBar() {
@@ -18,8 +18,8 @@ export default function MobileTabBar() {
       <div className="grid grid-cols-5 h-16">
         {TABS.map((t) => {
           const active =
-            t.href === '/capture'
-              ? pathname === '/capture' || pathname === '/capture/'
+            t.href === '/capture-press'
+              ? pathname === '/capture-press' || pathname === '/capture-press/'
               : pathname === t.href || pathname?.startsWith(t.href + '/')
           if (t.primary) {
             return (

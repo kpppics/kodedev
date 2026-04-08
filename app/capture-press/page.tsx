@@ -29,11 +29,11 @@ export default function CapturePressHome() {
                 minutes, not weeks.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link href="/capture/upload" className="btn btn-primary">
+                <Link href="/capture-press/upload" className="btn btn-primary">
                   <span className="material-symbols-outlined" style={{ fontSize: 20 }}>add_a_photo</span>
                   Upload your shot
                 </Link>
-                <Link href="/capture/how-it-works" className="btn btn-ghost">
+                <Link href="/capture-press/how-it-works" className="btn btn-ghost">
                   How it works
                 </Link>
               </div>
@@ -94,7 +94,7 @@ export default function CapturePressHome() {
             <div className="text-xs uppercase tracking-widest text-brand font-semibold">Latest in the newsroom</div>
             <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">Live submissions from reporters</h2>
           </div>
-          <Link href="/capture/browse" className="btn btn-light text-sm">
+          <Link href="/capture-press/browse" className="btn btn-light text-sm">
             See all
             <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
           </Link>
@@ -120,8 +120,8 @@ export default function CapturePressHome() {
                 accepted submission.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/capture/signin" className="btn btn-primary">Create account</Link>
-                <Link href="/capture/pricing" className="btn btn-ghost">See payout rates</Link>
+                <Link href="/capture-press/signin" className="btn btn-primary">Create account</Link>
+                <Link href="/capture-press/pricing" className="btn btn-ghost">See payout rates</Link>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ function PhoneMock() {
               </div>
               <div className="ml-auto chip chip-green">Sold</div>
             </div>
-            <img src="https://picsum.photos/seed/captureherohome/600/360" alt="" className="rounded-xl mt-3 w-full" />
+            <img src="https://picsum.photos/seed/capture-pressherohome/600/360" alt="" className="rounded-xl mt-3 w-full" />
             <div className="mt-2 text-xs text-mute">Soho · 4h ago · 12.4k views</div>
           </div>
           <div className="mt-auto rounded-2xl bg-brand text-white p-3 flex items-center justify-center gap-2 font-semibold shadow-soft">

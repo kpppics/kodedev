@@ -5,7 +5,7 @@ export default function CategoriesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
       <div className="flex items-center gap-2 text-sm text-mute mb-3">
-        <Link href="/capture" className="hover:text-brand">Home</Link>
+        <Link href="/capture-press" className="hover:text-brand">Home</Link>
         <span>/</span>
         <span className="text-ink">Categories</span>
       </div>

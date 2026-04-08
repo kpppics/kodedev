@@ -14,7 +14,7 @@ export default function SubmissionContent({ id }: { id: string }) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center">
         <h1 className="font-display text-3xl font-bold">Submission not found</h1>
-        <Link href="/capture/browse" className="btn btn-primary mt-6">
+        <Link href="/capture-press/browse" className="btn btn-primary mt-6">
           Back to feed
         </Link>
       </div>
@@ -27,9 +27,9 @@ export default function SubmissionContent({ id }: { id: string }) {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
       <div className="flex items-center gap-2 text-sm text-mute mb-3">
-        <Link href="/capture" className="hover:text-brand">Home</Link>
+        <Link href="/capture-press" className="hover:text-brand">Home</Link>
         <span>/</span>
-        <Link href="/capture/browse" className="hover:text-brand">Browse</Link>
+        <Link href="/capture-press/browse" className="hover:text-brand">Browse</Link>
         <span>/</span>
         <span className="text-ink line-clamp-1">{sub.title}</span>
       </div>
@@ -122,7 +122,7 @@ export default function SubmissionContent({ id }: { id: string }) {
               <p className="text-sm text-mute mt-2">
                 This shot is being pitched to verified newsrooms. Want to send in your own?
               </p>
-              <Link href="/capture/upload" className="btn btn-primary w-full mt-4">
+              <Link href="/capture-press/upload" className="btn btn-primary w-full mt-4">
                 <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add_a_photo</span>
                 Upload your shot
               </Link>
@@ -135,7 +135,7 @@ export default function SubmissionContent({ id }: { id: string }) {
               Never put yourself in danger to capture a story. Stay back from cordons and respect
               the people in your shot.
             </p>
-            <Link href="/capture/safety" className="text-brand-light text-sm font-semibold mt-3 inline-flex">
+            <Link href="/capture-press/safety" className="text-brand-light text-sm font-semibold mt-3 inline-flex">
               Read the safety guide →
             </Link>
           </div>

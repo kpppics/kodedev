@@ -70,7 +70,7 @@ export default function UploadPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
       <div className="flex items-center gap-2 text-sm text-mute mb-3">
-        <Link href="/capture" className="hover:text-brand">Home</Link>
+        <Link href="/capture-press" className="hover:text-brand">Home</Link>
         <span>/</span>
         <span className="text-ink">Upload</span>
       </div>
@@ -226,7 +226,7 @@ export default function UploadPage() {
                 <div className="text-sm text-mute">
                   This is my own footage, I haven't put myself in danger to capture it and I have the
                   rights to sell it. Read the{' '}
-                  <Link href="/capture/legal/contributors" className="text-brand underline">
+                  <Link href="/capture-press/legal/contributors" className="text-brand underline">
                     contributor terms
                   </Link>
                   .
@@ -242,7 +242,7 @@ export default function UploadPage() {
           )}
 
           <div className="flex items-center justify-between gap-3">
-            <Link href="/capture" className="btn btn-light">
+            <Link href="/capture-press" className="btn btn-light">
               Cancel
             </Link>
             <button
@@ -296,7 +296,7 @@ export default function UploadPage() {
               Never put yourself or others at risk for a shot. Keep your distance from incidents,
               respect police cordons and don't trespass.
             </p>
-            <Link href="/capture/safety" className="mt-3 inline-flex text-brand text-sm font-semibold">
+            <Link href="/capture-press/safety" className="mt-3 inline-flex text-brand text-sm font-semibold">
               Read the safety guide →
             </Link>
           </div>

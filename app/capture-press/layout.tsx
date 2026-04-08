@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import './capture.css'
+import './capture-press.css'
 import { AppProvider } from './providers'
 import CaptureNavbar from './components/CaptureNavbar'
 import Footer from './components/Footer'
