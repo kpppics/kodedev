@@ -34,6 +34,17 @@ body {
   color: #0f172a;
 }
 
+/* Wire the accent picker into Tailwind's emerald palette.
+   Tailwind v4 generates `color: var(--color-emerald-400)` etc., so overriding
+   these vars at the wrapper cascades to every text/bg/border/ring utility. */
+.whale-app {
+  --color-emerald-300: var(--whale-accent-strong);
+  --color-emerald-400: var(--whale-accent);
+  --color-emerald-500: var(--whale-accent-deep);
+  --color-teal-400:    var(--whale-accent);
+  --color-teal-500:    var(--whale-accent-deep);
+}
+
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #0f172a; }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
