@@ -1,129 +1,84 @@
 'use client'
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useApp } from '../providers'
+import { useState, useEffect } from 'react'
 
-const NAV = [
-  { href: '/browse', label: 'Browse' },
-  { href: '/categories', label: 'Categories' },
-  { href: '/how-it-works', label: 'How it works' },
-  { href: '/safety', label: 'Safety' },
+const NAV_LINKS = [
+  { label: 'Services',  href: '#services' },
+  { label: 'Work',      href: '#portfolio' },
+  { label: 'Process',   href: '#how-it-works' },
+  { label: 'About',     href: '#about' },
 ]
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const { user, hydrated } = useApp()
+  const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => setOpen(false), [pathname])
+  const closeMenu = () => setMenuOpen(false)
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all ${
-        scrolled
-          ? 'bg-[#0b1020]/90 backdrop-blur border-b border-white/10'
-          : 'bg-[#0b1020]'
-      }`}
+      id="navbar"
+      className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/80 transition-all"
+      style={{ boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.06)' : 'none' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="relative inline-flex h-9 w-9 rounded-xl bg-brand items-center justify-center shadow-soft">
-            <span className="material-symbols-outlined text-white" style={{ fontSize: 22 }}>
-              photo_camera
-            </span>
-            <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-yellow-300 border-2 border-[#0b1020]" />
-          </span>
-          <span className="font-display text-white text-lg font-bold leading-none">
-            Capture<span className="text-brand-light">Press</span>
-          </span>
-        </Link>
+      <nav className="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
+        <div className="text-2xl font-bold tracking-tighter text-slate-900 font-headline">
+          KODEDEV <span className="text-[10px] align-top font-body font-normal text-slate-400 tracking-normal ml-1">est. 2026</span>
+        </div>
 
-        <nav className="hidden md:flex items-center gap-1">
-          {NAV.map((n) => {
-            const active = pathname === n.href || pathname?.startsWith(n.href + '/')
-            return (
-              <Link
-                key={n.href}
-                href={n.href}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition ${
-                  active ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {n.label}
-              </Link>
-            )
-          })}
-        </nav>
-
-        <div className="hidden md:flex items-center gap-2">
-          <Link href="/upload" className="btn btn-primary text-sm py-2 px-4">
-            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-              add_a_photo
-            </span>
-            Upload
-          </Link>
-          {hydrated && user ? (
-            <Link href="/account" className="btn btn-ghost text-sm py-2 px-3">
-              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                account_circle
-              </span>
-              {user.name.split(' ')[0]}
-            </Link>
-          ) : (
-            <Link href="/signin" className="btn btn-ghost text-sm py-2 px-4">
-              Sign in
-            </Link>
-          )}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map(link => (
+            <a key={link.label} className="font-headline font-medium text-sm text-slate-600 hover:text-primary transition-colors" href={link.href}>
+              {link.label}
+            </a>
+          ))}
+          <a
+            className="bg-primary text-white px-6 py-2.5 rounded-full font-headline font-bold text-sm shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105 active:scale-95 transition-all"
+            href="#quote"
+          >
+            Get a Quote
+          </a>
         </div>
 
         <button
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg text-white hover:bg-white/10"
-          aria-label="Menu"
+          aria-label="Toggle menu"
+          className="md:hidden text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors"
+          onClick={() => setMenuOpen(v => !v)}
         >
-          <span className="material-symbols-outlined">{open ? 'close' : 'menu'}</span>
+          <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
         </button>
-      </div>
+      </nav>
 
-      {open && (
-        <div className="md:hidden border-t border-white/10 bg-[#0b1020]">
-          <div className="px-4 py-3 flex flex-col gap-1">
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                className="text-white/80 hover:text-white px-3 py-2 rounded-lg hover:bg-white/5"
-              >
-                {n.label}
-              </Link>
-            ))}
-            <div className="flex gap-2 pt-2">
-              <Link href="/upload" className="btn btn-primary flex-1 text-sm">
-                Upload
-              </Link>
-              {hydrated && user ? (
-                <Link href="/account" className="btn btn-ghost flex-1 text-sm">
-                  Account
-                </Link>
-              ) : (
-                <Link href="/signin" className="btn btn-ghost flex-1 text-sm">
-                  Sign in
-                </Link>
-              )}
-            </div>
-          </div>
+      <div
+        className="md:hidden bg-white border-t border-slate-100 overflow-hidden transition-all duration-400"
+        style={{ maxHeight: menuOpen ? '420px' : '0' }}
+      >
+        <div className="flex flex-col px-6 py-4 gap-1">
+          {NAV_LINKS.map(link => (
+            <a
+              key={link.label}
+              className="font-headline font-medium text-slate-700 py-3 px-4 rounded-xl hover:bg-primary/5 hover:text-primary transition-all"
+              href={link.href}
+              onClick={closeMenu}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            className="bg-primary text-white text-center font-headline font-bold py-4 px-4 rounded-full mt-2 shadow-lg shadow-primary/20"
+            href="#quote"
+            onClick={closeMenu}
+          >
+            Get a Quote
+          </a>
         </div>
-      )}
+      </div>
     </header>
   )
 }

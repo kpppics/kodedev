@@ -84,8 +84,8 @@ export default function HowItWorksPage() {
           be the one.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/upload" className="btn btn-primary">Upload now</Link>
-          <Link href="/signin?mode=signup" className="btn btn-ghost">Create account</Link>
+          <Link href="/capture/upload" className="btn btn-primary">Upload now</Link>
+          <Link href="/capture/signin?mode=signup" className="btn btn-ghost">Create account</Link>
         </div>
       </div>
 

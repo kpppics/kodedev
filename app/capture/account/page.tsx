@@ -30,8 +30,8 @@ export default function AccountPage() {
             Track your submissions, see your earnings and withdraw to your bank.
           </p>
           <div className="flex gap-3 justify-center mt-6">
-            <Link href="/signin" className="btn btn-primary">Sign in</Link>
-            <Link href="/signin?mode=signup" className="btn btn-light">Create account</Link>
+            <Link href="/capture/signin" className="btn btn-primary">Sign in</Link>
+            <Link href="/capture/signin?mode=signup" className="btn btn-light">Create account</Link>
           </div>
         </div>
       </div>

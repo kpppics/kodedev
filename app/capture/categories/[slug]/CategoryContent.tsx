@@ -13,7 +13,7 @@ export default function CategoryContent({ slug }: { slug: string }) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center">
         <h1 className="font-display text-3xl font-bold">Category not found</h1>
-        <Link href="/categories" className="btn btn-primary mt-6">
+        <Link href="/capture/categories" className="btn btn-primary mt-6">
           Back to categories
         </Link>
       </div>
@@ -30,9 +30,9 @@ export default function CategoryContent({ slug }: { slug: string }) {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
           <div className="flex items-center gap-2 text-sm text-white/70 mb-3">
-            <Link href="/" className="hover:text-white">Home</Link>
+            <Link href="/capture" className="hover:text-white">Home</Link>
             <span>/</span>
-            <Link href="/categories" className="hover:text-white">Categories</Link>
+            <Link href="/capture/categories" className="hover:text-white">Categories</Link>
             <span>/</span>
             <span className="text-white">{cat.name}</span>
           </div>
@@ -49,7 +49,7 @@ export default function CategoryContent({ slug }: { slug: string }) {
                 Typical payout: {cat.payout}
               </div>
             </div>
-            <Link href="/upload" className="btn btn-primary">
+            <Link href="/capture/upload" className="btn btn-primary">
               <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
                 add_a_photo
               </span>
@@ -62,7 +62,7 @@ export default function CategoryContent({ slug }: { slug: string }) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
           <h2 className="font-display text-2xl font-bold">Latest in {cat.name}</h2>
-          <Link href="/browse" className="text-brand text-sm font-semibold">
+          <Link href="/capture/browse" className="text-brand text-sm font-semibold">
             View all topics →
           </Link>
         </div>
@@ -73,7 +73,7 @@ export default function CategoryContent({ slug }: { slug: string }) {
             </span>
             <h3 className="font-display text-xl font-semibold mt-3">Nothing here yet</h3>
             <p className="text-mute mt-1">Be the first to send in {cat.name.toLowerCase()}.</p>
-            <Link href="/upload" className="btn btn-primary mt-5 inline-flex">
+            <Link href="/capture/upload" className="btn btn-primary mt-5 inline-flex">
               Upload now
             </Link>
           </div>

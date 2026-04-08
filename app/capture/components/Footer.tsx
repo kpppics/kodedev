@@ -25,29 +25,29 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-3 text-sm">App</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/browse" className="hover:text-white">Browse feed</Link></li>
-            <li><Link href="/upload" className="hover:text-white">Upload</Link></li>
-            <li><Link href="/categories" className="hover:text-white">Categories</Link></li>
-            <li><Link href="/account" className="hover:text-white">My account</Link></li>
+            <li><Link href="/capture/browse" className="hover:text-white">Browse feed</Link></li>
+            <li><Link href="/capture/upload" className="hover:text-white">Upload</Link></li>
+            <li><Link href="/capture/categories" className="hover:text-white">Categories</Link></li>
+            <li><Link href="/capture/account" className="hover:text-white">My account</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-white font-semibold mb-3 text-sm">Learn</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/how-it-works" className="hover:text-white">How it works</Link></li>
-            <li><Link href="/safety" className="hover:text-white">Safety guide</Link></li>
-            <li><Link href="/pricing" className="hover:text-white">What you earn</Link></li>
-            <li><Link href="/buyers" className="hover:text-white">For newsrooms</Link></li>
+            <li><Link href="/capture/how-it-works" className="hover:text-white">How it works</Link></li>
+            <li><Link href="/capture/safety" className="hover:text-white">Safety guide</Link></li>
+            <li><Link href="/capture/pricing" className="hover:text-white">What you earn</Link></li>
+            <li><Link href="/capture/buyers" className="hover:text-white">For newsrooms</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-white font-semibold mb-3 text-sm">Legal</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/legal/terms" className="hover:text-white">Terms</Link></li>
-            <li><Link href="/legal/privacy" className="hover:text-white">Privacy</Link></li>
-            <li><Link href="/legal/contributors" className="hover:text-white">Contributor agreement</Link></li>
+            <li><Link href="/capture/legal/terms" className="hover:text-white">Terms</Link></li>
+            <li><Link href="/capture/legal/privacy" className="hover:text-white">Privacy</Link></li>
+            <li><Link href="/capture/legal/contributors" className="hover:text-white">Contributor agreement</Link></li>
           </ul>
         </div>
       </div>

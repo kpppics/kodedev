@@ -76,7 +76,7 @@ export default function PricingPage() {
         <p className="text-white/70 mt-2 max-w-xl">
           Free to join. No subscription, no listing fees. You only pay when you sell.
         </p>
-        <Link href="/signin?mode=signup" className="btn btn-primary mt-5">
+        <Link href="/capture/signin?mode=signup" className="btn btn-primary mt-5">
           Create your account
         </Link>
       </div>
