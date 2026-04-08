@@ -7,7 +7,8 @@ import StayCard from './StayCard'
 import FlightCard from './FlightCard'
 import ProviderStrip from './ProviderStrip'
 import { STAY_PROVIDERS, FLIGHT_PROVIDERS, type SearchParams, type StayCategory } from '../../lib/providers'
-import { generateStays, generateFlights } from '../../lib/mockDeals'
+import type { StayDeal, FlightDeal } from '../../lib/mockDeals'
+import { fetchStays, fetchFlights } from '../../lib/liveDeals'
 
 function defaultDates() {
   const today = new Date()
@@ -42,7 +43,9 @@ export default function HolidayApp() {
   })
   const [tab, setTab] = useState<Tab>('all')
   const [sortBy, setSortBy] = useState<'price' | 'rating'>('price')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [stays, setStays] = useState<StayDeal[]>([])
+  const [flights, setFlights] = useState<FlightDeal[]>([])
 
   const stayCategory: StayCategory =
     tab === 'hotels' ? 'hotels'
@@ -51,8 +54,26 @@ export default function HolidayApp() {
     : tab === 'houses' ? 'houses'
     : 'all'
 
-  const stays = useMemo(() => generateStays(params, stayCategory), [params, stayCategory])
-  const flights = useMemo(() => generateFlights(params), [params])
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    Promise.all([fetchStays(params, stayCategory), fetchFlights(params)])
+      .then(([s, f]) => {
+        if (cancelled) return
+        setStays(s)
+        setFlights(f)
+        setLoading(false)
+      })
+      .catch(() => {
+        if (cancelled) return
+        setStays([])
+        setFlights([])
+        setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [params, stayCategory])
 
   const sortedStays = useMemo(() => {
     const arr = [...stays]
@@ -60,12 +81,6 @@ export default function HolidayApp() {
     else arr.sort((a, b) => a.pricePerNight - b.pricePerNight)
     return arr
   }, [stays, sortBy])
-
-  useEffect(() => {
-    setLoading(true)
-    const t = setTimeout(() => setLoading(false), 520)
-    return () => clearTimeout(t)
-  }, [params, tab])
 
   const handleSearch = (p: SearchParams) => setParams(p)
 
@@ -328,8 +343,8 @@ function Footer() {
           GoHoliday
         </div>
         <p className="text-slate-500 text-xs text-center">
-          GoHoliday is an independent meta-search. All prices shown are illustrative demo data —
-          click any deal to see live pricing on the provider's site.
+          GoHoliday is an independent meta-search. Live prices powered by Travelpayouts —
+          click any deal to book directly with the provider.
         </p>
         <div className="flex items-center gap-4 text-slate-500 text-xs">
           <a href="#" className="hover:text-slate-900">Privacy</a>
