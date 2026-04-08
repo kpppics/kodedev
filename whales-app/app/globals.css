@@ -12,13 +12,25 @@ html {
   scroll-behavior: smooth;
   background: #020617;
   color-scheme: dark;
+  /* Hard-stop any horizontal overflow at the document root. `clip` is
+     stronger than `hidden`: it doesn't create a scroll container, so child
+     `position: sticky` / `position: fixed` still work, and mobile Safari
+     can't silently pan the viewport. */
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 body {
   font-family: "Inter", sans-serif;
   background-color: #020617;
   color: #f1f5f9;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+.whale-app {
+  overflow-x: clip;
+  max-width: 100vw;
 }
 
 .material-symbols-outlined {
@@ -27,6 +39,16 @@ body {
 }
 
 .counter-num { font-variant-numeric: tabular-nums; }
+
+/* Prevent extra-large headlines from forcing horizontal scroll on narrow
+   viewports. `text-7xl` / `text-8xl` + tight tracking can otherwise exceed
+   the container width on very small phones. */
+.whale-app h1,
+.whale-app h2,
+.whale-app h3 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
 
 /* Light-mode override for the ThemeProvider wrapper */
 .whale-app[data-theme='light'] {
