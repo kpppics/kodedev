@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react'
 import { useApp } from '../providers'
 
 const NAV = [
-  { href: '/browse', label: 'Browse' },
-  { href: '/categories', label: 'Categories' },
-  { href: '/how-it-works', label: 'How it works' },
-  { href: '/safety', label: 'Safety' },
+  { href: '/capture/browse', label: 'Browse' },
+  { href: '/capture/categories', label: 'Categories' },
+  { href: '/capture/how-it-works', label: 'How it works' },
+  { href: '/capture/safety', label: 'Safety' },
 ]
 
 export default function Navbar() {
@@ -50,7 +50,7 @@ export default function Navbar() {
 
         <nav className="hidden md:flex items-center gap-1">
           {NAV.map((n) => {
-            const active = pathname === n.href || pathname?.startsWith(n.href + '/')
+            const active = pathname === n.href || pathname?.startsWith(n.href + '/') || pathname?.startsWith(n.href + '#')
             return (
               <Link
                 key={n.href}
