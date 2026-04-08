@@ -1,6 +1,4 @@
 {
   "buildCommand": "next build",
-  "outputDirectory": "out",
-  "installCommand": "npm install",
-  "devCommand": "next dev"
+  "installCommand": "npm install"
 }
