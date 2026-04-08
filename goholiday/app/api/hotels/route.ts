@@ -1,22 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
- * GET /api/hotels — proxies Hotellook's free cache endpoint and normalises
- * the response into goholiday's StayDeal shape. Click-through links carry
- * the TRAVELPAYOUTS_MARKER so every booking earns commission.
+ * GET /api/hotels — proxies Hotellook's cache endpoint and normalises
+ * the response into goholiday's StayDeal shape. Does a lookup.json call
+ * first to resolve the city to a stable locationId, which is far more
+ * reliable than raw city names for the cache endpoint.
+ *
+ * Click-through links carry NEXT_PUBLIC_TRAVELPAYOUTS_MARKER so every
+ * booking earns commission.
  */
 
 export const runtime = 'nodejs'
 export const revalidate = 300
 
+interface LookupLocation {
+  id: string
+  cityName?: string
+  fullName?: string
+  locationName?: string
+  countryName?: string
+}
+
+interface LookupResponse {
+  status?: string
+  results?: {
+    locations?: LookupLocation[]
+  }
+}
+
 interface HotellookHotel {
   hotelId: number
   hotelName: string
-  location?: { name?: string; country?: string; geo?: { lat: number; lon: number } }
+  location?: { name?: string; country?: string }
   stars?: number
   priceFrom?: number
   priceAvg?: number
-  pricePercentile?: Record<string, number>
 }
 
 const PERKS_BY_STARS: Record<number, string[]> = {
@@ -27,14 +45,37 @@ const PERKS_BY_STARS: Record<number, string[]> = {
   1: ['Great value', 'Instant booking', 'Best price'],
 }
 
+async function lookupLocationId(query: string, token: string): Promise<string | null> {
+  try {
+    const url = new URL('https://engine.hotellook.com/api/v2/lookup.json')
+    url.searchParams.set('query', query)
+    url.searchParams.set('lang', 'en')
+    url.searchParams.set('lookFor', 'city')
+    url.searchParams.set('limit', '1')
+    if (token) url.searchParams.set('token', token)
+
+    const res = await fetch(url.toString(), {
+      headers: { Accept: 'application/json', 'User-Agent': 'goholiday/1.0' },
+      next: { revalidate: 3600 },
+    })
+    if (!res.ok) return null
+    const body: LookupResponse = await res.json()
+    const loc = body.results?.locations?.[0]
+    return loc?.id ?? null
+  } catch {
+    return null
+  }
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const location = (searchParams.get('location') || '').trim() || 'London'
   const checkIn = searchParams.get('checkIn') || ''
   const checkOut = searchParams.get('checkOut') || ''
-  const adults = Number(searchParams.get('adults') || '2')
+  const adults = Math.max(1, Number(searchParams.get('adults') || '2'))
   const currency = (searchParams.get('currency') || 'gbp').toLowerCase()
   const limit = Math.min(Number(searchParams.get('limit') || '30'), 50)
+  const token = process.env.TRAVELPAYOUTS_TOKEN || ''
   const marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || ''
 
   if (!checkIn || !checkOut) {
@@ -48,23 +89,39 @@ export async function GET(req: NextRequest) {
 
   const cityQuery = location.split(',')[0].trim()
 
+  // Step 1: resolve city -> locationId (more reliable than raw names)
+  const locationId = await lookupLocationId(cityQuery, token)
+
+  // Step 2: fetch cached prices. cache.json does NOT accept `adults`;
+  // passing it can trigger a 404. Pair with either locationId or location.
   const upstream = new URL('https://engine.hotellook.com/api/v2/cache.json')
-  upstream.searchParams.set('location', cityQuery)
+  if (locationId) {
+    upstream.searchParams.set('locationId', locationId)
+  } else {
+    upstream.searchParams.set('location', cityQuery)
+  }
   upstream.searchParams.set('currency', currency)
   upstream.searchParams.set('checkIn', checkIn)
   upstream.searchParams.set('checkOut', checkOut)
-  upstream.searchParams.set('adults', String(adults))
   upstream.searchParams.set('limit', String(limit))
+  if (token) upstream.searchParams.set('token', token)
 
   try {
     const res = await fetch(upstream.toString(), {
       headers: { Accept: 'application/json', 'User-Agent': 'goholiday/1.0' },
       next: { revalidate: 300 },
     })
-    if (!res.ok) throw new Error(`Hotellook ${res.status}`)
+    if (!res.ok) {
+      return NextResponse.json({
+        deals: [],
+        error: `Hotellook ${res.status}`,
+        debug: { upstream: upstream.toString().replace(token, 'REDACTED'), locationId },
+      })
+    }
     const rows: HotellookHotel[] = await res.json()
 
-    const currencySymbol = currency === 'gbp' ? '£' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency.toUpperCase()
+    const currencySymbol =
+      currency === 'gbp' ? '£' : currency === 'eur' ? '€' : currency === 'usd' ? '$' : currency.toUpperCase()
 
     const deals = rows
       .filter((h) => (h.priceFrom ?? h.priceAvg ?? 0) > 0)
@@ -77,7 +134,8 @@ export async function GET(req: NextRequest) {
           stars >= 4 ? 'hotel' : stars >= 2 ? 'hotel' : 'apartment'
 
         const bookingUrl =
-          `https://search.hotellook.com/hotels?hotelId=${h.hotelId}` +
+          `https://search.hotellook.com/hotels?` +
+          `hotelId=${h.hotelId}` +
           `&checkIn=${encodeURIComponent(checkIn)}` +
           `&checkOut=${encodeURIComponent(checkOut)}` +
           `&adults=${adults}` +
