@@ -253,4 +253,6 @@ export const PUBLIC_APIS = [
   },
 ]
 
-export const GAMMA_API_BASE = 'https://gamma-api.polymarket.com'
+// Routed through a same-origin Vercel rewrite (see next.config.ts) so iOS
+// Safari + content blockers don't drop the request as a third-party fetch.
+export const GAMMA_API_BASE = '/polymarket-api'
