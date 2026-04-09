@@ -1,119 +1,15 @@
-// Verified whale wallet data — sourced from the public Polymarket whale
-// tracking playbook. Addresses are public on-chain (Polygon). The truncated
-// form (0xPREFIX...SUFFIX) is shown in the UI; the full address would be
-// pulled from polytrackhq.app or polymarketanalytics.com in production.
+// All whale/market data is fetched LIVE from Polymarket's public APIs.
+// See `GAMMA_API_BASE`, `LB_API_BASE`, `DATA_API_BASE` below for the
+// same-origin proxies configured in next.config.ts.
 
-export type Whale = {
-  name: string
-  addressShort: string
-  profitUsd: number
-  bets: number
-  volumeUsd?: number
-  winRate: number
-  strategy: string
-  flag?: string
+export type LeaderboardEntry = {
+  proxyWallet: string
+  amount: number
+  pseudonym?: string | null
+  name?: string | null
+  bio?: string | null
+  profileImage?: string | null
 }
-
-export const PERFECT_RECORDS: Whale[] = [
-  {
-    name: 'Theo4',
-    addressShort: '0x5668...5839',
-    profitUsd: 22_050_000,
-    bets: 14,
-    winRate: 100,
-    strategy: '2024 election — bought Trump at 37¢',
-  },
-  {
-    name: 'RepTrump',
-    addressShort: '0x8631...aa53',
-    profitUsd: 7_530_000,
-    bets: 8,
-    winRate: 100,
-    strategy: '2024 election — all Republican bets',
-  },
-  {
-    name: 'zxgngl',
-    addressShort: '0xd235...0f29',
-    profitUsd: 7_810_000,
-    bets: 8,
-    winRate: 100,
-    strategy: 'One massive Trump bet + small BTC',
-  },
-  {
-    name: 'PrincessCaro',
-    addressShort: '0x8119...7887',
-    profitUsd: 6_080_000,
-    bets: 14,
-    winRate: 100,
-    strategy: 'Election + hedged with small Harris bets',
-  },
-  {
-    name: 'majorexploiter',
-    addressShort: '0x033a...0d50',
-    profitUsd: 3_670_000,
-    bets: 3,
-    winRate: 100,
-    strategy: 'European football — Arsenal, Liverpool, Rennais',
-    flag: 'NEW account Feb 2026 — suspicious',
-  },
-]
-
-export const ALGO_MONSTERS: Whale[] = [
-  {
-    name: 'swisstony',
-    addressShort: '0x204f...0e14',
-    profitUsd: 5_670_000,
-    bets: 68_851,
-    volumeUsd: 614_000_000,
-    winRate: 99.4,
-    strategy: 'Sports algorithm — football, tennis, baseball',
-  },
-  {
-    name: 'GamblingIsAllYouNeed',
-    addressShort: '0x507e...00ae',
-    profitUsd: 4_620_000,
-    bets: 48_314,
-    volumeUsd: 302_000_000,
-    winRate: 99.1,
-    strategy: 'Sports + politics algo',
-  },
-  {
-    name: 'RN1',
-    addressShort: '0x2005...09ea',
-    profitUsd: 6_700_000,
-    bets: 45_936,
-    volumeUsd: 344_000_000,
-    winRate: 99.3,
-    strategy: 'Tennis, football, NFL, esports',
-  },
-  {
-    name: 'gabagool22',
-    addressShort: '0x6031...f96d',
-    profitUsd: 868_000,
-    bets: 28_620,
-    volumeUsd: 124_000_000,
-    winRate: 99.52,
-    strategy: 'BTC arbitrage bot — buys both sides of every market',
-  },
-  {
-    name: 'gmanas',
-    addressShort: '0xe90b...5da2',
-    profitUsd: 4_960_000,
-    bets: 4_907,
-    volumeUsd: 529_000_000,
-    winRate: 99.0,
-    strategy: 'Sports + UFC + politics',
-  },
-  {
-    name: 'kch123',
-    addressShort: '0x6a72...03ee',
-    profitUsd: 11_400_000,
-    bets: 2_334,
-    volumeUsd: 269_000_000,
-    winRate: 98.5,
-    strategy: 'Mixed — biggest single win $1.09M on Villarreal',
-  },
-]
 
 export type Tool = {
   name: string
@@ -253,6 +149,8 @@ export const PUBLIC_APIS = [
   },
 ]
 
-// Routed through a same-origin Vercel rewrite (see next.config.ts) so iOS
-// Safari + content blockers don't drop the request as a third-party fetch.
+// Routed through same-origin Vercel rewrites (see next.config.ts) so iOS
+// Safari + content blockers don't drop the requests as third-party fetches.
 export const GAMMA_API_BASE = '/polymarket-api'
+export const LB_API_BASE = '/polymarket-lb'
+export const DATA_API_BASE = '/polymarket-data'

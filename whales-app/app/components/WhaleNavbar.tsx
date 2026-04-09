@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import ThemeControls from './ThemeControls'
 
 const LINKS = [
-  { href: '#perfect-records', label: 'Whales' },
+  { href: '#top-profit', label: 'Profit' },
+  { href: '#top-volume', label: 'Volume' },
   { href: '#live', label: 'Live' },
   { href: '#strategies', label: 'Strategies' },
   { href: '#tools', label: 'Tools' },

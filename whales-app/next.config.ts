@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
         source: '/polymarket-api/:path*',
         destination: 'https://gamma-api.polymarket.com/:path*',
       },
+      {
+        source: '/polymarket-lb/:path*',
+        destination: 'https://lb-api.polymarket.com/:path*',
+      },
+      {
+        source: '/polymarket-data/:path*',
+        destination: 'https://data-api.polymarket.com/:path*',
+      },
     ]
   },
 }

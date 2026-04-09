@@ -1,20 +1,47 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { LB_API_BASE, type LeaderboardEntry } from '../data'
 
-const STATS = [
-  { value: '$80M+', label: 'Tracked profit' },
-  { value: '11', label: 'Verified whales' },
-  { value: '<30s', label: 'Alert latency' },
-  { value: '24/7', label: 'On-chain feed' },
-]
+type HeroStats = {
+  totalProfit: number
+  topProfit: number
+  count: number
+}
 
 export default function WhaleHero() {
-  const [pulse, setPulse] = useState(0)
+  const [stats, setStats] = useState<HeroStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
   useEffect(() => {
-    const t = setInterval(() => setPulse(p => p + 1), 1500)
-    return () => clearInterval(t)
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch(`${LB_API_BASE}/profit?window=all&limit=20`)
+        if (!res.ok) throw new Error(`API ${res.status}`)
+        const data = (await res.json()) as LeaderboardEntry[]
+        if (cancelled) return
+        const total = data.reduce((sum, r) => sum + (r.amount ?? 0), 0)
+        const top = data.reduce((m, r) => Math.max(m, r.amount ?? 0), 0)
+        setStats({ totalProfit: total, topProfit: top, count: data.length })
+      } catch {
+        if (!cancelled) setError(true)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
   }, [])
+
+  const fmt = (n: number) => {
+    if (n >= 1_000_000_000) return `$${(n / 1_000_000_000).toFixed(2)}B`
+    if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`
+    if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`
+    return `$${Math.round(n)}`
+  }
 
   return (
     <section className="relative overflow-hidden border-b border-white/5">
@@ -39,7 +66,7 @@ export default function WhaleHero() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
           </span>
-          Live · {pulse > 0 ? `${pulse * 3}` : '0'} on-chain pings
+          Live Polymarket on-chain feed
         </div>
 
         <h1 className="font-headline text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] mb-6">
@@ -53,16 +80,15 @@ export default function WhaleHero() {
         </h1>
 
         <p className="text-lg md:text-2xl text-slate-300 max-w-3xl leading-relaxed mb-10">
-          Every Polymarket trade is on-chain. We surface the whales with{' '}
-          <span className="text-emerald-300 font-semibold">100% win rates</span>, the
-          arbitrage bots making{' '}
-          <span className="text-emerald-300 font-semibold">$0.03 per trade x 100K trades a day</span>,
-          and the alert tools that ping you the moment they bet.
+          Every Polymarket trade is on-chain. We rank the top wallets by real
+          profit and volume, pulled{' '}
+          <span className="text-emerald-300 font-semibold">live from Polymarket&apos;s public leaderboard API</span>{' '}
+          on every page load. No scraping, no fake numbers, no middleman.
         </p>
 
         <div className="flex flex-wrap gap-4 mb-16">
           <a
-            href="#perfect-records"
+            href="#top-profit"
             className="group bg-emerald-400 text-slate-950 px-7 py-4 rounded-full font-headline font-bold text-base hover:bg-emerald-300 transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
           >
             See the Whales
@@ -78,19 +104,56 @@ export default function WhaleHero() {
           </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-white/10">
-          {STATS.map(s => (
-            <div key={s.label}>
-              <div className="font-headline text-3xl md:text-4xl font-black bg-gradient-to-br from-white to-emerald-300 bg-clip-text text-transparent counter-num">
-                {s.value}
-              </div>
-              <div className="text-xs md:text-sm text-slate-400 font-medium mt-1 uppercase tracking-wider">
-                {s.label}
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-10 border-t border-white/10">
+          <HeroStat
+            loading={loading}
+            error={error}
+            label="Combined top-20 profit"
+            value={stats ? fmt(stats.totalProfit) : null}
+          />
+          <HeroStat
+            loading={loading}
+            error={error}
+            label="Largest single wallet"
+            value={stats ? fmt(stats.topProfit) : null}
+          />
+          <HeroStat
+            loading={loading}
+            error={error}
+            label="Wallets ranked"
+            value={stats ? stats.count.toString() : null}
+          />
         </div>
       </div>
     </section>
+  )
+}
+
+function HeroStat({
+  loading,
+  error,
+  label,
+  value,
+}: {
+  loading: boolean
+  error: boolean
+  label: string
+  value: string | null
+}) {
+  return (
+    <div>
+      <div className="font-headline text-3xl md:text-4xl font-black bg-gradient-to-br from-white to-emerald-300 bg-clip-text text-transparent counter-num min-h-[1.2em]">
+        {loading ? (
+          <span className="inline-block h-9 w-28 rounded-md bg-white/10 animate-pulse align-middle" />
+        ) : error ? (
+          <span className="text-slate-500">—</span>
+        ) : (
+          value
+        )}
+      </div>
+      <div className="text-xs md:text-sm text-slate-400 font-medium mt-1 uppercase tracking-wider">
+        {label}
+      </div>
+    </div>
   )
 }

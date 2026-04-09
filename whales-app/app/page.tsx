@@ -10,7 +10,6 @@ import PlaybookSection from './components/PlaybookSection'
 import WhaleNavbar from './components/WhaleNavbar'
 import WhaleFooter from './components/WhaleFooter'
 import ThemeProvider from './components/ThemeProvider'
-import { ALGO_MONSTERS, PERFECT_RECORDS } from './data'
 
 export const metadata: Metadata = {
   title: 'Whale Tracker — Polymarket & Kalshi Insider Bets',
@@ -26,21 +25,24 @@ export default function WhalesPage() {
       <main className="pt-20">
         <WhaleHero />
         <WhaleTable
-          id="perfect-records"
-          eyebrow="Perfect Records"
-          title="Wallets that have never lost a bet"
-          subtitle="100% win rate, verified on the Polygon blockchain. Bet big, were right."
+          id="top-profit"
+          eyebrow="Top Profit · All-time"
+          title="Wallets with the biggest realised profit"
+          subtitle="Live from Polymarket's public leaderboard API. Ranked by total USD profit across all resolved markets."
           accent="emerald"
-          whales={PERFECT_RECORDS}
+          metric="profit"
+          window="all"
+          limit={10}
         />
         <WhaleTable
-          id="algo-monsters"
-          eyebrow="Algorithmic Monsters"
-          title="Bots running 24/7 with near-perfect win rates"
-          subtitle="Massive volume, automated execution, sophisticated modeling. The machines."
+          id="top-volume"
+          eyebrow="Top Volume · All-time"
+          title="Wallets pushing the most size"
+          subtitle="Live from Polymarket's public leaderboard API. Ranked by total USD volume — the high-frequency algos and whales moving the market."
           accent="indigo"
-          whales={ALGO_MONSTERS}
-          showVolume
+          metric="volume"
+          window="all"
+          limit={10}
         />
         <LiveMarketsFeed />
         <StrategiesSection />

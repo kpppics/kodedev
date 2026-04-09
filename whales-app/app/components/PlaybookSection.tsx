@@ -86,8 +86,8 @@ export default function PlaybookSection() {
             Ready to follow the smart money?
           </div>
           <p className="text-slate-300 max-w-xl mx-auto mb-8">
-            Drop the wallet addresses above into Polylerts and you&apos;ll get pinged
-            within seconds the next time Theo4, swisstony, or gabagool22 makes a move.
+            Drop any of the wallet addresses above into Polylerts and you&apos;ll get
+            pinged within seconds the next time a top whale makes a move.
           </p>
           <a
             href="https://t.me/polylerts_bot"
