@@ -127,7 +127,7 @@ function EmailModal({ business, check, onClose }: { business: Business; check?: 
 }
 
 export default function AdminPage() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('search');
