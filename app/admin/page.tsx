@@ -127,7 +127,10 @@ function EmailModal({ business, check, onClose }: { business: Business; check?: 
 }
 
 export default function AdminPage() {
-  const [authenticated, setAuthenticated] = useState(true);
+  const [authenticated, setAuthenticated] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('kodedev_auth') === '1';
+  });
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('search');
@@ -151,7 +154,7 @@ export default function AdminPage() {
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    if (passwordInput === ADMIN_PASSWORD) { setAuthenticated(true); setPasswordError(false); }
+    if (passwordInput === ADMIN_PASSWORD) { localStorage.setItem('kodedev_auth', '1'); setAuthenticated(true); setPasswordError(false); }
     else setPasswordError(true);
   }
 
@@ -334,7 +337,7 @@ export default function AdminPage() {
           <h1 className="text-xl font-bold text-white">Lead Finder</h1>
           <p className="text-gray-400 text-xs mt-0.5">Kodedev Admin</p>
         </div>
-        <button onClick={() => setAuthenticated(false)} className="text-gray-500 hover:text-gray-300 text-sm transition">Logout</button>
+        <button onClick={() => { localStorage.removeItem('kodedev_auth'); setAuthenticated(false); }} className="text-gray-500 hover:text-gray-300 text-sm transition">Logout</button>
       </div>
 
       <div className="flex gap-0 border-b border-gray-800 bg-gray-900 px-6">
