@@ -51,7 +51,6 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [searched, setSearched] = useState(false);
-  const [noWebsiteOnly, setNoWebsiteOnly] = useState(false);
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -184,49 +183,34 @@ export default function AdminPage() {
               {loading ? 'Searching...' : 'Find Leads'}
             </button>
           </form>
-          <div className="flex items-center gap-3 mt-3">
-            <label className="flex items-center gap-2 cursor-pointer select-none text-sm text-gray-300">
-              <input
-                type="checkbox"
-                checked={noWebsiteOnly}
-                onChange={e => setNoWebsiteOnly(e.target.checked)}
-                className="w-4 h-4 accent-purple-500"
-              />
-              Show potential clients only (no website)
-            </label>
-          </div>
           {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
         </div>
 
         {/* Results */}
         {searched && (
           <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-            {(() => {
-              const filtered = noWebsiteOnly ? businesses.filter(b => !b.website) : businesses;
-              const hotCount = businesses.filter(b => !b.website).length;
-              return (<>
             <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
               <h2 className="font-semibold text-white">
-                {filtered.length} {noWebsiteOnly ? 'potential clients' : 'businesses'} found
+                {businesses.length} businesses found
                 <span className="text-gray-500 font-normal text-sm ml-2">near {location}</span>
-                {!noWebsiteOnly && hotCount > 0 && (
+                {businesses.filter(b => !b.website).length > 0 && (
                   <span className="ml-2 text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">
-                    {hotCount} with no website
+                    {businesses.filter(b => !b.website).length} not listed
                   </span>
                 )}
               </h2>
-              {filtered.length > 0 && (
+              {businesses.length > 0 && (
                 <button onClick={exportCSV} className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
                   Export CSV
                 </button>
               )}
             </div>
 
-            {filtered.length === 0 ? (
-              <p className="text-gray-400 px-5 py-8">No results match. Try unchecking the filter.</p>
+            {businesses.length === 0 ? (
+              <p className="text-gray-400 px-5 py-8">No businesses found. Try a different location or category.</p>
             ) : (
               <div className="divide-y divide-gray-800">
-                {filtered.map((b, i) => (
+                {businesses.map((b, i) => (
                   <div key={i} className="px-5 py-4 hover:bg-gray-800/40 transition">
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 flex-1">
@@ -234,7 +218,7 @@ export default function AdminPage() {
                           <span className="font-semibold text-white">{b.name}</span>
                           {!b.website && (
                             <span className="text-xs bg-orange-500/20 text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-full">
-                              No website
+                              Not listed
                             </span>
                           )}
                           {b.website && (
@@ -280,7 +264,6 @@ export default function AdminPage() {
                 ))}
               </div>
             )}
-          </>);})()}
           </div>
         )}
       </div>
