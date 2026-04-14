@@ -1,0 +1,57 @@
+import type { Metadata, Viewport } from 'next'
+import './globals.css'
+import { AppShell } from './components/AppShell'
+
+export const metadata: Metadata = {
+  title: 'Arbitrage | Find deals. Sell for profit.',
+  description:
+    'Personal Amazon + eBay arbitrage tool. Scan barcodes, snap thrift finds, paste retailer URLs — live prices, real fees, real profit.',
+  applicationName: 'Arbitrage',
+  appleWebApp: {
+    capable: true,
+    title: 'Arbitrage',
+    statusBarStyle: 'black-translucent',
+  },
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [{ url: '/icons/icon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/icons/icon.svg', sizes: '180x180', type: 'image/svg+xml' }],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: 'cover',
+  userScalable: false,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0f19' },
+  ],
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-surface font-body text-on-surface antialiased">
+        <AppShell>{children}</AppShell>
+      </body>
+    </html>
+  )
+}

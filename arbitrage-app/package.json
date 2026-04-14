@@ -1,0 +1,34 @@
+{
+  "name": "arbitrage-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal Amazon + eBay arbitrage tool (UK/US) — live APIs, barcode scan, thrift scan, retailer URL resolver.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@zxing/browser": "^0.1.5",
+    "fast-xml-parser": "^4.5.0",
+    "next": "16.2.1",
+    "node-html-parser": "^6.1.13",
+    "papaparse": "^5.4.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/papaparse": "^5.3.15",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^2.1.5"
+  }
+}
