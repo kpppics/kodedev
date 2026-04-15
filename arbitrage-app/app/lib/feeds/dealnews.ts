@@ -1,5 +1,5 @@
 import { fetchFeed, type FeedItem } from './hotukdeals'
 
 export async function dealnews(): Promise<FeedItem[]> {
-  return fetchFeed('https://www.dealnews.com/rss/', 'DealNews')
+  return fetchFeed('https://www.dealnews.com/rss/all-deals.rss', 'DealNews')
 }

@@ -18,7 +18,7 @@ export async function fetchFeed(url: string, sourceName: string): Promise<FeedIt
   let xml: string
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'ArbitrageApp/1.0 (+rss feed reader)' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' },
       redirect: 'follow',
       next: { revalidate: 900 },
     })
