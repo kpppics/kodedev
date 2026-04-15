@@ -9,7 +9,7 @@ export const revalidate = 900
 
 export async function GET() {
   const items = await fetchAllFeeds(CONFIG.deals.feeds)
-  const limited = items.slice(0, 30)
+  const limited = items.slice(0, 5)
 
   const enriched = await Promise.all(limited.map(async item => {
     let identifier = ''
