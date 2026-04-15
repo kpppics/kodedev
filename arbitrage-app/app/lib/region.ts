@@ -8,7 +8,7 @@ export interface RegionConfig {
   ebay: { siteId: string; host: string; marketplace: string }
   vat: { enabled: boolean; rate: number }
   salesTax: { enabled: boolean; defaultRate: number }
-  deals: { feeds: Array<'hotukdeals' | 'latestdeals' | 'slickdeals' | 'dealnews'> }
+  deals: { feeds: Array<'hotukdeals' | 'latestdeals' | 'slickdeals' | 'dealnews' | 'hip2save' | 'bradsdeals' | 'pennypinchinmom' | 'walmart' | 'homedepot'> }
 }
 
 export const REGION_CONFIG: Record<Region, RegionConfig> = {
@@ -30,7 +30,7 @@ export const REGION_CONFIG: Record<Region, RegionConfig> = {
     ebay: { siteId: 'EBAY_US', host: 'ebay.com', marketplace: 'EBAY_US' },
     vat: { enabled: false, rate: 0 },
     salesTax: { enabled: true, defaultRate: 0 },
-    deals: { feeds: ['slickdeals', 'dealnews'] },
+    deals: { feeds: ['slickdeals', 'dealnews', 'hip2save', 'walmart', 'homedepot', 'bradsdeals', 'pennypinchinmom'] },
   },
 }
 

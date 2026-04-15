@@ -17,6 +17,7 @@ export default function Deals() {
   const [rows, setRows] = useState<DealRow[]>([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState<string | null>(null)
+  const [pennyOnly, setPennyOnly] = useState(false)
   const { region } = useRegion()
 
   async function load() {
@@ -31,6 +32,8 @@ export default function Deals() {
   }
   useEffect(() => { load() }, [region])
 
+  const displayed = pennyOnly ? rows.filter(r => r.item.price !== undefined && r.item.price < 1) : rows
+
   return (
     <div className="page">
       <div className="flex items-center justify-between mb-3">
@@ -43,6 +46,10 @@ export default function Deals() {
         Crowdsourced deal feeds, scored against live Amazon/eBay prices. Sorted by profit.
       </p>
 
+      <div className="flex gap-2 mb-4">
+        <button className={`chip ${pennyOnly ? 'chip-profit' : ''}`} onClick={() => setPennyOnly(p => !p)}>Penny deals (&lt;£1/$1)</button>
+      </div>
+
       {err && <div className="chip chip-loss mb-3">{err}</div>}
 
       {loading && rows.length === 0 && (
@@ -52,7 +59,7 @@ export default function Deals() {
       )}
 
       <div className="flex flex-col gap-3">
-        {rows.map((r, i) => (
+        {displayed.map((r, i) => (
           <div key={i} className="card p-4 card-hover">
             <div className="flex items-center gap-2 mb-1">
               <ProviderBadge provider={r.item.source} />
