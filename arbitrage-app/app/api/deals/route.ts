@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { CONFIG } from '@/app/lib/region'
+import { REGION_CONFIG } from '@/app/lib/region'
 import { fetchAllFeeds } from '@/app/lib/feeds/brickseek'
 import { analyze } from '@/app/lib/analyze'
 import { resolveUrl } from '@/app/lib/resolver/resolver'
@@ -7,8 +7,10 @@ import { resolveUrl } from '@/app/lib/resolver/resolver'
 export const runtime = 'nodejs'
 export const revalidate = 900
 
-export async function GET() {
-  const items = await fetchAllFeeds(CONFIG.deals.feeds)
+export async function GET(req: Request) {
+  const region = (new URL(req.url).searchParams.get('region') || 'uk') as 'uk' | 'us'
+  const config = REGION_CONFIG[region] ?? REGION_CONFIG.uk
+  const items = await fetchAllFeeds(config.deals.feeds)
   const limited = items.slice(0, 5)
 
   const enriched = await Promise.all(limited.map(async item => {

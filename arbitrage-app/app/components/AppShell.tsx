@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
+import { RegionProvider, useRegion } from '../lib/regionContext'
 
 const NAV = [
   { href: '/deals', label: 'Deals', icon: 'local_fire_department' },
@@ -29,10 +30,10 @@ const ALL = [
   { href: '/settings', label: 'Settings', icon: 'settings' },
 ]
 
-export function AppShell({ children }: { children: ReactNode }) {
+function AppShellInner({ children }: { children: ReactNode }) {
   const pathname = usePathname() || '/'
-  const region = (process.env.NEXT_PUBLIC_REGION || 'uk').toLowerCase()
   const isMock = process.env.NEXT_PUBLIC_USE_MOCK === '1'
+  const { region, toggle } = useRegion()
   const regionFlag = region === 'us' ? '🇺🇸' : '🇬🇧'
   const [theme, setTheme] = useState<'auto' | 'light' | 'dark'>('auto')
 
@@ -60,7 +61,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="gradient-text">Arbitrage</span>
         </Link>
         <div className="flex items-center gap-2">
-          <span className="chip" title={region.toUpperCase()}>{regionFlag} {region.toUpperCase()}</span>
+          <button className="chip" style={{ cursor: 'pointer' }} title={region.toUpperCase()} onClick={toggle}>{regionFlag} {region.toUpperCase()}</button>
           {isMock && <span className="chip chip-warn" title="Mock mode">MOCK</span>}
           <button className="btn btn-ghost" style={{ minWidth: 44, padding: '0 12px' }} onClick={toggleTheme} aria-label="Toggle theme">
             <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{themeIcon}</span>
@@ -100,5 +101,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         })}
       </nav>
     </>
+  )
+}
+
+export function AppShell({ children }: { children: ReactNode }) {
+  return (
+    <RegionProvider>
+      <AppShellInner>{children}</AppShellInner>
+    </RegionProvider>
   )
 }

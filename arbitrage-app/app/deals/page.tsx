@@ -6,6 +6,7 @@ import { ProviderBadge } from '../components/ProviderBadge'
 import { money } from '../lib/region'
 import { pct } from '../lib/math'
 import type { AnalyzeOutput } from '../lib/analyze'
+import { useRegion } from '../lib/regionContext'
 
 interface DealRow {
   item: { title: string; url: string; price?: number; source: string; description?: string }
@@ -16,18 +17,19 @@ export default function Deals() {
   const [rows, setRows] = useState<DealRow[]>([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState<string | null>(null)
+  const { region } = useRegion()
 
   async function load() {
     setLoading(true); setErr(null)
     try {
-      const res = await fetch('/api/deals')
+      const res = await fetch(`/api/deals?region=${region}`)
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'deals failed')
       setRows(data.deals || [])
     } catch (e) { setErr(String((e as Error).message || e)) }
     finally { setLoading(false) }
   }
-  useEffect(() => { load() }, [])
+  useEffect(() => { load() }, [region])
 
   return (
     <div className="page">
