@@ -1,42 +1,36 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { THRIFT_PROMPT } from './prompt'
 import type { ThriftIdentification } from './types'
 
-let client: Anthropic | null = null
-function anthropic(): Anthropic {
-  if (!client) {
-    const key = process.env.ANTHROPIC_API_KEY
-    if (!key) throw new Error('ANTHROPIC_API_KEY missing')
-    client = new Anthropic({ apiKey: key })
-  }
-  return client
-}
+// Groq vision API (OpenAI-compatible). Model: llama-3.2-90b-vision-preview or llama-3.2-11b-vision-preview
+const GROQ_API = 'https://api.groq.com/openai/v1/chat/completions'
 
 export async function identifyFromImage(imageBase64: string, mediaType: string): Promise<ThriftIdentification> {
-  const model = process.env.VISION_MODEL || 'claude-sonnet-4-6'
-  const res = await anthropic().messages.create({
-    model,
-    max_tokens: 800,
-    temperature: 0,
-    messages: [{
-      role: 'user',
-      content: [
-        {
-          type: 'image',
-          source: {
-            type: 'base64',
-            media_type: mediaType as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif',
-            data: imageBase64,
-          },
-        },
-        { type: 'text', text: THRIFT_PROMPT },
-      ],
-    }],
+  const key = process.env.GROQ_API_KEY
+  if (!key) throw new Error('GROQ_API_KEY missing')
+  const model = process.env.VISION_MODEL || 'llama-3.2-90b-vision-preview'
+
+  const res = await fetch(GROQ_API, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      max_tokens: 800,
+      temperature: 0,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: `data:${mediaType};base64,${imageBase64}` } },
+          { type: 'text', text: THRIFT_PROMPT },
+        ],
+      }],
+    }),
   })
-  const text = res.content
-    .filter((c): c is { type: 'text'; text: string } => c.type === 'text')
-    .map(c => c.text)
-    .join('')
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`Groq vision error ${res.status}: ${err.slice(0, 200)}`)
+  }
+  const data = await res.json() as { choices: Array<{ message: { content: string } }> }
+  const text = data.choices?.[0]?.message?.content || ''
   const jsonStart = text.indexOf('{')
   const jsonEnd = text.lastIndexOf('}')
   if (jsonStart < 0 || jsonEnd < 0) throw new Error('Vision response lacked JSON: ' + text.slice(0, 200))
