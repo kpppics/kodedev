@@ -34,12 +34,13 @@ export const REGION_CONFIG: Record<Region, RegionConfig> = {
   },
 }
 
-export const REGION: Region = ((process.env.REGION || process.env.NEXT_PUBLIC_REGION || 'uk') as Region)
-export const CONFIG: RegionConfig = REGION_CONFIG[REGION] ?? REGION_CONFIG.uk
+const _rawRegion = process.env.NEXT_PUBLIC_REGION || 'uk'
+export const REGION: Region = (_rawRegion in REGION_CONFIG ? _rawRegion : 'uk') as Region
+export const CONFIG: RegionConfig = REGION_CONFIG[REGION]
 
-export const USE_MOCK = (process.env.USE_MOCK || process.env.NEXT_PUBLIC_USE_MOCK || '0') === '1'
+export const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === '1'
 
 export function money(n: number, region: Region = REGION): string {
-  const cfg = REGION_CONFIG[region]
+  const cfg = REGION_CONFIG[region] ?? REGION_CONFIG.uk
   return new Intl.NumberFormat(cfg.locale, { style: 'currency', currency: cfg.currency, maximumFractionDigits: 2 }).format(n)
 }
