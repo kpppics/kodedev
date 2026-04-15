@@ -14,9 +14,11 @@ export function parseBrickseekCsv(csvText: string): FeedItem[] {
   }).filter(i => i.title && i.url)
 }
 
-export async function fetchAllFeeds(feeds: Array<'hotukdeals' | 'latestdeals' | 'slickdeals' | 'dealnews' | 'hip2save' | 'bradsdeals' | 'pennypinchinmom' | 'walmart' | 'homedepot'>): Promise<FeedItem[]> {
+export async function fetchAllFeeds(feeds: Array<'hotukdeals' | 'latestdeals' | 'techradar' | 'savethestudent' | 'slickdeals' | 'dealnews' | 'hip2save' | 'bradsdeals' | 'pennypinchinmom' | 'walmart' | 'homedepot'>): Promise<FeedItem[]> {
   const { hotukdeals } = await import('./hotukdeals')
   const { latestdeals } = await import('./latestdeals')
+  const { techradar } = await import('./techradar')
+  const { savethestudent } = await import('./savethestudent')
   const { slickdeals } = await import('./slickdeals')
   const { dealnews } = await import('./dealnews')
   const { hip2save } = await import('./hip2save')
@@ -24,7 +26,7 @@ export async function fetchAllFeeds(feeds: Array<'hotukdeals' | 'latestdeals' | 
   const { pennypinchinmom } = await import('./pennypinchinmom')
   const { walmart } = await import('./walmart')
   const { homedepot } = await import('./homedepot')
-  const map = { hotukdeals, latestdeals, slickdeals, dealnews, hip2save, bradsdeals, pennypinchinmom, walmart, homedepot }
+  const map = { hotukdeals, latestdeals, techradar, savethestudent, slickdeals, dealnews, hip2save, bradsdeals, pennypinchinmom, walmart, homedepot }
   const results = await Promise.all(feeds.map(f => map[f]().catch(() => [])))
   return results.flat()
 }
