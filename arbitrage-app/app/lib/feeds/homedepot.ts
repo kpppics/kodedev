@@ -3,7 +3,7 @@ import type { FeedItem } from './hotukdeals'
 
 export async function homedepot(): Promise<FeedItem[]> {
   return fetchFeed(
-    'https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=retailer&q=home+depot&output=rss',
+    'https://hip2save.com/tag/home-depot/feed/',
     'Home Depot'
   )
 }
