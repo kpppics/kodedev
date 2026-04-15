@@ -3,7 +3,7 @@ import type { FeedItem } from './hotukdeals'
 
 export async function walmart(): Promise<FeedItem[]> {
   return fetchFeed(
-    'https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&q=walmart&output=rss',
+    'https://9to5toys.com/feed/',
     'Walmart Clearance'
   )
 }
