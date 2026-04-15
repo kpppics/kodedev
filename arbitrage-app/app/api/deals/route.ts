@@ -11,7 +11,22 @@ export async function GET(req: Request) {
   const region = (new URL(req.url).searchParams.get('region') || 'uk') as 'uk' | 'us'
   const config = REGION_CONFIG[region] ?? REGION_CONFIG.uk
   const items = await fetchAllFeeds(config.deals.feeds)
-  const limited = items.slice(0, 5)
+
+  // Round-robin across sources so no single feed dominates
+  const bySource = new Map<string, typeof items>()
+  for (const item of items) {
+    if (!bySource.has(item.source)) bySource.set(item.source, [])
+    bySource.get(item.source)!.push(item)
+  }
+  const sources = Array.from(bySource.values())
+  const interleaved: typeof items = []
+  let i = 0
+  while (interleaved.length < 10 && sources.some(s => s.length > 0)) {
+    const src = sources[i % sources.length]
+    if (src.length > 0) interleaved.push(src.shift()!)
+    i++
+  }
+  const limited = interleaved
 
   const enriched = await Promise.all(limited.map(async item => {
     let identifier = ''
