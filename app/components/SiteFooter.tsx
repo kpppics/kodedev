@@ -33,7 +33,7 @@ export default function SiteFooter() {
         </div>
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-sm">© 2026 KODEDEV. All rights reserved.</p>
+          <p className="text-slate-500 text-sm">© 2026 KODE DEV LTD. All rights reserved.</p>
           <div className="flex gap-6">
             <a className="text-slate-500 hover:text-slate-300 transition-colors text-sm" href="#">Privacy Policy</a>
             <a className="text-slate-500 hover:text-slate-300 transition-colors text-sm" href="#">Terms of Service</a>
