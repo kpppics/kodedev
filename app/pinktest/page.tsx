@@ -7,7 +7,7 @@ export default function PinkTest() {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <span style={{ color: 'black', fontSize: '4rem', fontWeight: 'bold' }}>PINK</span>
+      <span style={{ color: 'black', fontSize: '4rem', fontWeight: 'bold' }}>PINK DOG</span>
     </div>
   );
 }
