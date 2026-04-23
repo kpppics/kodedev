@@ -7,11 +7,16 @@ export const metadata: Metadata = {
 export default function TestPage() {
   return (
     <main className="fixed inset-0 overflow-hidden bg-black">
-      <img
-        src="/testpage-thailand-sunset.png"
-        alt="Thailand beach at sunset with long-tail boats, an elephant, and a woman entering the sea"
+      <video
         className="h-screen w-screen object-cover"
-      />
+        poster="/testpage-thailand-sunset.png"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/testpage-thailand-sunset.mp4" type="video/mp4" />
+      </video>
     </main>
   )
 }
