@@ -60,7 +60,7 @@ export default function KidsHubPage() {
           <span className="text-2xl" aria-hidden>⭐</span>
           <span className="text-xl font-extrabold tabular-nums">{progress.stickers}</span>
         </div>
-        <h1 className="kids-headline text-3xl sm:text-4xl text-center flex-1">Louie&apos;s AI Playground</h1>
+        <h1 className="kids-headline text-3xl sm:text-4xl text-center flex-1">Little KODE Dev</h1>
         <AudioToggle />
       </header>
 
@@ -79,7 +79,7 @@ export default function KidsHubPage() {
             onClick={startGreeting}
             className="kids-pill text-xl"
             style={{ background: 'var(--kids-pink)', color: 'white' }}
-            aria-label="Tap to hear Louie say hello"
+            aria-label="Tap to hear Kodey say hello"
           >
             🔊 Tap to say hi!
           </button>

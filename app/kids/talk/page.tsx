@@ -11,7 +11,7 @@ import { TALK_PROMPTS, type TalkPrompt, pickReply } from '../lib/talkReplies'
 import { MODULE_EMOJI, MODULE_INTROS, MODULE_TITLES } from '../lib/mascotLines'
 
 interface ChatTurn {
-  who: 'kid' | 'louie'
+  who: 'kid' | 'kodey'
   text: string
   emoji?: string
 }
@@ -44,7 +44,7 @@ export default function TalkPage() {
 
     await new Promise(r => setTimeout(r, 700))
 
-    setTurns(prev => [...prev, { who: 'louie', text: reply }])
+    setTurns(prev => [...prev, { who: 'kodey', text: reply }])
     await mascot.say(reply)
 
     setTapCount(c => {
@@ -124,7 +124,7 @@ export default function TalkPage() {
         </div>
 
         <p className="text-center text-sm font-bold mt-2" style={{ color: 'var(--kids-ink-soft)' }}>
-          Tap a picture to chat with Louie!
+          Tap a picture to chat with Kodey!
         </p>
       </div>
 

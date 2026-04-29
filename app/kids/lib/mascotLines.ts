@@ -1,6 +1,7 @@
 import type { ModuleId } from '../hooks/useKidsProgress'
 
-export const MASCOT_NAME = 'Louie'
+export const MASCOT_NAME = 'Kodey'
+export const APP_NAME = 'Little KODE Dev'
 
 export const MASCOT_GREETINGS = [
   `Hi! I'm ${MASCOT_NAME}! What shall we make today?`,
