@@ -1,6 +1,7 @@
 'use client'
 
-import { Mascot, type MascotState } from './Mascot'
+import { MascotHybrid } from './MascotHybrid'
+import type { MascotState } from './Mascot'
 
 interface MascotStageProps {
   state: MascotState
@@ -41,7 +42,7 @@ export function MascotStage({
         className="pointer-events-auto"
         style={{ background: 'transparent', border: 0, padding: 0, cursor: onTap ? 'pointer' : 'default' }}
       >
-        <Mascot state={state} size={size} />
+        <MascotHybrid state={state} size={size} />
       </button>
     </div>
   )
