@@ -1,0 +1,259 @@
+/* ============================================================
+   KIDS LEARNING APP — playful, scoped tokens
+   ============================================================ */
+
+.kids-app {
+  --kids-bg:        #fef9f3;
+  --kids-bg-warm:   #ffeed1;
+  --kids-bg-cool:   #d8f0ff;
+  --kids-pink:      #ff7eb6;
+  --kids-pink-deep: #d63384;
+  --kids-yellow:    #ffd166;
+  --kids-yellow-deep:#f4a300;
+  --kids-blue:      #4cc9f0;
+  --kids-blue-deep: #1e88e5;
+  --kids-green:     #6ee7b7;
+  --kids-green-deep:#10b981;
+  --kids-purple:    #b388ff;
+  --kids-purple-deep:#7c3aed;
+  --kids-orange:    #ff9f43;
+  --kids-cream:     #fff8e7;
+  --kids-ink:       #2b2640;
+  --kids-ink-soft:  #5b5478;
+
+  background:
+    radial-gradient(circle at 10% 10%, #ffe4f3 0, transparent 40%),
+    radial-gradient(circle at 90% 20%, #d8f0ff 0, transparent 45%),
+    radial-gradient(circle at 50% 90%, #fff3c1 0, transparent 50%),
+    var(--kids-bg);
+  min-height: 100dvh;
+  color: var(--kids-ink);
+  font-family: "Inter", "Comic Sans MS", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.kids-app * { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.kids-app button, .kids-app a { user-select: none; }
+
+/* === Reusable kid-friendly utility classes === */
+
+.kids-card {
+  background: white;
+  border: 4px solid var(--kids-ink);
+  border-radius: 28px;
+  box-shadow: 0 6px 0 var(--kids-ink);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.kids-card:active { transform: translate(0, 4px); box-shadow: 0 2px 0 var(--kids-ink); }
+
+.kids-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 9999px;
+  border: 3px solid var(--kids-ink);
+  background: white;
+  font-weight: 700;
+}
+
+.kids-headline {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--kids-ink);
+  text-shadow: 3px 3px 0 rgba(255,255,255,0.6);
+}
+
+/* === Mascot animations === */
+
+@keyframes kids-bob {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-8px) rotate(1deg); }
+}
+@keyframes kids-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 97%      { transform: scaleY(0.05); }
+}
+@keyframes kids-mouth-talk {
+  0%, 100% { transform: scaleY(0.6); }
+  50%      { transform: scaleY(1.4); }
+}
+@keyframes kids-think-float {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.7); }
+  40%  { opacity: 1; transform: translateY(-4px) scale(1); }
+  100% { opacity: 0; transform: translateY(-22px) scale(1.1); }
+}
+@keyframes kids-cheer-hop {
+  0%, 100% { transform: translateY(0); }
+  20%      { transform: translateY(-22px) rotate(-6deg); }
+  40%      { transform: translateY(0) rotate(0deg); }
+  60%      { transform: translateY(-14px) rotate(4deg); }
+  80%      { transform: translateY(0) rotate(0deg); }
+}
+@keyframes kids-arm-wave {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(20deg); }
+}
+@keyframes kids-pop-in {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes kids-spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes kids-sparkle-up {
+  0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(-90px) scale(1.2); opacity: 0; }
+}
+@keyframes kids-bounce-tap {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+@keyframes kids-shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-6px); }
+  80%      { transform: translateX(6px); }
+}
+@keyframes kids-spin-tap {
+  to { transform: rotate(360deg); }
+}
+@keyframes kids-paint-sweep {
+  0%   { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes kids-rainbow-hue {
+  0%   { filter: hue-rotate(0deg) saturate(1.6); }
+  100% { filter: hue-rotate(360deg) saturate(1.6); }
+}
+@keyframes kids-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.7); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}
+
+/* Mascot state-driven animation hooks */
+.mascot-idle      #body { animation: kids-bob 3.4s ease-in-out infinite; transform-origin: 50% 80%; }
+.mascot-idle      #left-eye, .mascot-idle #right-eye { animation: kids-blink 4.2s infinite; transform-origin: center; transform-box: fill-box; }
+.mascot-listening #pupils { transition: transform 200ms ease; }
+.mascot-thinking  #body { animation: kids-bob 1.6s ease-in-out infinite; transform-origin: 50% 80%; }
+.mascot-thinking  .think-bubble { animation: kids-think-float 1.6s ease-in-out infinite; }
+.mascot-talking   #mouth { animation: kids-mouth-talk 240ms ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.mascot-talking   #body  { animation: kids-bob 1.4s ease-in-out infinite; transform-origin: 50% 80%; }
+.mascot-cheering  #body  { animation: kids-cheer-hop 800ms ease-in-out 2; transform-origin: 50% 80%; }
+.mascot-cheering  #left-arm, .mascot-cheering #right-arm { animation: kids-arm-wave 300ms ease-in-out 4; transform-origin: top; transform-box: fill-box; }
+
+/* MiniWidget action animations */
+.kw-anim-bounce { animation: kids-bounce-tap 500ms ease-in-out; }
+.kw-anim-spin   { animation: kids-spin-tap 700ms ease-in-out; }
+.kw-anim-shake  { animation: kids-shake 500ms ease-in-out; }
+
+.kw-emit {
+  position: absolute;
+  font-size: 32px;
+  pointer-events: none;
+  animation: kids-sparkle-up 1.1s ease-out forwards;
+}
+
+/* Sticker reward star burst */
+.sticker-star {
+  animation: kids-pop-in 600ms cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+/* Picture-module reveal */
+.kids-paint-sweep { animation: kids-paint-sweep 1.2s ease-out forwards; }
+.kids-rainbow     { animation: kids-rainbow-hue 6s linear infinite; }
+.kids-twinkle     { animation: kids-twinkle 1.6s ease-in-out infinite; }
+
+/* === Video module clip animations === */
+
+@keyframes clip-dance {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  25%      { transform: translateY(-14px) rotate(8deg); }
+  50%      { transform: translateY(0) rotate(-8deg); }
+  75%      { transform: translateY(-10px) rotate(6deg); }
+}
+@keyframes clip-fly {
+  0%   { transform: translate(-30px, 40px) rotate(-12deg) scale(0.8); }
+  50%  { transform: translate(0, -10px) rotate(8deg) scale(1); }
+  100% { transform: translate(30px, 40px) rotate(-12deg) scale(0.8); }
+}
+@keyframes clip-sleep {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50%      { transform: translateY(2px) rotate(0deg) scale(1.02); }
+}
+@keyframes clip-zzz {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  50%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(20px, -40px) scale(1.2); }
+}
+
+.clip-dance .clip-actor { animation: clip-dance 1s ease-in-out infinite; transform-origin: 50% 90%; }
+.clip-fly   .clip-actor { animation: clip-fly 3.2s ease-in-out infinite; transform-origin: 50% 50%; }
+.clip-sleep .clip-actor { animation: clip-sleep 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
+.clip-sleep .clip-zzz   { animation: clip-zzz 2.4s ease-in-out infinite; }
+
+/* Floating sea bubbles for sea video */
+@keyframes bubble-rise {
+  0%   { transform: translateY(0) scale(0.8); opacity: 0.4; }
+  100% { transform: translateY(-220px) scale(1.2); opacity: 0; }
+}
+.bubble-rise { animation: bubble-rise 4s ease-in infinite; }
+
+/* Twinkling stars for space scene */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+.star-twinkle { animation: star-twinkle 1.4s ease-in-out infinite; }
+
+/* Floating leaves for jungle */
+@keyframes leaf-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+.leaf-sway { animation: leaf-sway 3s ease-in-out infinite; }
+
+/* === Utility: gentle hover lift (touch devices ignore) === */
+@media (hover: hover) {
+  .kids-hover-lift { transition: transform 140ms ease; }
+  .kids-hover-lift:hover { transform: translateY(-4px) scale(1.03); }
+}
+
+/* === Caption/speech bubble === */
+.kids-bubble {
+  background: white;
+  border: 3px solid var(--kids-ink);
+  border-radius: 22px;
+  padding: 10px 16px;
+  font-weight: 700;
+  position: relative;
+  box-shadow: 0 4px 0 var(--kids-ink);
+}
+.kids-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 30px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-right: 3px solid var(--kids-ink);
+  border-bottom: 3px solid var(--kids-ink);
+  transform: rotate(45deg);
+}
+
+/* === Reduced motion === */
+@media (prefers-reduced-motion: reduce) {
+  .kids-app * {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+  }
+}
