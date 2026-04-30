@@ -166,33 +166,10 @@ export function MascotHybrid({ state = 'idle', size = 140, style }: MascotHybrid
             </g>
           )}
 
-          {/* IDLE — invisible eye groups (just so #left-eye/#right-eye exist
-              for the blink CSS animation; the patch only shows during the
-              ~5% blink scaleY, briefly hiding the source eyes). */}
-          {(state === 'idle' || state === 'listening') && (
-            <>
-              <g id="left-eye">
-                <rect
-                  x={v.leftEyeX - v.eyeHalfWidth}
-                  y={eyesY - 2}
-                  width={v.eyeHalfWidth * 2}
-                  height={4}
-                  rx={1.6}
-                  fill={v.fill}
-                />
-              </g>
-              <g id="right-eye">
-                <rect
-                  x={v.rightEyeX - v.eyeHalfWidth}
-                  y={eyesY - 2}
-                  width={v.eyeHalfWidth * 2}
-                  height={4}
-                  rx={1.6}
-                  fill={v.fill}
-                />
-              </g>
-            </>
-          )}
+          {/* Idle / listening: the source image already shows smiling eyes —
+              we don't overlay anything, so the photo's natural face shows
+              through. (Blink-via-overlay was attempted earlier but it had
+              the inverse effect: covering the eyes 92% of the time.) */}
         </svg>
       </div>
     </div>

@@ -20,20 +20,20 @@ export const MASCOT_ASPECT = 9 / 16
  */
 export const MASCOT_VISOR = {
   // bounding box of the dark visor (face screen)
-  left: 26,
-  right: 74,
-  top: 10,
-  bottom: 30,
+  left: 22,
+  right: 78,
+  top: 9,
+  bottom: 28,
   // eye centers (smiling arcs in the source image)
-  leftEyeX: 39,
-  rightEyeX: 61,
-  eyesY: 19,
-  eyeHalfWidth: 5,
+  leftEyeX: 36,
+  rightEyeX: 64,
+  eyesY: 17,
+  eyeHalfWidth: 6,
   // mouth center
   mouthX: 50,
-  mouthY: 26,
-  mouthHalfWidth: 4,
+  mouthY: 24,
+  mouthHalfWidth: 5,
   // visor fill colour (used to "patch over" the source eyes/mouth when
   // overlaying a different expression)
-  fill: '#0a141a',
+  fill: '#0c151c',
 }
