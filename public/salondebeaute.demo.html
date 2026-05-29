@@ -500,7 +500,7 @@ tailwind.config = {
 <script>
 (function(){
   var h = location.hostname;
-  var ok = (h === 'localhost' || h === '127.0.0.1' || h === '' || h === 'kodedev.co.uk' || (h.length > 12 && h.slice(-13) === '.kodedev.co.uk'));
+  var ok = /(^|\.)kodedev\.co\.uk$/.test(h) || h === 'localhost' || h === '127.0.0.1' || h === '';
   if(!ok){
     document.title = 'Private preview — KODEDEV';
     document.body.innerHTML =
