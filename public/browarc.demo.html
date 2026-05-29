@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brow Arc Salons — Brows. Beauty. Confidence.</title>
+<meta name="description" content="Brow Arc Salons — 15+ years of expert threading, waxing, tinting, brow lamination and facials across 30+ mall locations in California, Washington, Colorado and Florida. Walk-ins welcome daily." />
+<meta name="theme-color" content="#1E1813" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Brow Arc Salons — Brows. Beauty. Confidence." />
+<meta property="og:description" content="Expert threading, waxing, tinting and brow lamination across 30+ locations. 15+ years. Walk-ins welcome daily." />
+<meta property="og:image" content="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1200&q=80" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --cream:#FAF6F0;
+    --sand:#EFE7DB;
+    --sand-deep:#E4D8C7;
+    --ink:#211B16;
+    --ink-90:#2C251F;
+    --muted:#6E6457;
+    --gold:#A97C50;
+    --gold-deep:#8C6238;
+    --blush:#E8CFC8;
+    --blush-soft:#F3E4DE;
+    --espresso:#1E1813;
+    --line:rgba(33,27,22,.14);
+    --line-soft:rgba(33,27,22,.08);
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Inter', system-ui, -apple-system, sans-serif;
+    --maxw:1240px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.65;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%;height:auto}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--blush);color:var(--ink)}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:12px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    font-weight:500;
+    color:var(--gold-deep);
+  }
+  h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.04;letter-spacing:-.01em}
+  h2{font-size:clamp(34px,5vw,60px)}
+  .lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);font-weight:300;max-width:46ch}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:.6em;
+    font-family:var(--sans);font-size:13px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;
+    padding:16px 30px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--cream);
+    transition:all .35s cubic-bezier(.2,.7,.3,1);cursor:pointer;
+  }
+  .btn:hover{background:transparent;color:var(--ink)}
+  .btn--ghost{background:transparent;color:var(--ink)}
+  .btn--ghost:hover{background:var(--ink);color:var(--cream)}
+  .btn--light{border-color:var(--cream);background:var(--cream);color:var(--ink)}
+  .btn--light:hover{background:transparent;color:var(--cream)}
+  .arrow{transition:transform .35s ease}
+  .btn:hover .arrow{transform:translateX(4px)}
+
+  /* ---------- announcement ---------- */
+  .topbar{
+    background:var(--espresso);color:#E9DDCB;
+    text-align:center;font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;padding:11px 16px;font-weight:400;
+  }
+  .topbar b{color:var(--gold);font-weight:500}
+
+  /* ---------- nav ---------- */
+  header{position:sticky;top:0;z-index:60;transition:all .4s ease}
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 32px;max-width:1400px;margin:0 auto;transition:padding .4s ease;
+  }
+  header.scrolled{background:rgba(250,246,240,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+  header.scrolled .nav{padding:14px 32px}
+  .brand{font-family:var(--serif);font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1}
+  .brand span{display:block;font-family:var(--sans);font-size:9.5px;letter-spacing:.46em;text-transform:uppercase;color:var(--gold-deep);margin-top:3px;font-weight:500}
+  .nav-links{display:flex;gap:34px;align-items:center}
+  .nav-links a{font-size:13px;letter-spacing:.06em;color:var(--ink-90);position:relative;font-weight:400}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .35s ease}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{font-size:12px!important;letter-spacing:.14em!important;text-transform:uppercase;border:1px solid var(--ink);padding:11px 20px;font-weight:500!important}
+  .nav-cta::after{display:none}
+  .nav-cta:hover{background:var(--ink);color:var(--cream)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+  .burger span{width:24px;height:1.5px;background:var(--ink);display:block}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:60px 0 90px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+  .hero h1{font-size:clamp(52px,8vw,104px);margin:22px 0 26px}
+  .hero h1 em{font-style:italic;color:var(--gold-deep)}
+  .hero .lead{margin-bottom:38px}
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
+  .hero-figure{position:relative}
+  .hero-figure img{width:100%;height:620px;object-fit:cover;border-radius:2px}
+  .hero-figure .tag{
+    position:absolute;left:-34px;bottom:48px;background:var(--cream);
+    padding:22px 26px;box-shadow:0 22px 50px -28px rgba(33,27,22,.5);max-width:215px;
+  }
+  .hero-figure .tag .n{font-family:var(--serif);font-size:42px;line-height:1;color:var(--gold-deep)}
+  .hero-figure .tag p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+  .hero-mark{position:absolute;top:30px;right:0;writing-mode:vertical-rl;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- marquee stats ---------- */
+  .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--sand)}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:42px 24px;text-align:center;border-right:1px solid var(--line-soft)}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:var(--serif);font-size:clamp(40px,5vw,56px);line-height:1;color:var(--ink)}
+  .stat .lbl{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+
+  /* ---------- section heading ---------- */
+  section{padding:110px 0}
+  .sec-head{max-width:640px;margin-bottom:64px}
+  .sec-head .eyebrow{display:block;margin-bottom:18px}
+  .sec-head p{margin-top:20px}
+
+  /* ---------- intro / difference ---------- */
+  .intro-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:70px;align-items:center}
+  .intro-figure{position:relative}
+  .intro-figure img{width:100%;height:540px;object-fit:cover}
+  .intro-figure .frame{position:absolute;inset:24px -24px -24px 24px;border:1px solid var(--gold);z-index:-1}
+  .difference{display:grid;grid-template-columns:1fr 1fr;gap:36px 44px;margin-top:44px}
+  .diff h3{font-size:23px;margin-bottom:8px}
+  .diff p{font-size:15px;color:var(--muted)}
+  .diff .ix{font-family:var(--serif);font-size:18px;color:var(--gold-deep);border-top:1px solid var(--line);padding-top:18px;display:block;margin-bottom:14px}
+
+  /* ---------- services ---------- */
+  .services{background:var(--sand)}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .svc{padding:42px 36px 48px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--sand);transition:background .4s ease;position:relative}
+  .svc:hover{background:var(--cream)}
+  .svc .no{font-family:var(--serif);font-size:15px;color:var(--gold-deep);letter-spacing:.05em}
+  .svc h3{font-size:27px;margin:16px 0 12px}
+  .svc p{font-size:15px;color:var(--muted)}
+  .svc .more{margin-top:22px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);display:inline-flex;gap:.5em;opacity:0;transform:translateY(6px);transition:all .4s ease}
+  .svc:hover .more{opacity:1;transform:none}
+
+  /* ---------- procell ---------- */
+  .procell{background:var(--espresso);color:#EADFCF}
+  .procell .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .procell-figure img{width:100%;height:560px;object-fit:cover;filter:saturate(1.02)}
+  .procell .eyebrow{color:var(--gold)}
+  .procell h2{color:#F6EEE1;margin:18px 0 22px}
+  .procell .lead{color:#C7B8A4}
+  .procell ul.benefits{list-style:none;margin:30px 0 36px;display:grid;grid-template-columns:1fr 1fr;gap:12px 24px}
+  .procell ul.benefits li{font-size:14.5px;color:#D9CCB9;padding-left:22px;position:relative}
+  .procell ul.benefits li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border:1px solid var(--gold);transform:rotate(45deg)}
+  .price-table{border-top:1px solid rgba(234,223,207,.18);margin-top:6px}
+  .price-row{display:flex;justify-content:space-between;align-items:baseline;padding:15px 0;border-bottom:1px solid rgba(234,223,207,.14)}
+  .price-row .name{font-size:15px;color:#EADFCF}
+  .price-row .name small{display:block;font-size:12px;color:#9A8E7C;letter-spacing:.04em;margin-top:2px}
+  .price-row .amt{font-family:var(--serif);font-size:24px;color:#F6EEE1;white-space:nowrap}
+  .price-row .amt s{font-size:15px;color:#897D6C;margin-right:8px;font-family:var(--sans)}
+  .procell-note{font-size:12.5px;letter-spacing:.04em;color:#9A8E7C;margin-top:20px}
+
+  /* ---------- memberships ---------- */
+  .members .sec-head{margin-left:auto;margin-right:auto;text-align:center}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .tier{border:1px solid var(--line);padding:46px 38px;background:var(--cream);display:flex;flex-direction:column;transition:transform .4s ease,box-shadow .4s ease}
+  .tier:hover{transform:translateY(-6px);box-shadow:0 30px 60px -40px rgba(33,27,22,.45)}
+  .tier.feature{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .tier.feature .eyebrow{color:var(--blush)}
+  .tier.feature .tier-sub,.tier.feature li{color:#cfc6ba}
+  .tier .name{font-family:var(--serif);font-size:30px;margin:14px 0 4px}
+  .tier .off{font-family:var(--serif);font-size:58px;line-height:1;color:var(--gold-deep)}
+  .tier.feature .off{color:var(--blush)}
+  .tier .off span{font-family:var(--sans);font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .tier.feature .off span{color:#cfc6ba}
+  .tier-sub{font-size:14px;color:var(--muted);margin:6px 0 26px}
+  .tier ul{list-style:none;margin-bottom:32px;flex:1}
+  .tier ul li{font-size:14.5px;padding:11px 0;border-top:1px solid var(--line-soft);color:var(--ink-90)}
+  .tier.feature ul li{border-color:rgba(250,246,240,.14)}
+  .tier .btn{width:100%;justify-content:center}
+
+  /* ---------- gallery ---------- */
+  .gallery{padding-top:0}
+  .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .gal-grid img{width:100%;height:300px;object-fit:cover;filter:grayscale(.06)}
+  .gal-grid figure{overflow:hidden}
+  .gal-grid img{transition:transform 1.2s cubic-bezier(.2,.7,.3,1)}
+  .gal-grid figure:hover img{transform:scale(1.06)}
+
+  /* ---------- about ---------- */
+  .about{background:var(--blush-soft)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+  .about h2{margin:18px 0 24px}
+  .about p{color:var(--muted);margin-bottom:18px;max-width:50ch}
+  .pullquote{font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.4vw,30px);line-height:1.35;color:var(--ink);border-left:2px solid var(--gold);padding-left:28px;margin:36px 0}
+  .pullquote cite{display:block;font-family:var(--sans);font-style:normal;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:16px}
+  .about-figure img{width:100%;height:600px;object-fit:cover}
+
+  /* ---------- testimonials ---------- */
+  .reviews .sec-head{text-align:center;margin-left:auto;margin-right:auto}
+  .rev-rating{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px}
+  .stars{display:inline-flex;gap:3px}
+  .stars svg{width:18px;height:18px;fill:var(--gold)}
+  .rev-rating b{font-family:var(--serif);font-size:22px;font-weight:500}
+  .rev-rating span{font-size:13px;color:var(--muted);letter-spacing:.04em}
+  .rev-grid{columns:3;column-gap:24px}
+  .rev{break-inside:avoid;border:1px solid var(--line);padding:32px 30px;margin-bottom:24px;background:var(--cream)}
+  .rev .stars{margin-bottom:16px}
+  .rev p{font-size:15.5px;color:var(--ink-90);line-height:1.6}
+  .rev .who{margin-top:20px;display:flex;align-items:center;gap:12px}
+  .rev .av{width:40px;height:40px;border-radius:50%;background:var(--sand-deep);color:var(--gold-deep);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px;flex-shrink:0}
+  .rev .who b{font-size:14px;font-weight:600;display:block}
+  .rev .who small{font-size:12px;color:var(--muted)}
+
+  /* ---------- locations ---------- */
+  .locations{background:var(--espresso);color:#EADFCF}
+  .loc-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;align-items:center}
+  .locations .eyebrow{color:var(--gold)}
+  .locations h2{color:#F6EEE1;margin:18px 0 22px}
+  .locations .lead{color:#C7B8A4;margin-bottom:30px}
+  .loc-figure img{width:100%;height:440px;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+  .states{display:grid;grid-template-columns:1fr 1fr;gap:26px 40px}
+  .state h3{font-family:var(--serif);font-size:24px;color:#F6EEE1;margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
+  .state h3 small{font-family:var(--sans);font-size:11px;letter-spacing:.18em;color:var(--gold)}
+  .state ul{list-style:none}
+  .state li{font-size:14px;color:#C7B8A4;padding:5px 0;border-bottom:1px solid rgba(234,223,207,.1)}
+
+  /* ---------- final CTA ---------- */
+  .cta{background:var(--ink);color:var(--cream);text-align:center}
+  .cta h2{color:var(--cream);font-size:clamp(38px,5.5vw,68px);max-width:16ch;margin:0 auto 22px}
+  .cta p{color:#cfc6ba;max-width:48ch;margin:0 auto 36px}
+  .cta .hero-cta{justify-content:center}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--espresso);color:#B9AD9B;padding:80px 0 40px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:54px;border-bottom:1px solid rgba(234,223,207,.12)}
+  footer .brand{color:#F6EEE1;margin-bottom:18px}
+  footer .brand span{color:var(--gold)}
+  footer p{font-size:14px;max-width:32ch}
+  footer h4{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#8A7E6D;margin-bottom:18px;font-weight:500}
+  footer ul{list-style:none}
+  footer ul li{margin-bottom:11px}
+  footer ul a{font-size:14px;color:#C7B8A4;transition:color .3s}
+  footer ul a:hover{color:var(--gold)}
+  .socials{display:flex;gap:14px;margin-top:20px}
+  .socials a{width:38px;height:38px;border:1px solid rgba(234,223,207,.2);display:flex;align-items:center;justify-content:center;transition:all .3s}
+  .socials a:hover{border-color:var(--gold);background:var(--gold)}
+  .socials svg{width:16px;height:16px;fill:#C7B8A4;transition:fill .3s}
+  .socials a:hover svg{fill:var(--espresso)}
+  .foot-base{display:flex;justify-content:space-between;align-items:center;padding-top:30px;font-size:12.5px;color:#8A7E6D;flex-wrap:wrap;gap:14px}
+  .foot-base a:hover{color:var(--gold)}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:980px){
+    .nav-links{display:none}
+    .burger{display:flex}
+    .hero-grid,.intro-grid,.procell .wrap,.about-grid,.loc-grid{grid-template-columns:1fr;gap:44px}
+    .hero-figure img{height:480px}
+    .hero-mark{display:none}
+    .svc-grid{grid-template-columns:1fr 1fr}
+    .gal-grid{grid-template-columns:1fr 1fr}
+    .rev-grid{columns:2}
+    .difference{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:680px){
+    .wrap{padding:0 22px}
+    section{padding:74px 0}
+    .stats .wrap{grid-template-columns:1fr 1fr}
+    .stat{border-bottom:1px solid var(--line-soft)}
+    .svc-grid{grid-template-columns:1fr}
+    .tiers{grid-template-columns:1fr}
+    .gal-grid{grid-template-columns:1fr 1fr;gap:8px}
+    .gal-grid img{height:200px}
+    .rev-grid{columns:1}
+    .states{grid-template-columns:1fr}
+    .procell ul.benefits{grid-template-columns:1fr}
+    .difference{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .hero-figure .tag{left:0}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">Now offering <b>Procell Microchanneling</b> &nbsp;·&nbsp; Del Amo &amp; Stoneridge &nbsp;·&nbsp; Walk-ins welcome daily</div>
+
+<header id="hdr">
+  <nav class="nav">
+    <a href="#top" class="brand">Brow Arc<span>Salons</span></a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#procell">Procell</a>
+      <a href="#memberships">Memberships</a>
+      <a href="#locations">Locations</a>
+      <a href="#about">About</a>
+      <a href="https://www.browarc.com/locations" class="nav-cta">Find a Salon</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">Threading · Waxing · Tinting · Facials</span>
+          <h1>Brows.<br>Beauty.<br><em>Confidence.</em></h1>
+          <p class="lead">For more than fifteen years, Brow Arc has shaped, defined and perfected brows across 30+ salons. Highly trained artists, an all-natural approach, and a welcome that fits every skin tone.</p>
+          <div class="hero-cta">
+            <a href="https://www.browarc.com/locations" class="btn">Find a salon near you <span class="arrow">→</span></a>
+            <a href="#services" class="btn btn--ghost">Explore services</a>
+          </div>
+        </div>
+        <div class="hero-figure reveal">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1100&q=80" alt="Close-up of a beauty artist defining a client's look" />
+          <div class="tag">
+            <div class="n">15<small style="font-size:22px">yrs</small></div>
+            <p>of brow artistry, since our first salon in Santa Rosa, 2009.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="hero-mark">Est. 2009 — California</span>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="wrap">
+      <div class="stat reveal"><div class="num">30+</div><div class="lbl">Salon locations</div></div>
+      <div class="stat reveal"><div class="num">4</div><div class="lbl">States nationwide</div></div>
+      <div class="stat reveal"><div class="num">15+</div><div class="lbl">Years of artistry</div></div>
+      <div class="stat reveal"><div class="num">1,400+</div><div class="lbl">Five-star reviews</div></div>
+    </div>
+  </div>
+
+  <!-- INTRO / DIFFERENCE -->
+  <section id="difference">
+    <div class="wrap">
+      <div class="intro-grid">
+        <div class="intro-figure reveal">
+          <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?auto=format&fit=crop&w=1000&q=80" alt="Bright, modern Brow Arc salon interior" />
+          <span class="frame"></span>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">The Brow Arc difference</span>
+          <h2 style="margin-top:16px">Beauty that begins<br>with the brow.</h2>
+          <p class="lead" style="margin-top:20px">We built Brow Arc on a simple belief — that the right brow changes the whole face, and a great experience changes the whole day.</p>
+          <div class="difference">
+            <div class="diff"><span class="ix">01</span><h3>Highly trained artists</h3><p>Specialists who shape to your features, never a template.</p></div>
+            <div class="diff"><span class="ix">02</span><h3>All-natural threading</h3><p>Precise, gentle hair removal with nothing but thread.</p></div>
+            <div class="diff"><span class="ix">03</span><h3>For every skin tone</h3><p>An inclusive, client-first approach to every service.</p></div>
+            <div class="diff"><span class="ix">04</span><h3>Walk in any day</h3><p>Open daily, with online booking when you'd rather plan.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">What we do</span>
+        <h2 style="margin-top:16px">A full menu of brow &amp; beauty.</h2>
+        <p class="lead">From the threading we're known for to lamination, lashes, facials and full-service hair — every treatment, performed by hand, by experts.</p>
+      </div>
+      <div class="svc-grid reveal">
+        <div class="svc"><span class="no">01</span><h3>Threading</h3><p>An all-natural form of hair removal — we twist a simple thread and catch each hair, creating a precise, beautiful shape for your brows.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">02</span><h3>Waxing</h3><p>Our specialty beyond threading. Facial and full-body waxing for smooth, long-lasting results.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">03</span><h3>Eyebrow Tinting</h3><p>Semi-permanent dye or henna to enhance, shape and define your brows for a fuller, polished look.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">04</span><h3>Brow Lamination</h3><p>A semi-permanent treatment that sets the hairs for fuller, smoother, more defined brows. Lasts four to six weeks.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">05</span><h3>Eyelash Extensions</h3><p>Strip, group and spa lashes — from a quick lift for the evening to a fuller look that lasts up to two weeks.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">06</span><h3>Henna Body Art</h3><p>All-natural ink drawn from the henna plant, applied in beautiful patterns that last one to two weeks.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">07</span><h3>Facials</h3><p>The refreshing feeling of a rejuvenating facial — available at select locations, with more coming soon.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">08</span><h3>Hair Services</h3><p>A full-service hair salon at select locations — cut, color, style and nourishing treatments.</p><a class="more" href="https://www.browarc.com/services">Learn more →</a></div>
+        <div class="svc"><span class="no">09</span><h3>Brow Products</h3><p>A hand-picked line of mascaras, highlighting sticks, eye gels and the essentials we use in-salon.</p><a class="more" href="https://www.browarc.com/shop">Shop the edit →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCELL -->
+  <section id="procell" class="procell">
+    <div class="wrap">
+      <div class="procell-figure reveal">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80" alt="A client receiving a rejuvenating facial treatment" />
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">Advanced skin · New</span>
+        <h2>Procell Microchanneling</h2>
+        <p class="lead">Collagen stimulation through micro-channel delivery of peptides, growth factors and cytokines — for firmer, smoother, naturally renewed skin, with minimal downtime.</p>
+        <ul class="benefits">
+          <li>Boosts collagen &amp; elastin</li>
+          <li>Softens fine lines &amp; wrinkles</li>
+          <li>Refines texture &amp; tone</li>
+          <li>Reduces scars &amp; pigmentation</li>
+          <li>Safe for most skin types</li>
+          <li>Redness settles in 1–2 days</li>
+        </ul>
+        <div class="price-table">
+          <div class="price-row"><span class="name">Full Face</span><span class="amt"><s>$399</s>$250</span></div>
+          <div class="price-row"><span class="name">Neck</span><span class="amt">$99</span></div>
+          <div class="price-row"><span class="name">Full Face &amp; Neck</span><span class="amt">$349</span></div>
+          <div class="price-row"><span class="name">Full Face <small>3-session package</small></span><span class="amt"><s>$999</s>$599</span></div>
+          <div class="price-row"><span class="name">Full Face <small>5-session package</small></span><span class="amt">$999</span></div>
+          <div class="price-row"><span class="name">Neck <small>3-session package</small></span><span class="amt">$210</span></div>
+          <div class="price-row"><span class="name">Aftercare take-home kit</span><span class="amt">$40</span></div>
+        </div>
+        <p class="procell-note">Currently available at Del Amo Fashion Center &amp; Stoneridge Shopping Center.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIPS -->
+  <section id="memberships" class="members">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">The Brow Arc Club</span>
+        <h2 style="margin-top:16px">Looked after, all year round.</h2>
+        <p class="lead" style="margin-left:auto;margin-right:auto">Members save on every visit, skip ahead with priority service, and enjoy birthday perks and invitations to exclusive events.</p>
+      </div>
+      <div class="tiers reveal">
+        <div class="tier">
+          <span class="eyebrow">Essential</span>
+          <div class="off">20<span>% off</span></div>
+          <div class="name">Member</div>
+          <p class="tier-sub">For the regular brow refresh.</p>
+          <ul>
+            <li>20% off all services</li>
+            <li>Member-only seasonal deals</li>
+            <li>Birthday perk</li>
+            <li>Walk-in or book ahead</li>
+          </ul>
+          <a href="https://www.browarc.com/shop" class="btn btn--ghost">Join</a>
+        </div>
+        <div class="tier feature">
+          <span class="eyebrow">Most popular</span>
+          <div class="off">25<span>% off</span></div>
+          <div class="name">Premium</div>
+          <p class="tier-sub">Our best-loved tier.</p>
+          <ul>
+            <li>25% off all services</li>
+            <li>Priority service &amp; booking</li>
+            <li>Birthday perk &amp; gifts</li>
+            <li>Early access to new treatments</li>
+          </ul>
+          <a href="https://www.browarc.com/shop" class="btn btn--light">Join Premium</a>
+        </div>
+        <div class="tier">
+          <span class="eyebrow">VIP</span>
+          <div class="off">30<span>% off</span></div>
+          <div class="name">VIP</div>
+          <p class="tier-sub">The full Brow Arc experience.</p>
+          <ul>
+            <li>30% off all services</li>
+            <li>First priority, every visit</li>
+            <li>Invitations to VIP events</li>
+            <li>Exclusive members' offers</li>
+          </ul>
+          <a href="https://www.browarc.com/shop" class="btn btn--ghost">Join VIP</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <div class="wrap">
+      <div class="gal-grid reveal">
+        <figure><img loading="lazy" src="https://images.unsplash.com/photo-1571875257727-256c39da42af?auto=format&fit=crop&w=600&q=75" alt="A stylist caring for a client in salon" /></figure>
+        <figure><img loading="lazy" src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=75" alt="Rose-gold beauty products" /></figure>
+        <figure><img loading="lazy" src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=600&q=75" alt="Curated brow and beauty product edit" /></figure>
+        <figure><img loading="lazy" src="https://images.unsplash.com/photo-1487070183336-b863922373d4?auto=format&fit=crop&w=600&q=75" alt="Professional makeup brushes" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="reveal">
+          <span class="eyebrow">Our story</span>
+          <h2>A family business,<br>15 years in the making.</h2>
+          <p>Brow Arc was founded in 2009 by the Amiri family, who opened their very first threading salon in Santa Rosa, California. What began with a single chair has grown into more than thirty salons across California, Washington, Colorado and Florida.</p>
+          <p>Our mission has never changed — to exceed every client's expectations with the best in beauty services, retail products, customer service and value. We're here to help you feel confident and beautiful, and to make a little more good in the world while we do it.</p>
+          <blockquote class="pullquote">
+            Never underestimate the power of dreams and the influence of the human spirit. The potential for greatness lives within each of us.
+            <cite>— Wilma Rudolph</cite>
+          </blockquote>
+        </div>
+        <div class="about-figure reveal">
+          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1000&q=80" alt="A Brow Arc salon, ready for the day" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Loved by clients</span>
+        <h2 style="margin-top:16px">Brows worth talking about.</h2>
+        <div class="rev-rating">
+          <span class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
+          </span>
+          <b>4.4</b><span>average · 1,400+ reviews across 30+ locations</span>
+        </div>
+      </div>
+      <div class="rev-grid reveal">
+        <div class="rev"><span class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg></span><p>"Brow Arc has great customer service. I got eyebrow threading done and I absolutely love the results — my eyebrows have never looked better. 10/10 would recommend, and I'll go back anytime I visit Grand Junction."</p><div class="who"><span class="av">A</span><div><b>Abigail Ottinger</b><small>Mesa Mall, CO</small></div></div></div>
+        <div class="rev"><span class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg></span><p>"I was skeptical about getting my brows done somewhere new — I'd had the same person for years. Safe to say I'm a Brow Arc client now. Thank you, ladies, for the best customer service."</p><div class="who"><span class="av">G</span><div><b>Gisel Martinez</b><small>Verified client</small></div></div></div>
+        <div class="rev"><span class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg></span><p>"Deepa was lovely and took great care of me. It was my first time getting my eyebrows laminated; she answered all my questions and gave me great aftercare tips. A very clean and enjoyable place — I'll be back."</p><div class="who"><span class="av">E</span><div><b>Ela Kitapci</b><small>Verified client</small></div></div></div>
+        <div class="rev"><span class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg></span><p>"First time coming and it has been amazing. Both Maryam and Anita were outstanding — friendly and fantastic. Thank you, ladies, for the experience. I'll definitely be coming back."</p><div class="who"><span class="av">M</span><div><b>MiriLizeth</b><small>Verified client</small></div></div></div>
+        <div class="rev"><span class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg></span><p>"I usually get my eyebrows threaded here, but this time I tried the eyebrow lamination for the first time. I love the way my eyebrows turned out. I highly recommend Brow Arc."</p><div class="who"><span class="av">G</span><div><b>Geraldine Garcia</b><small>Verified client</small></div></div></div>
+        <div class="rev"><span class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg></span><p>"Yasamin did a perfect job tinting my eyebrows, including her advice on color. I will definitely go back."</p><div class="who"><span class="av">O</span><div><b>O. Sandoval</b><small>Verified client</small></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section id="locations" class="locations">
+    <div class="wrap">
+      <div class="loc-grid">
+        <div class="reveal">
+          <span class="eyebrow">Find us</span>
+          <h2>30+ salons,<br>four states.</h2>
+          <p class="lead">You'll find Brow Arc in the malls you already love — open daily for walk-ins, with online booking when you'd rather plan ahead.</p>
+          <a href="https://www.browarc.com/locations" class="btn btn--light">Find a salon near you <span class="arrow">→</span></a>
+          <div class="loc-figure" style="margin-top:36px"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=75" alt="Inside a Brow Arc salon" /></div>
+        </div>
+        <div class="states reveal">
+          <div class="state">
+            <h3>California <small>13+</small></h3>
+            <ul><li>Brea Mall</li><li>Del Amo Fashion Center</li><li>Galleria at Tyler</li><li>Stoneridge, Pleasanton</li><li>Santa Rosa Plaza</li><li>Valencia · Montebello</li><li>Palm Desert · Coddingtown</li></ul>
+          </div>
+          <div class="state">
+            <h3>Washington <small>8+</small></h3>
+            <ul><li>Alderwood Mall</li><li>Bellevue Square</li><li>Southcenter, Tukwila</li><li>Tacoma Mall</li><li>Northgate, Seattle</li><li>Westlake, Downtown</li></ul>
+          </div>
+          <div class="state">
+            <h3>Florida <small>4+</small></h3>
+            <ul><li>Indian River Mall</li><li>Melbourne Square</li><li>Treasure Coast Mall</li><li>Tradition Square, PSL</li></ul>
+          </div>
+          <div class="state">
+            <h3>Colorado <small>Now open</small></h3>
+            <ul><li>Mesa Mall, Grand Junction</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow" style="color:var(--blush)">Walk in today</span>
+        <h2 style="margin-top:18px">Your best brows are<br>one visit away.</h2>
+        <p>No appointment needed — find your nearest Brow Arc and let our artists do the rest. Prefer to plan? Book online in under a minute.</p>
+        <div class="hero-cta">
+          <a href="https://www.browarc.com/locations" class="btn btn--light">Find a salon <span class="arrow">→</span></a>
+          <a href="https://www.browarc.com/shop" class="btn" style="border-color:var(--cream);color:var(--cream);background:transparent">Join the club</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand">Brow Arc<span>Salons</span></div>
+        <p>Making the world a better place, one brow at a time. Expert threading, waxing and beauty since 2009.</p>
+        <div class="socials">
+          <a href="https://instagram.com/browarcsalons" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 01-.9 1.38c-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.6 2.2 15.2 2.2 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.14 0-3.51.01-4.75.07-.9.04-1.39.2-1.71.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.12.32-.28.81-.32 1.71C3.21 8.49 3.2 8.86 3.2 12s.01 3.51.07 4.75c.04.9.2 1.39.32 1.71.17.43.37.74.69 1.06.32.32.63.52 1.06.69.32.12.81.28 1.71.32 1.24.06 1.61.07 4.75.07s3.51-.01 4.75-.07c.9-.04 1.39-.2 1.71-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.12-.32.28-.81.32-1.71.06-1.24.07-1.61.07-4.75s-.01-3.51-.07-4.75c-.04-.9-.2-1.39-.32-1.71a2.85 2.85 0 00-.69-1.06 2.85 2.85 0 00-1.06-.69c-.32-.12-.81-.28-1.71-.32C15.51 4.01 15.14 4 12 4zm0 3.06A4.94 4.94 0 1112 17a4.94 4.94 0 010-9.88zm0 1.8a3.14 3.14 0 100 6.28 3.14 3.14 0 000-6.28zm5.14-.7a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0z"/></svg></a>
+          <a href="https://facebook.com/browarcsalons" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.8-.1-1.6-.15-2.4-.15-2.4 0-4.05 1.47-4.05 4.16V9.9H7.5V13h2.75v8h3.25z"/></svg></a>
+          <a href="https://pinterest.com/browarcsalons" aria-label="Pinterest"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 4 5.7 4 8.8c0 1.9.7 3.5 2.3 4.1.25.1.5 0 .57-.28l.23-.9c.08-.28.05-.38-.16-.62-.45-.53-.73-1.2-.73-2.17 0-2.8 2.1-5.3 5.45-5.3 2.97 0 4.6 1.82 4.6 4.24 0 3.2-1.4 5.88-3.5 5.88-1.15 0-2-.95-1.73-2.12.33-1.4.96-2.9.96-3.9 0-.9-.48-1.65-1.48-1.65-1.18 0-2.12 1.22-2.12 2.85 0 1.04.35 1.74.35 1.74s-1.2 5.06-1.4 5.95c-.42 1.77-.06 3.94-.03 4.16.02.13.18.16.26.06.1-.14 1.46-1.8 1.92-3.46.13-.47.74-2.9.74-2.9.37.7 1.44 1.3 2.58 1.3 3.4 0 5.7-3.1 5.7-7.24C20.96 5.13 18 2 12 2z"/></svg></a>
+          <a href="https://twitter.com/browarcsalons" aria-label="X"><svg viewBox="0 0 24 24"><path d="M17.7 3h3.3l-7.2 8.24L22 21h-6.6l-5.18-6.78L4.3 21H1l7.7-8.8L2 3h6.77l4.68 6.2L17.7 3zm-1.16 16h1.83L7.55 4.9H5.6l10.94 14.1z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul><li><a href="#services">Services</a></li><li><a href="#procell">Procell</a></li><li><a href="#memberships">Memberships</a></li><li><a href="https://www.browarc.com/shop">Shop</a></li><li><a href="https://www.browarc.com/specials">Specials</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#about">About us</a></li><li><a href="#locations">Locations</a></li><li><a href="https://www.browarc.com/news">News</a></li><li><a href="https://www.browarc.com/employment-opportunities">Careers</a></li><li><a href="https://www.browarc.com/faqs">FAQs</a></li></ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul><li><a href="mailto:browarc@gmail.com">browarc@gmail.com</a></li><li><a href="https://www.browarc.com/gift-cards">Gift cards</a></li><li><a href="https://www.browarc.com/locations">Book a visit</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Brow Arc Salons. All rights reserved.</span>
+      <span>Threading · Waxing · Tinting · Lamination · Lashes · Facials · Hair</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // sticky nav state
+  const hdr = document.getElementById('hdr');
+  const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 40);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile menu
+  const burger = document.getElementById('burger');
+  const links = document.querySelector('.nav-links');
+  burger.addEventListener('click', () => {
+    const open = links.style.display === 'flex';
+    links.style.cssText = open ? '' : 'display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--cream);padding:24px 32px;gap:18px;border-bottom:1px solid var(--line-soft);box-shadow:0 30px 50px -30px rgba(33,27,22,.4)';
+  });
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i) => {
+    el.style.transitionDelay = (Math.min(i%4,3)*0.07)+'s';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
