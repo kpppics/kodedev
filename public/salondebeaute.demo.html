@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon de Beauté — Master Stylist Atelier · Old Town Monrovia</title>
+<meta name="description" content="Salon de Beauté — a quiet Monrovia atelier led by master stylist Allen. Thirty years of craft, L'Oréal Paris certified: precision cuts, colour, Brazilian Blowout smoothing, extensions and bridal styling.">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        espresso:'#1C1714', charcoal:'#2B2521', umber:'#3D352E',
+        cream:'#F4EEE3', bone:'#EAE2D2',
+        brass:'#A8814B', brassLt:'#C9A36A',
+        ink60:'#6B6258', inkOnDark:'#CDC3B4',
+      },
+      fontFamily: {
+        display:['Fraunces','serif'],
+        sans:['Inter','system-ui','sans-serif'],
+      },
+      letterSpacing: { label:'0.22em' },
+      maxWidth: { wrap:'1240px' },
+    }
+  }
+}
+</script>
+<style>
+  @keyframes drift { from{transform:translateX(0)} to{transform:translateX(-30px)} }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+  .drift{animation:drift 30s ease-in-out infinite alternate}
+  .marquee-track{animation:marquee 40s linear infinite}
+  .marquee-wrap:hover .marquee-track{animation-play-state:paused}
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .svc-row .svc-desc{max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.2,.7,.2,1),opacity .45s ease,margin .45s ease}
+  .svc-row:hover .svc-desc,.svc-row:focus-within .svc-desc{max-height:120px;opacity:1;margin-top:.6rem}
+  .svc-row .svc-underline{transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .svc-row:hover .svc-underline,.svc-row:focus-within .svc-underline{transform:scaleX(1)}
+  .img-fx{filter:grayscale(100%) contrast(1.02);transition:filter .7s ease,transform .7s ease}
+  .img-fx:hover{filter:grayscale(0);transform:scale(1.04)}
+  .ghost-link{position:relative}
+  .ghost-link::after{content:"";position:absolute;left:0;bottom:-3px;height:1px;width:100%;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .ghost-link:hover::after{transform:scaleX(1)}
+  #mobileMenu a{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+  #mobileMenu.open a{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .marquee-track,.drift{animation:none!important}
+    .img-fx{filter:grayscale(0)}
+  }
+</style>
+</head>
+<body class="bg-cream text-espresso font-sans antialiased selection:bg-brass/30">
+
+<!-- ===================== NAV ===================== -->
+<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12">
+    <div class="flex items-center justify-between h-20">
+      <!-- Wordmark + monogram -->
+      <a href="#top" class="flex items-center gap-3 group">
+        <span aria-hidden="true" class="inline-block">
+          <svg width="30" height="30" viewBox="0 0 40 40" fill="none" class="text-brass">
+            <path d="M24 8c-5 0-9 3-9 7s4 5 8 6 6 2 6 5-3 5-7 5-7-2-8-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M14 32c5 0 9-3 9-7s-4-5-8-6-6-2-6-5 3-5 7-5 7 2 8 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55"/>
+          </svg>
+        </span>
+        <span id="wordmark" class="font-display text-lg sm:text-xl tracking-tight text-cream transition-colors duration-500">Salon de Beauté</span>
+      </a>
+      <!-- Desktop links -->
+      <nav class="hidden md:flex items-center gap-9" aria-label="Primary">
+        <a href="#allen" class="navlink ghost-link text-sm text-inkOnDark/90 transition-colors">Allen</a>
+        <a href="#services" class="navlink ghost-link text-sm text-inkOnDark/90 transition-colors">Services</a>
+        <a href="#atelier" class="navlink ghost-link text-sm text-inkOnDark/90 transition-colors">Atelier</a>
+        <a href="#visit" class="navlink ghost-link text-sm text-inkOnDark/90 transition-colors">Visit</a>
+      </nav>
+      <!-- CTA + hamburger -->
+      <div class="flex items-center gap-4">
+        <a href="tel:+16268992411" class="hidden sm:inline-flex items-center gap-2 border border-brass/70 text-brassLt hover:bg-brass hover:text-espresso transition-colors duration-300 rounded-full px-5 py-2.5 text-xs tracking-label uppercase">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+          Call 626-899-2411
+        </a>
+        <button id="menuBtn" class="md:hidden text-cream p-2 -mr-2" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile overlay -->
+<div id="mobileMenu" class="fixed inset-0 z-[60] bg-espresso/95 backdrop-blur hidden flex-col">
+  <div class="flex items-center justify-between h-20 px-6">
+    <span class="font-display text-lg text-cream tracking-tight">Salon de Beauté</span>
+    <button id="menuClose" class="text-cream p-2 -mr-2" aria-label="Close menu">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="flex-1 flex flex-col justify-center gap-8 px-8" aria-label="Mobile">
+    <a href="#allen" class="font-display text-4xl text-cream">Allen</a>
+    <a href="#services" class="font-display text-4xl text-cream">Services</a>
+    <a href="#atelier" class="font-display text-4xl text-cream">Atelier</a>
+    <a href="#visit" class="font-display text-4xl text-cream">Visit</a>
+    <a href="tel:+16268992411" class="mt-4 text-brassLt text-sm tracking-label uppercase">Call 626-899-2411</a>
+  </nav>
+</div>
+
+<main id="top">
+
+<!-- ===================== 01 HERO ===================== -->
+<section aria-labelledby="hero-h" class="relative bg-espresso text-cream overflow-hidden">
+  <!-- watermark -->
+  <span aria-hidden="true" class="drift pointer-events-none select-none absolute -bottom-10 -left-6 sm:left-4 font-display italic text-[28vw] sm:text-[20vw] leading-none text-cream/[0.04] whitespace-nowrap">Beauté</span>
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-16 lg:pt-40 lg:pb-24">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <!-- left 7 -->
+      <div class="lg:col-span-7 relative z-10">
+        <p class="reveal text-brass text-[11px] sm:text-xs tracking-label uppercase mb-7 flex items-center gap-3">
+          <span class="inline-block w-8 h-px bg-brass/70"></span>EST. 2000 · OLD TOWN MONROVIA
+        </p>
+        <h1 id="hero-h" class="reveal font-display font-light text-5xl sm:text-6xl lg:text-7xl leading-[1.04] tracking-tight">
+          Precision hair, shaped by thirty years of <span class="italic text-brassLt">mastery</span>.
+        </h1>
+        <p class="reveal mt-8 max-w-xl text-inkOnDark text-base sm:text-lg leading-relaxed">
+          Master stylist Allen — L'Oréal Paris certified — colour, cuts and Brazilian Blowout smoothing, in a quiet Monrovia atelier.
+        </p>
+        <div class="reveal mt-10 flex flex-wrap items-center gap-7">
+          <a href="tel:+16268992411" class="inline-flex items-center gap-2.5 bg-brass hover:bg-brassLt text-espresso font-medium text-sm rounded-full px-7 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+            Book by phone
+          </a>
+          <a href="#atelier" class="ghost-link text-sm text-inkOnDark hover:text-cream transition-colors">See the work</a>
+        </div>
+      </div>
+      <!-- right 5 -->
+      <div class="reveal lg:col-span-5 relative z-10">
+        <div class="relative ring-1 ring-brass/40 p-1.5 lg:-my-10">
+          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1100&q=80"
+               alt="Moody interior of the Salon de Beauté atelier — styling chairs and mirrors"
+               fetchpriority="high" class="w-full h-[460px] sm:h-[560px] lg:h-[620px] object-cover">
+          <span class="absolute bottom-4 left-4 bg-espresso/80 backdrop-blur text-cream text-[10px] tracking-label uppercase px-3 py-1.5 border border-brass/30">522 S Myrtle Ave</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12"><div class="h-px bg-brass/30"></div></div>
+</section>
+
+<!-- ===================== MARQUEE ===================== -->
+<section aria-hidden="true" class="bg-espresso py-7 overflow-hidden border-b border-umber">
+  <div class="marquee-wrap relative">
+    <div class="marquee-track flex w-max items-center text-cream/85 font-display italic text-2xl sm:text-3xl">
+      <span class="flex items-center">
+        <span class="px-6">Precision Cuts</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Colour &amp; Highlights</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Brazilian Blowout</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Extensions</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Bridal &amp; Event</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Blow-dry</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+      </span>
+      <span class="flex items-center">
+        <span class="px-6">Precision Cuts</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Colour &amp; Highlights</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Brazilian Blowout</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Extensions</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Bridal &amp; Event</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+        <span class="px-6">Blow-dry</span><svg width="9" height="9" viewBox="0 0 10 10" class="text-brass shrink-0"><path d="M5 0l5 5-5 5-5-5z" fill="currentColor"/></svg>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 01 ALLEN ===================== -->
+<section id="allen" aria-labelledby="allen-h" class="bg-cream py-20 lg:py-32">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12">
+    <div class="reveal flex items-center gap-4 mb-12 lg:mb-16">
+      <span class="font-display text-brass text-3xl">01</span>
+      <span class="h-px flex-1 bg-brass/30 max-w-[120px]"></span>
+      <span class="text-brass text-[11px] tracking-label uppercase">The Master Stylist</span>
+    </div>
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-0 items-start">
+      <!-- left 5 images -->
+      <div class="reveal lg:col-span-5 relative">
+        <div class="ring-1 ring-brass/40 p-1.5 w-[88%]">
+          <img src="https://images.unsplash.com/photo-1571875257727-256c39da42af?auto=format&fit=crop&w=1000&q=80"
+               alt="Stylist Allen tending to a client at the wash basin" loading="lazy"
+               class="img-fx w-full aspect-[4/5] object-cover">
+        </div>
+        <div class="ring-1 ring-brass/40 p-1.5 bg-cream w-[46%] absolute -bottom-8 right-0 sm:right-4 shadow-xl shadow-black/10">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80"
+               alt="Close styling and beauty portrait at the atelier" loading="lazy"
+               class="img-fx w-full aspect-[3/4] object-cover">
+        </div>
+      </div>
+      <!-- brass divider -->
+      <div class="hidden lg:flex lg:col-span-1 justify-center"><div class="w-px h-full bg-brass/30"></div></div>
+      <!-- right 6 story -->
+      <div class="reveal lg:col-span-6 pt-12 lg:pt-0">
+        <h2 id="allen-h" class="font-display font-light text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight">
+          Three decades behind the chair.
+        </h2>
+        <div class="mt-8 space-y-5 text-ink60 text-base leading-relaxed max-w-xl">
+          <p>Allen has spent more than thirty years shaping hair — and shaping the standards of the people who work alongside him. Certified by L'Oréal Paris and certified in Brazilian Blowout, he built his reputation in the San Gabriel Valley before opening this atelier, where he once led a team of twenty-three stylists at a thriving Arcadia salon.</p>
+          <p>He works in Arabic, French and English, and treats every appointment the way the great houses treat couture: a careful read of the client, a precise plan, and a finish that holds long after you leave the chair.</p>
+        </div>
+        <p class="mt-8 font-display italic text-xl sm:text-2xl text-espresso leading-snug max-w-lg border-l border-brass/50 pl-5">
+          The cut is only half of it — the rest is knowing exactly what suits you.
+        </p>
+        <!-- credential pills -->
+        <ul class="mt-10 flex flex-wrap gap-3">
+          <li class="inline-flex items-center gap-2 border border-brass/40 rounded-full px-4 py-2 text-xs text-espresso/80">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+            L'Oréal Paris certified
+          </li>
+          <li class="inline-flex items-center gap-2 border border-brass/40 rounded-full px-4 py-2 text-xs text-espresso/80">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><path d="M5 19c3-7 11-7 14 0"/><path d="M12 3c-2 3-2 6 0 9 2-3 2-6 0-9Z"/></svg>
+            Brazilian Blowout certified
+          </li>
+          <li class="inline-flex items-center gap-2 border border-brass/40 rounded-full px-4 py-2 text-xs text-espresso/80">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            30+ years behind the chair
+          </li>
+          <li class="inline-flex items-center gap-2 border border-brass/40 rounded-full px-4 py-2 text-xs text-espresso/80">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15 0 18M12 3c-2.5 2.7-2.5 15 0 18"/></svg>
+            Arabic · French · English
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 SERVICES ===================== -->
+<section id="services" aria-labelledby="svc-h" class="relative bg-espresso text-cream py-20 lg:py-32 overflow-hidden">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12">
+    <div class="reveal flex items-center gap-4 mb-12 lg:mb-16">
+      <span class="font-display text-brass text-3xl">02</span>
+      <span class="h-px flex-1 bg-brass/30 max-w-[120px]"></span>
+      <span class="text-brass text-[11px] tracking-label uppercase">The Carte</span>
+    </div>
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <div class="lg:col-span-8">
+        <h2 id="svc-h" class="reveal font-display font-light text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-10 lg:mb-14">A considered carte of services.</h2>
+        <div class="grid sm:grid-cols-2 gap-x-12 gap-y-2">
+          <!-- row -->
+          <div class="svc-row reveal border-t border-umber py-5 cursor-default" tabindex="0">
+            <div class="flex items-baseline gap-3">
+              <span class="font-display text-xl text-cream whitespace-nowrap">Precision Cut</span>
+              <span class="flex-1 border-b border-dotted border-umber translate-y-[-3px]"></span>
+              <span class="text-brassLt text-sm whitespace-nowrap">$75–$85 by length</span>
+            </div>
+            <div class="svc-desc"><span class="block h-px w-12 bg-brass svc-underline mb-2"></span><p class="text-inkOnDark text-sm leading-relaxed">Cut, wash and blow-dry, tailored to your hair's weight, growth and the way you actually wear it.</p></div>
+          </div>
+          <div class="svc-row reveal border-t border-umber py-5 cursor-default" tabindex="0">
+            <div class="flex items-baseline gap-3">
+              <span class="font-display text-xl text-cream whitespace-nowrap">Colour &amp; Highlights</span>
+              <span class="flex-1 border-b border-dotted border-umber translate-y-[-3px]"></span>
+              <span class="text-brassLt text-sm whitespace-nowrap">Consultation</span>
+            </div>
+            <div class="svc-desc"><span class="block h-px w-12 bg-brass svc-underline mb-2"></span><p class="text-inkOnDark text-sm leading-relaxed">Bespoke colour and dimensional highlights, mapped to your tone and lifestyle before a single foil is placed.</p></div>
+          </div>
+          <div class="svc-row reveal border-t border-umber py-5 cursor-default" tabindex="0">
+            <div class="flex items-baseline gap-3">
+              <span class="font-display text-xl text-cream whitespace-nowrap">Brazilian Blowout</span>
+              <span class="flex-1 border-b border-dotted border-umber translate-y-[-3px]"></span>
+              <span class="text-brassLt text-sm whitespace-nowrap">Consultation</span>
+            </div>
+            <div class="svc-desc"><span class="block h-px w-12 bg-brass svc-underline mb-2"></span><p class="text-inkOnDark text-sm leading-relaxed">Certified smoothing that calms frizz and cuts styling time, while leaving real movement in the hair.</p></div>
+          </div>
+          <div class="svc-row reveal border-t border-umber py-5 cursor-default" tabindex="0">
+            <div class="flex items-baseline gap-3">
+              <span class="font-display text-xl text-cream whitespace-nowrap">Hair Extensions</span>
+              <span class="flex-1 border-b border-dotted border-umber translate-y-[-3px]"></span>
+              <span class="text-brassLt text-sm whitespace-nowrap">Consultation</span>
+            </div>
+            <div class="svc-desc"><span class="block h-px w-12 bg-brass svc-underline mb-2"></span><p class="text-inkOnDark text-sm leading-relaxed">Length and density added with a careful colour and texture match, blended so the join disappears.</p></div>
+          </div>
+          <div class="svc-row reveal border-t border-umber py-5 cursor-default" tabindex="0">
+            <div class="flex items-baseline gap-3">
+              <span class="font-display text-xl text-cream whitespace-nowrap">Blow-dry &amp; Styling</span>
+              <span class="flex-1 border-b border-dotted border-umber translate-y-[-3px]"></span>
+              <span class="text-brassLt text-sm whitespace-nowrap">By request</span>
+            </div>
+            <div class="svc-desc"><span class="block h-px w-12 bg-brass svc-underline mb-2"></span><p class="text-inkOnDark text-sm leading-relaxed">A clean, lasting finish for the everyday or the occasion — shaped, set and sent out the door.</p></div>
+          </div>
+          <div class="svc-row reveal border-t border-b border-umber py-5 cursor-default" tabindex="0">
+            <div class="flex items-baseline gap-3">
+              <span class="font-display text-xl text-cream whitespace-nowrap">Special-Event &amp; Bridal</span>
+              <span class="flex-1 border-b border-dotted border-umber translate-y-[-3px]"></span>
+              <span class="text-brassLt text-sm whitespace-nowrap">By appointment</span>
+            </div>
+            <div class="svc-desc"><span class="block h-px w-12 bg-brass svc-underline mb-2"></span><p class="text-inkOnDark text-sm leading-relaxed">Wedding-day and event styling planned in advance, rehearsed if you wish, and held through the longest day.</p></div>
+          </div>
+        </div>
+        <p class="reveal mt-9 text-ink60/90 text-xs tracking-label uppercase">Walk-ins welcome · Pricing varies with length &amp; condition</p>
+      </div>
+      <!-- feature image bleed -->
+      <div class="reveal lg:col-span-4 lg:-mr-12 hidden lg:block">
+        <div class="ring-1 ring-brass/40 p-1.5">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80"
+               alt="Long, glossy brown hair — colour and finish work" loading="lazy"
+               class="img-fx w-full h-[640px] object-cover">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 REPUTATION ===================== -->
+<section id="reputation" aria-labelledby="rep-h" class="bg-bone py-20 lg:py-28">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12">
+    <div class="reveal flex items-center gap-4 mb-12 lg:mb-16">
+      <span class="font-display text-brass text-3xl">03</span>
+      <span class="h-px flex-1 bg-brass/30 max-w-[120px]"></span>
+      <span class="text-brass text-[11px] tracking-label uppercase">Why Clients Return</span>
+    </div>
+    <h2 id="rep-h" class="sr-only">Why clients trust Allen</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 border-t border-brass/30">
+      <div class="reveal py-8 lg:py-10 lg:pr-8 border-b sm:border-b-0 sm:border-r border-brass/20">
+        <div class="font-display font-light text-5xl lg:text-6xl text-espresso tracking-tight">2000</div>
+        <p class="mt-3 text-ink60 text-sm leading-relaxed max-w-[14rem]">Established in Old Town Monrovia</p>
+      </div>
+      <div class="reveal py-8 lg:py-10 lg:px-8 border-b sm:border-b-0 sm:border-r-0 lg:border-r border-brass/20">
+        <div class="font-display font-light text-5xl lg:text-6xl text-espresso tracking-tight">30+</div>
+        <p class="mt-3 text-ink60 text-sm leading-relaxed max-w-[14rem]">Years of master craftsmanship</p>
+      </div>
+      <div class="reveal py-8 lg:py-10 lg:px-8 border-b sm:border-b-0 sm:border-r border-brass/20">
+        <div class="font-display font-light text-5xl lg:text-6xl text-espresso tracking-tight">60+</div>
+        <p class="mt-3 text-ink60 text-sm leading-relaxed max-w-[14rem]">Genuine reviews across Yelp &amp; Google</p>
+      </div>
+      <div class="reveal py-8 lg:py-10 lg:pl-8">
+        <div class="font-display font-light text-5xl lg:text-6xl text-espresso tracking-tight">3</div>
+        <p class="mt-3 text-ink60 text-sm leading-relaxed max-w-[14rem]">Languages spoken (Arabic · French · English)</p>
+      </div>
+    </div>
+    <p class="reveal mt-12 max-w-3xl text-ink60 text-base leading-relaxed border-t border-brass/20 pt-8">
+      Across more than sixty reviews on Yelp and Google, the themes repeat: clients describe Allen as professional, genuinely warm, and remarkably talented at the chair. They point to the breadth of work he handles under one roof — cuts, colour, smoothing, extensions and event styling — and to pricing that stays fair for the quality that comes back out.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== 04 GALLERY ===================== -->
+<section id="atelier" aria-labelledby="gal-h" class="bg-cream py-20 lg:py-32">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12">
+    <div class="reveal flex items-center gap-4 mb-12 lg:mb-16">
+      <span class="font-display text-brass text-3xl">04</span>
+      <span class="h-px flex-1 bg-brass/30 max-w-[120px]"></span>
+      <span class="text-brass text-[11px] tracking-label uppercase">Inside the Atelier</span>
+    </div>
+    <h2 id="gal-h" class="sr-only">The space and gallery</h2>
+    <div class="grid lg:grid-cols-12 gap-5">
+      <figure class="reveal lg:col-span-7 lg:row-span-2 group">
+        <div class="overflow-hidden ring-1 ring-brass/40 p-1.5">
+          <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?auto=format&fit=crop&w=1200&q=80"
+               alt="Interior of the salon space" loading="lazy"
+               class="img-fx w-full h-[300px] lg:h-[620px] object-cover">
+        </div>
+        <figcaption class="mt-3 text-brass text-[11px] tracking-label uppercase">The atelier</figcaption>
+      </figure>
+      <figure class="reveal lg:col-span-5 group">
+        <div class="overflow-hidden ring-1 ring-brass/40 p-1.5">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80"
+               alt="Glossy colour and finish result" loading="lazy"
+               class="img-fx w-full h-[260px] lg:h-[300px] object-cover">
+        </div>
+        <figcaption class="mt-3 text-brass text-[11px] tracking-label uppercase">Colour work</figcaption>
+      </figure>
+      <figure class="reveal lg:col-span-5 group">
+        <div class="overflow-hidden ring-1 ring-brass/40 p-1.5">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80"
+               alt="Close beauty and styling portrait — the finish" loading="lazy"
+               class="img-fx w-full h-[260px] lg:h-[300px] object-cover">
+        </div>
+        <figcaption class="mt-3 text-brass text-[11px] tracking-label uppercase">Finish</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VISIT / FOOTER CTA ===================== -->
+<section id="visit" aria-labelledby="visit-h" class="bg-espresso text-cream py-20 lg:py-32">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12">
+    <h2 id="visit-h" class="sr-only">Visit and book</h2>
+    <div class="grid lg:grid-cols-12 gap-14 lg:gap-12">
+      <!-- left info -->
+      <div class="reveal lg:col-span-6 space-y-10">
+        <div>
+          <p class="text-brass text-[11px] tracking-label uppercase mb-3">Visit</p>
+          <p class="font-display text-2xl text-cream leading-snug">522 S Myrtle Ave,<br>Monrovia, CA 91016</p>
+          <p class="text-ink60 text-sm mt-2">Old Town Monrovia</p>
+        </div>
+        <div>
+          <p class="text-brass text-[11px] tracking-label uppercase mb-3">Hours</p>
+          <p class="text-inkOnDark text-sm leading-relaxed">Tue–Sat 9:00am–6:00pm<br>Closed Sun &amp; Mon · Walk-ins welcome</p>
+        </div>
+        <div>
+          <p class="text-brass text-[11px] tracking-label uppercase mb-3">Amenities</p>
+          <ul class="flex flex-wrap gap-x-6 gap-y-3 text-inkOnDark text-sm">
+            <li class="inline-flex items-center gap-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M12 6v8h5M12 14l3 6M12 9h-2a4 4 0 1 0 1 7.9"/></svg>Wheelchair accessible</li>
+            <li class="inline-flex items-center gap-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0M8 16a5 5 0 0 1 8 0"/><circle cx="12" cy="19" r="1"/></svg>Free Wi-Fi</li>
+            <li class="inline-flex items-center gap-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8814B" stroke-width="1.5" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Cards accepted</li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-brass text-[11px] tracking-label uppercase mb-3">Follow</p>
+          <a href="https://instagram.com/salondebeaute_monrovia" target="_blank" rel="noopener" class="ghost-link inline-flex items-center gap-2 text-inkOnDark hover:text-cream text-sm transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @salondebeaute_monrovia
+          </a>
+        </div>
+      </div>
+      <!-- right CTA block -->
+      <div class="reveal lg:col-span-6">
+        <div class="border border-brass/40 p-8 sm:p-12 h-full flex flex-col justify-center">
+          <h3 class="font-display font-light text-4xl sm:text-5xl tracking-tight leading-tight">Book your <span class="italic text-brassLt">chair</span>.</h3>
+          <p class="mt-5 text-inkOnDark text-base leading-relaxed max-w-md">Call to check availability or walk in during opening hours — Allen will take it from there.</p>
+          <a href="tel:+16268992411" class="group mt-9 inline-block font-display text-4xl sm:text-5xl lg:text-6xl text-brass hover:text-brassLt transition-colors tracking-tight">626-899-2411</a>
+          <a href="https://maps.google.com/?q=522+S+Myrtle+Ave,+Monrovia,+CA+91016" target="_blank" rel="noopener" class="ghost-link mt-7 inline-flex items-center gap-2 text-inkOnDark hover:text-cream text-sm w-fit transition-colors">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Get directions
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-espresso text-cream border-t border-brass/30">
+  <div class="max-w-wrap mx-auto px-6 sm:px-8 lg:px-12 py-10">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+      <a href="#top" class="flex items-center gap-3">
+        <span aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 40 40" fill="none" class="text-brass">
+            <path d="M24 8c-5 0-9 3-9 7s4 5 8 6 6 2 6 5-3 5-7 5-7-2-8-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M14 32c5 0 9-3 9-7s-4-5-8-6-6-2-6-5 3-5 7-5 7 2 8 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55"/>
+          </svg>
+        </span>
+        <span class="font-display text-lg tracking-tight">Salon de Beauté</span>
+      </a>
+      <p class="text-ink60 text-xs">© 2026 Salon de Beauté · Monrovia, CA</p>
+      <p class="text-ink60 text-[11px] tracking-label uppercase">Old Town Monrovia · Est. 2000</p>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<!-- ===================== WATERMARK PILL ===================== -->
+<a href="https://kodedev.co.uk" target="_blank" rel="noopener"
+   class="fixed bottom-4 left-4 z-[70] group inline-flex items-center gap-2 rounded-full border border-brass/40 bg-espresso/85 backdrop-blur px-3.5 py-2 text-[10px] tracking-label uppercase text-inkOnDark/90 hover:text-cream hover:border-brass/70 transition-colors shadow-lg shadow-black/30">
+  <span aria-hidden="true" class="inline-block w-1.5 h-1.5 rounded-full bg-brass"></span>
+  Private preview · built by <span class="text-brassLt group-hover:text-brass transition-colors">KODEDEV</span> for Salon de Beauté
+</a>
+
+<script>
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var sibs = Array.prototype.slice.call(e.target.parentNode.querySelectorAll(':scope > .reveal'));
+        var i = sibs.indexOf(e.target);
+        e.target.style.transitionDelay = (i>0 ? Math.min(i,6)*70 : 0) + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  var nav = document.getElementById('nav');
+  function onScroll(){
+    if(window.scrollY > 40){
+      nav.classList.add('bg-espresso/95','backdrop-blur','border-b','border-umber','shadow-sm');
+    } else {
+      nav.classList.remove('bg-espresso/95','backdrop-blur','border-b','border-umber','shadow-sm');
+    }
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  var menu = document.getElementById('mobileMenu');
+  var openBtn = document.getElementById('menuBtn');
+  var closeBtn = document.getElementById('menuClose');
+  function open(){ menu.classList.remove('hidden'); menu.classList.add('flex'); requestAnimationFrame(function(){menu.classList.add('open');}); openBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+  function close(){ menu.classList.remove('open'); openBtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; setTimeout(function(){menu.classList.add('hidden'); menu.classList.remove('flex');},300); }
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', close); });
+})();
+</script>
+
+<!-- ===================== DOMAIN LOCK ===================== -->
+<script>
+(function(){
+  var h = location.hostname;
+  var ok = (h === 'localhost' || h === '127.0.0.1' || h === '' || h === 'kodedev.co.uk' || (h.length > 12 && h.slice(-13) === '.kodedev.co.uk'));
+  if(!ok){
+    document.title = 'Private preview — KODEDEV';
+    document.body.innerHTML =
+      '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1C1714;color:#F4EEE3;font-family:Inter,system-ui,sans-serif;padding:24px;text-align:center;">'+
+        '<div style="max-width:520px;">'+
+          '<div style="color:#A8814B;font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:20px;">Private preview</div>'+
+          '<h1 style="font-family:Georgia,&quot;Times New Roman&quot;,serif;font-weight:300;font-size:30px;line-height:1.25;margin:0 0 18px;">This preview is private.</h1>'+
+          '<p style="color:#CDC3B4;font-size:15px;line-height:1.6;margin:0 0 26px;">Built by KODEDEV for Salon de Beauté. View it at the link below.</p>'+
+          '<a href="https://kodedev.co.uk/salondebeaute.demo" style="display:inline-block;border:1px solid rgba(168,129,75,.6);color:#C9A36A;text-decoration:none;border-radius:999px;padding:13px 26px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;">kodedev.co.uk/salondebeaute.demo</a>'+
+        '</div>'+
+      '</div>';
+    throw new Error('Domain lock: preview restricted to KODEDEV.');
+  }
+})();
+</script>
+</body>
+</html>
