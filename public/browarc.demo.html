@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Brow Arc Salons — Brows. Beauty. Confidence.</title>
 <meta name="description" content="Brow Arc Salons — 15+ years of expert threading, waxing, tinting, brow lamination and facials across 30+ mall locations in California, Washington, Colorado and Florida. Walk-ins welcome daily." />
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex" />
 <meta name="theme-color" content="#1E1813" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -271,6 +272,30 @@
   /* ---------- reveal ---------- */
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.3,1)}
   .reveal.in{opacity:1;transform:none}
+
+  /* ---------- preview watermark ---------- */
+  .kd-mark{
+    position:fixed;left:18px;bottom:18px;z-index:900;
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(30,24,19,.82);color:#EADFCF;
+    font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+    padding:9px 15px;border-radius:999px;
+    border:1px solid rgba(234,223,207,.22);backdrop-filter:blur(8px);
+    box-shadow:0 12px 34px -16px rgba(0,0,0,.6);text-decoration:none;
+    transition:opacity .3s ease;opacity:.55;
+  }
+  .kd-mark:hover{opacity:1}
+  .kd-mark b{color:var(--gold);font-weight:600;letter-spacing:.1em}
+  .kd-mark .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+  @media(max-width:680px){.kd-mark{font-size:9px;padding:7px 11px;left:12px;bottom:12px}}
+  .kd-lock{
+    position:fixed;inset:0;background:#1E1813;color:#EADFCF;z-index:99999;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px;font-family:var(--sans);
+  }
+  .kd-lock h2{font-family:var(--serif);font-size:clamp(32px,6vw,52px);color:#F6EEE1;margin-bottom:18px}
+  .kd-lock p{max-width:34ch;line-height:1.7;color:#C7B8A4;font-size:15px;margin-bottom:28px}
+  .kd-lock a{color:var(--gold);border:1px solid var(--gold);padding:14px 26px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
 
   /* ---------- responsive ---------- */
   @media(max-width:980px){
@@ -632,7 +657,23 @@
   </div>
 </footer>
 
+<a class="kd-mark" href="https://kodedev.co.uk" target="_blank" rel="noopener"><span class="dot"></span>Private preview · built by <b>KODEDEV</b> for Brow Arc</a>
+
 <script>
+  // ---- domain lock: only render on the official KODEDEV preview host ----
+  (function(){
+    var h = location.hostname;
+    var allowed = /(^|\.)kodedev\.co\.uk$/.test(h) || h === 'localhost' || h === '127.0.0.1';
+    if (!allowed) {
+      document.title = 'Private preview — KODEDEV';
+      document.body.innerHTML =
+        '<div class="kd-lock"><h2>Private preview</h2>' +
+        '<p>This concept site was designed and built by KODEDEV. It can only be viewed at its official preview link.</p>' +
+        '<a href="https://kodedev.co.uk/browarc.demo">View the real preview</a></div>';
+      throw new Error('preview locked');
+    }
+  })();
+
   // sticky nav state
   const hdr = document.getElementById('hdr');
   const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 40);
