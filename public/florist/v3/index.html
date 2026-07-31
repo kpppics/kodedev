@@ -78,6 +78,7 @@
     }
 
     .wordmark {
+      flex-shrink: 0;
       font-family: var(--serif);
       font-size: 1.65rem;
       font-weight: 500;
@@ -300,6 +301,198 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(22px, 3vw, 42px) clamp(16px, 2.2vw, 30px);
+    }
+
+    /* ---- Catalogue raisonné ---- */
+    .catalogue {
+      padding-top: clamp(64px, 8vw, 120px);
+    }
+
+    .cat-lead {
+      max-width: 60ch;
+      margin: 0 0 clamp(34px, 4vw, 54px);
+      color: #46453f;
+      font-size: clamp(1rem, 1.3vw, 1.12rem);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+
+    .cat-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 2vw, 30px);
+      margin-bottom: clamp(44px, 5vw, 72px);
+      padding: clamp(24px, 3vw, 36px) 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cat-figure {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(2.1rem, 4vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: -0.045em;
+      line-height: 1;
+    }
+
+    .cat-figure-label {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      line-height: 1.4;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    /* plates */
+    .plates {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(26px, 3.4vw, 48px) clamp(16px, 2.2vw, 30px);
+      margin-bottom: clamp(52px, 6vw, 88px);
+    }
+
+    .plate {
+      min-width: 0;
+    }
+
+    .plate-image {
+      position: relative;
+      overflow: hidden;
+      background: var(--paper-deep);
+      aspect-ratio: 1 / 1;
+    }
+
+    .plate-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform 420ms cubic-bezier(.2, .7, .2, 1);
+    }
+
+    .plate:hover .plate-image img {
+      transform: scale(1.028);
+    }
+
+    .plate-no {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 7px;
+      background: rgba(244, 243, 239, 0.92);
+      color: var(--ink);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .plate-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 11px;
+      border-top: 1px solid var(--line);
+      margin-top: 11px;
+    }
+
+    .plate-title {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 500;
+      line-height: 1.35;
+      text-wrap: balance;
+    }
+
+    .plate-year {
+      flex-shrink: 0;
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* register */
+    .register-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--ink);
+    }
+
+    .register-title {
+      font-size: 0.69rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .register-note {
+      color: var(--muted);
+      font-size: 0.66rem;
+      letter-spacing: 0.04em;
+      text-align: right;
+      text-wrap: balance;
+    }
+
+    .register {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0 clamp(18px, 2.6vw, 44px);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .reg-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(23, 23, 22, 0.09);
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
+    .reg-no {
+      flex-shrink: 0;
+      color: var(--muted);
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .reg-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reg-item.is-pending .reg-name {
+      color: #a9a79f;
+    }
+
+    .reg-item.is-recorded .reg-name {
+      font-weight: 500;
+    }
+
+    .reg-year {
+      margin-left: auto;
+      flex-shrink: 0;
+      color: var(--muted);
+      font-size: 0.64rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
     }
 
     .work-card {
@@ -581,9 +774,53 @@
       white-space: nowrap;
     }
 
+    @media (max-width: 1024px) {
+      .register {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 760px) {
       :root {
         --page: min(100% - 36px, 600px);
+      }
+
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 9px;
+        padding: 11px 0;
+      }
+
+      .site-nav {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .plates {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 27px 13px;
+      }
+
+      .cat-summary {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: left;
+      }
+
+      .register {
+        grid-template-columns: 1fr;
+      }
+
+      .register-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .register-note {
+        text-align: left;
       }
 
       .header-inner {
@@ -725,6 +962,7 @@
       <a class="wordmark" href="#top" aria-label="Florist home"><img src="/florist/florist-logo-blue.png" alt="Florist" width="200" height="55"></a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#work">Work</a>
+        <a href="#catalogue">Catalogue</a>
         <a href="#collected">Collected</a>
         <a href="#shop">Shop</a>
         <a href="#about">About</a>
@@ -820,10 +1058,151 @@
       </div>
     </section>
 
+
+    <section class="section catalogue" id="catalogue" aria-labelledby="catalogue-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-label">02 / Catalogue</span>
+          <h2 id="catalogue-title">Catalogue raisonn&eacute;</h2>
+        </div>
+      </div>
+
+      <p class="cat-lead">A complete register of installed works. Street pieces are impermanent by nature, so each entry is recorded, numbered and dated as it is verified. Six entries are documented below. The remaining records are being compiled from the archive.</p>
+
+      <div class="cat-summary">
+        <div>
+          <span class="cat-figure">44</span>
+          <span class="cat-figure-label">Works installed worldwide</span>
+        </div>
+        <div>
+          <span class="cat-figure">06</span>
+          <span class="cat-figure-label">Entries documented</span>
+        </div>
+        <div>
+          <span class="cat-figure">2024&ndash;25</span>
+          <span class="cat-figure-label">Recorded period</span>
+        </div>
+      </div>
+
+      <div class="plates">
+        <article class="plate">
+          <div class="plate-image">
+            <img src="/florist/img/2.jpg" alt="Florist - Blue, 2025" loading="lazy">
+            <span class="plate-no">№001</span>
+          </div>
+          <div class="plate-meta">
+            <h3 class="plate-title">Florist - Blue</h3>
+            <span class="plate-year">2025</span>
+          </div>
+        </article>
+        <article class="plate">
+          <div class="plate-image">
+            <img src="/florist/img/3.jpg" alt="Florist - Rose, 2025" loading="lazy">
+            <span class="plate-no">№002</span>
+          </div>
+          <div class="plate-meta">
+            <h3 class="plate-title">Florist - Rose</h3>
+            <span class="plate-year">2025</span>
+          </div>
+        </article>
+        <article class="plate">
+          <div class="plate-image">
+            <img src="/florist/img/4.jpg" alt="Florist - Amber, 2025" loading="lazy">
+            <span class="plate-no">№003</span>
+          </div>
+          <div class="plate-meta">
+            <h3 class="plate-title">Florist - Amber</h3>
+            <span class="plate-year">2025</span>
+          </div>
+        </article>
+        <article class="plate">
+          <div class="plate-image">
+            <img src="/florist/img/7.jpg" alt="The Plaza del Pi, 2024" loading="lazy">
+            <span class="plate-no">№004</span>
+          </div>
+          <div class="plate-meta">
+            <h3 class="plate-title">The Plaza del Pi</h3>
+            <span class="plate-year">2024</span>
+          </div>
+        </article>
+        <article class="plate">
+          <div class="plate-image">
+            <img src="/florist/img/6.jpg" alt="Tutti Frutti, 2025" loading="lazy">
+            <span class="plate-no">№005</span>
+          </div>
+          <div class="plate-meta">
+            <h3 class="plate-title">Tutti Frutti</h3>
+            <span class="plate-year">2025</span>
+          </div>
+        </article>
+        <article class="plate">
+          <div class="plate-image">
+            <img src="/florist/img/1.jpg" alt="Lightbox - Florist, 2025" loading="lazy">
+            <span class="plate-no">№006</span>
+          </div>
+          <div class="plate-meta">
+            <h3 class="plate-title">Lightbox - Florist</h3>
+            <span class="plate-year">2025</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="register-head">
+        <span class="register-title">Register of works</span>
+        <span class="register-note">Entries are added as records are verified</span>
+      </div>
+      <ol class="register">
+          <li class="reg-item is-recorded"><span class="reg-no">№001</span><span class="reg-name">Florist - Blue</span><span class="reg-year">2025</span></li>
+          <li class="reg-item is-recorded"><span class="reg-no">№002</span><span class="reg-name">Florist - Rose</span><span class="reg-year">2025</span></li>
+          <li class="reg-item is-recorded"><span class="reg-no">№003</span><span class="reg-name">Florist - Amber</span><span class="reg-year">2025</span></li>
+          <li class="reg-item is-recorded"><span class="reg-no">№004</span><span class="reg-name">The Plaza del Pi</span><span class="reg-year">2024</span></li>
+          <li class="reg-item is-recorded"><span class="reg-no">№005</span><span class="reg-name">Tutti Frutti</span><span class="reg-year">2025</span></li>
+          <li class="reg-item is-recorded"><span class="reg-no">№006</span><span class="reg-name">Lightbox - Florist</span><span class="reg-year">2025</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№007</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№008</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№009</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№010</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№011</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№012</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№013</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№014</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№015</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№016</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№017</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№018</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№019</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№020</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№021</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№022</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№023</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№024</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№025</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№026</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№027</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№028</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№029</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№030</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№031</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№032</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№033</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№034</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№035</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№036</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№037</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№038</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№039</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№040</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№041</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№042</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№043</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+          <li class="reg-item is-pending"><span class="reg-no">№044</span><span class="reg-name">Record to be verified</span><span class="reg-year">&mdash;</span></li>
+      </ol>
+    </section>
+
     <section class="collection-band" id="collected" aria-labelledby="collected-title">
       <div class="collection-inner">
         <div class="collection-intro">
-          <span class="section-label">02 / Collected</span>
+          <span class="section-label">03 / Collected</span>
           <p class="collection-copy" id="collected-title">Forty four street installations worldwide, and every print release to date sold out. Originals have placed at £3,500. This is a growing archive of collected and sold pieces, submitted by the people who own them.</p>
         </div>
 
@@ -855,7 +1234,7 @@
     <section class="section editions" id="shop" aria-labelledby="shop-title">
       <div class="section-heading">
         <div>
-          <span class="section-label">03 / Shop</span>
+          <span class="section-label">04 / Shop</span>
           <h2 id="shop-title">Prints and editions</h2>
         </div>
         <a class="section-link" href="#shop">Visit the shop</a>
@@ -909,7 +1288,7 @@
         <img src="/florist/img/6.jpg" alt="Tutti Frutti hand-cut tile mosaic by Florist">
       </div>
       <div class="about-copy">
-        <span class="section-label">04 / About</span>
+        <span class="section-label">05 / About</span>
         <h2 id="about-title">Florist.</h2>
         <p>Florist wasn't born in a studio. It started with a handful of tiles, a pair of cutters, and hours on YouTube figuring out how to make something that would last.</p>
         <p>Experiments with random bits of pixel art turned into the Florist pattern, a tight, repeating design that feels like order carved out of chaos. Now I look for the places the city leaves blank, boarded-up windows, bricked-in doorways, forgotten walls. The spaces that would otherwise stay empty.</p>
