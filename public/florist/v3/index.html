@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Florist is a London mosaic artist working in hand-cut tile, creating original works, limited editions and commissions.">
+  <title>Florist | London Mosaic Artist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f4f3ef;
+      --paper-deep: #eae8e1;
+      --ink: #171716;
+      --muted: #696862;
+      --line: #cfcdc5;
+      --white: #fbfaf7;
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "DM Sans", Arial, sans-serif;
+      --page: min(1380px, calc(100% - 40px));
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(23, 23, 22, 0.12);
+      background: rgba(244, 243, 239, 0.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      width: var(--page);
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-size: 1.65rem;
+      font-weight: 500;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: clamp(14px, 2.4vw, 34px);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .site-nav a {
+      position: relative;
+      padding: 7px 0;
+    }
+
+    .site-nav a::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 2px;
+      left: 0;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 180ms ease;
+    }
+
+    .site-nav a:hover::after,
+    .site-nav a:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .hero {
+      width: var(--page);
+      margin: 0 auto;
+      padding: clamp(56px, 8vw, 124px) 0 clamp(72px, 10vw, 156px);
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      align-items: end;
+      gap: clamp(36px, 7vw, 118px);
+    }
+
+    .eyebrow,
+    .section-label,
+    .work-year,
+    .product-price,
+    .archive-label {
+      font-size: 0.69rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      display: block;
+      margin-bottom: 22px;
+      color: var(--muted);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 690px;
+      margin-bottom: 24px;
+      font-family: var(--serif);
+      font-size: clamp(3.4rem, 7vw, 7.6rem);
+      font-weight: 400;
+      letter-spacing: -0.065em;
+      line-height: 0.9;
+    }
+
+    .hero-copy {
+      max-width: 420px;
+      margin-bottom: 34px;
+      color: #46453f;
+      font-size: clamp(1rem, 1.4vw, 1.16rem);
+      line-height: 1.6;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 19px;
+      border: 1px solid var(--ink);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .button:hover {
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .button-secondary {
+      border-color: var(--line);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--ink);
+    }
+
+    .hero-art {
+      position: relative;
+      overflow: hidden;
+      background: var(--paper-deep);
+      aspect-ratio: 1 / 1.04;
+    }
+
+    .hero-art img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero-caption {
+      position: absolute;
+      right: 15px;
+      bottom: 13px;
+      padding: 6px 8px;
+      background: rgba(244, 243, 239, 0.9);
+      color: var(--ink);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      width: var(--page);
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 29px;
+      padding-top: 1px;
+      border-top: 1px solid var(--ink);
+    }
+
+    .section-label {
+      padding-top: 12px;
+      color: var(--muted);
+    }
+
+    h2 {
+      margin: 10px 0 0;
+      font-family: var(--serif);
+      font-size: clamp(2.35rem, 4.2vw, 4.7rem);
+      font-weight: 400;
+      letter-spacing: -0.055em;
+      line-height: 0.97;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(22px, 3vw, 42px) clamp(16px, 2.2vw, 30px);
+    }
+
+    .work-card {
+      min-width: 0;
+    }
+
+    .work-image {
+      overflow: hidden;
+      background: var(--paper-deep);
+      aspect-ratio: 1 / 1;
+    }
+
+    .work-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform 350ms cubic-bezier(.2, .7, .2, 1);
+    }
+
+    .work-card:hover .work-image img {
+      transform: scale(1.025);
+    }
+
+    .work-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 11px;
+    }
+
+    .work-title {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .work-year {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 0.65rem;
+    }
+
+    .collection-band {
+      margin-top: clamp(88px, 13vw, 190px);
+      padding: clamp(62px, 8vw, 118px) 0;
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .collection-inner {
+      width: var(--page);
+      margin: 0 auto;
+    }
+
+    .collection-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+      gap: clamp(28px, 8vw, 132px);
+      padding-bottom: clamp(42px, 6vw, 82px);
+    }
+
+    .collection-band .section-label {
+      padding-top: 0;
+      color: #bdbbb3;
+    }
+
+    .collection-copy {
+      margin: 0;
+      max-width: 780px;
+      font-family: var(--serif);
+      font-size: clamp(1.72rem, 3.2vw, 3.45rem);
+      font-weight: 400;
+      letter-spacing: -0.045em;
+      line-height: 1.12;
+    }
+
+    .collection-bottom {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(26px, 6vw, 96px);
+      padding-top: 24px;
+      border-top: 1px solid rgba(251, 250, 247, 0.28);
+    }
+
+    .archive-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+
+    .archive-frame {
+      min-height: 112px;
+      display: flex;
+      align-items: flex-end;
+      padding: 11px;
+      border: 1px solid rgba(251, 250, 247, 0.28);
+      background:
+        linear-gradient(135deg, rgba(251,250,247,0.08) 0%, transparent 55%),
+        rgba(251, 250, 247, 0.03);
+    }
+
+    .archive-label {
+      color: #d9d7cf;
+      font-size: 0.58rem;
+      line-height: 1.45;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      align-items: end;
+    }
+
+    .stat-value {
+      display: block;
+      margin-bottom: 6px;
+      font-family: var(--serif);
+      font-size: clamp(1.65rem, 2.6vw, 2.7rem);
+      font-weight: 400;
+      letter-spacing: -0.045em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      display: block;
+      color: #c8c6be;
+      font-size: 0.68rem;
+      line-height: 1.4;
+    }
+
+    .editions {
+      padding-top: clamp(88px, 12vw, 180px);
+    }
+
+    .section-link {
+      margin-bottom: 5px;
+      border-bottom: 1px solid var(--ink);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .section-link:hover {
+      color: var(--muted);
+      border-color: var(--muted);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(16px, 2.1vw, 29px);
+    }
+
+    .product-card {
+      min-width: 0;
+    }
+
+    .product-image {
+      overflow: hidden;
+      background: var(--paper-deep);
+      aspect-ratio: 1 / 1;
+    }
+
+    .product-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform 350ms cubic-bezier(.2, .7, .2, 1);
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.025);
+    }
+
+    .product-meta {
+      padding-top: 11px;
+    }
+
+    .product-title {
+      margin: 0 0 4px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .product-price {
+      color: var(--muted);
+      font-size: 0.65rem;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+      gap: clamp(36px, 8vw, 130px);
+      align-items: start;
+      margin-top: clamp(92px, 14vw, 200px);
+      padding: clamp(56px, 8vw, 112px) 0;
+      border-top: 1px solid var(--ink);
+    }
+
+    .about-image {
+      overflow: hidden;
+      background: var(--paper-deep);
+      aspect-ratio: 0.87 / 1;
+    }
+
+    .about-image img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .about-copy {
+      padding-top: 4px;
+    }
+
+    .about-copy h2 {
+      margin-bottom: 27px;
+    }
+
+    .about-copy p {
+      max-width: 570px;
+      margin-bottom: 20px;
+      color: #3e3d39;
+      font-size: 1.02rem;
+      line-height: 1.65;
+    }
+
+    .about-copy .button {
+      margin-top: 12px;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      width: var(--page);
+      margin: 0 auto;
+      padding: 28px 0 34px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 7px 16px;
+      text-align: center;
+    }
+
+    .footer-contact a:hover {
+      color: var(--ink);
+    }
+
+    .copyright {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --page: min(100% - 36px, 600px);
+      }
+
+      .header-inner {
+        min-height: 64px;
+        gap: 14px;
+      }
+
+      .wordmark {
+        font-size: 1.45rem;
+      }
+
+      .site-nav {
+        gap: 13px;
+        font-size: 0.65rem;
+        letter-spacing: 0.045em;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 37px;
+        padding-top: 49px;
+        padding-bottom: 88px;
+      }
+
+      h1 {
+        max-width: 350px;
+        font-size: clamp(3.55rem, 16vw, 4.55rem);
+      }
+
+      .hero-art {
+        aspect-ratio: 1 / 1;
+      }
+
+      .section-heading {
+        align-items: start;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 22px;
+      }
+
+      .work-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 27px 13px;
+      }
+
+      .work-meta {
+        display: block;
+      }
+
+      .work-year {
+        display: block;
+        margin-top: 4px;
+      }
+
+      .collection-intro,
+      .collection-bottom,
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .collection-intro {
+        gap: 25px;
+      }
+
+      .collection-bottom {
+        gap: 32px;
+      }
+
+      .archive-frame {
+        min-height: 93px;
+        padding: 8px;
+      }
+
+      .stats {
+        gap: 12px;
+      }
+
+      .stat-label {
+        font-size: 0.62rem;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 29px 13px;
+      }
+
+      .about {
+        gap: 34px;
+      }
+
+      .about-image {
+        aspect-ratio: 1 / 0.92;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 12px;
+        padding: 27px 0 31px;
+      }
+
+      .copyright {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 390px) {
+      :root {
+        --page: calc(100% - 30px);
+      }
+
+      .site-nav {
+        gap: 10px;
+        font-size: 0.61rem;
+      }
+
+      .site-nav a {
+        padding: 6px 0;
+      }
+
+      .work-title,
+      .product-title {
+        font-size: 0.81rem;
+      }
+
+      .stats {
+        gap: 8px;
+      }
+
+      .stat-value {
+        font-size: 1.48rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="Florist home">Florist.</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#work">Work</a>
+        <a href="#collected">Collected</a>
+        <a href="#shop">Shop</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <span class="eyebrow">London mosaic artist</span>
+        <h1 id="hero-title">Hand-cut tile,<br>made to last.</h1>
+        <p class="hero-copy">Pixel-simple imagery rendered in tile, from walls across London to original works and editions for the home.</p>
+        <div class="actions">
+          <a class="button" href="#work">View the work</a>
+          <a class="button button-secondary" href="mailto:hello@notaflorist.com">Enquire</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="/florist/img/1.jpg" alt="Lightbox - Florist, a hand-cut tile mosaic work">
+        <span class="hero-caption">Lightbox, 2025</span>
+      </div>
+    </section>
+
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-label">01 / Work</span>
+          <h2 id="work-title">Selected works</h2>
+        </div>
+      </div>
+
+      <div class="work-grid">
+        <article class="work-card">
+          <div class="work-image">
+            <img src="/florist/img/2.jpg" alt="Florist - Blue, 2025">
+          </div>
+          <div class="work-meta">
+            <h3 class="work-title">Florist - Blue</h3>
+            <span class="work-year">2025</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div class="work-image">
+            <img src="/florist/img/3.jpg" alt="Florist - Rose, 2025">
+          </div>
+          <div class="work-meta">
+            <h3 class="work-title">Florist - Rose</h3>
+            <span class="work-year">2025</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div class="work-image">
+            <img src="/florist/img/4.jpg" alt="Florist - Amber, 2025">
+          </div>
+          <div class="work-meta">
+            <h3 class="work-title">Florist - Amber</h3>
+            <span class="work-year">2025</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div class="work-image">
+            <img src="/florist/img/7.jpg" alt="The Plaza del Pi, 2024">
+          </div>
+          <div class="work-meta">
+            <h3 class="work-title">The Plaza del Pi</h3>
+            <span class="work-year">2024</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div class="work-image">
+            <img src="/florist/img/6.jpg" alt="Tutti Frutti, 2025">
+          </div>
+          <div class="work-meta">
+            <h3 class="work-title">Tutti Frutti</h3>
+            <span class="work-year">2025</span>
+          </div>
+        </article>
+
+        <article class="work-card">
+          <div class="work-image">
+            <img src="/florist/img/1.jpg" alt="Lightbox - Florist, 2025">
+          </div>
+          <div class="work-meta">
+            <h3 class="work-title">Lightbox - Florist</h3>
+            <span class="work-year">2025</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="collection-band" id="collected" aria-labelledby="collected-title">
+      <div class="collection-inner">
+        <div class="collection-intro">
+          <span class="section-label">02 / Collected</span>
+          <p class="collection-copy" id="collected-title">Original Florist works and limited prints have found homes with collectors across the UK and Europe, a growing archive of collected and sold pieces submitted by their owners.</p>
+        </div>
+
+        <div class="collection-bottom">
+          <div class="archive-strip" aria-label="Collected work archive">
+            <div class="archive-frame"><span class="archive-label">Collected work<br>Owner archive</span></div>
+            <div class="archive-frame"><span class="archive-label">Collected work<br>Owner archive</span></div>
+            <div class="archive-frame"><span class="archive-label">Collected work<br>Owner archive</span></div>
+          </div>
+
+          <div class="stats" aria-label="Collection statistics">
+            <div class="stat">
+              <span class="stat-value">40+</span>
+              <span class="stat-label">works placed</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">3</span>
+              <span class="stat-label">countries</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">£20–£195</span>
+              <span class="stat-label">print editions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section editions" id="shop" aria-labelledby="shop-title">
+      <div class="section-heading">
+        <div>
+          <span class="section-label">03 / Shop</span>
+          <h2 id="shop-title">Prints and editions</h2>
+        </div>
+        <a class="section-link" href="#shop">Visit the shop</a>
+      </div>
+
+      <div class="product-grid">
+        <a class="product-card" href="#shop" aria-label="Red, Pink and White, £195.00">
+          <div class="product-image">
+            <img src="/florist/img/3.jpg" alt="Red, Pink & White print edition">
+          </div>
+          <div class="product-meta">
+            <h3 class="product-title">Red, Pink &amp; White</h3>
+            <span class="product-price">£195.00</span>
+          </div>
+        </a>
+
+        <a class="product-card" href="#shop" aria-label="Green, Pink and White, £195.00">
+          <div class="product-image">
+            <img src="/florist/img/2.jpg" alt="Green, Pink & White print edition">
+          </div>
+          <div class="product-meta">
+            <h3 class="product-title">Green, Pink &amp; White</h3>
+            <span class="product-price">£195.00</span>
+          </div>
+        </a>
+
+        <a class="product-card" href="#shop" aria-label="Tutti Frutti Blurple, £175.00">
+          <div class="product-image">
+            <img src="/florist/img/8.jpg" alt="Tutti Frutti - Blurple print edition">
+          </div>
+          <div class="product-meta">
+            <h3 class="product-title">Tutti Frutti - Blurple</h3>
+            <span class="product-price">£175.00</span>
+          </div>
+        </a>
+
+        <a class="product-card" href="#shop" aria-label="Florist Print, £90.00">
+          <div class="product-image">
+            <img src="/florist/img/5.jpg" alt="Florist Print edition">
+          </div>
+          <div class="product-meta">
+            <h3 class="product-title">Florist Print</h3>
+            <span class="product-price">£90.00</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section about" id="about" aria-labelledby="about-title">
+      <div class="about-image">
+        <img src="/florist/img/6.jpg" alt="Tutti Frutti hand-cut tile mosaic by Florist">
+      </div>
+      <div class="about-copy">
+        <span class="section-label">04 / About</span>
+        <h2 id="about-title">Florist.</h2>
+        <p>Florist is a London mosaic artist working in hand-cut tile. Their visual language is pixel-simple imagery rendered in tile, installed on walls across London and increasingly framed for the home.</p>
+        <p>Coming from street art, Florist now makes fine art and collectible work through originals, limited editions and one-off commissions.</p>
+        <a class="button" href="mailto:hello@notaflorist.com?subject=Original%20work%20enquiry">Enquire about original work</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>London</span>
+      <div class="footer-contact">
+        <a href="https://www.instagram.com/florist.ldn/" aria-label="Florist on Instagram">@florist.ldn</a>
+        <a href="mailto:hello@notaflorist.com">hello@notaflorist.com</a>
+      </div>
+      <span class="copyright">(c) 2026 Florist</span>
+    </div>
+  </footer>
+</body>
+</html>
