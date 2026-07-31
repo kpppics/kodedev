@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florist | Contemporary Hand-Cut Mosaic</title>
+    <meta name="description" content="Florist is a London mosaic artist working in hand-cut tile, creating original fine art, limited editions and commissions.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg: #faf9f7;
+            --color-text: #1c1b1a;
+            --color-text-muted: #5a5957;
+            --color-border: #e6e4e0;
+            --color-band: #f2f0ec;
+            
+            --font-serif: 'EB Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+            
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+        }
+
+        /* Reset & Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Accessibility */
+        :focus-visible {
+            outline: 2px solid var(--color-text);
+            outline-offset: 4px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: var(--space-sm);
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: var(--space-lg);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        p {
+            margin-bottom: var(--space-sm);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--color-text-muted);
+            max-width: 650px;
+            margin-bottom: var(--space-lg);
+            line-height: 1.5;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-xl) 0;
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: var(--space-lg) 0;
+            }
+            .container {
+                padding: 0 var(--space-sm);
+            }
+        }
+
+        /* Header & Nav */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(250, 249, 247, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        nav ul {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--color-text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .header-inner {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: var(--space-md) var(--space-lg);
+            }
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            border: 1px solid var(--color-text);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--color-text);
+            color: var(--color-bg);
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+            border-color: #333;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-text);
+            color: var(--color-bg);
+        }
+
+        /* Hero */
+        .hero-section {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: var(--space-xl);
+            padding-bottom: var(--space-xl);
+        }
+
+        /* Grids */
+        .grid-6 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg) var(--space-md);
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg) var(--space-md);
+        }
+
+        @media (min-width: 600px) {
+            .grid-6 { grid-template-columns: repeat(2, 1fr); }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .grid-6 { grid-template-columns: repeat(3, 1fr); }
+            .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* Artwork Cards */
+        .art-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .art-image-wrapper {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background-color: var(--color-border);
+        }
+
+        .art-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .art-card:hover .art-image-wrapper img {
+            transform: scale(1.04);
+        }
+
+        .art-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .art-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            color: var(--color-text);
+        }
+
+        .art-detail {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Proof Band */
+        .proof-band {
+            background-color: var(--color-band);
+            text-align: center;
+            padding: var(--space-xl) 0;
+        }
+
+        .proof-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .proof-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-lg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-lg);
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-md);
+            }
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .stat-number {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-xl);
+            }
+        }
+
+        .about-image {
+            aspect-ratio: 4 / 5;
+            width: 100%;
+            object-fit: cover;
+            background-color: var(--color-border);
+        }
+
+        .about-text p {
+            font-size: 1.125rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        .about-text .btn {
+            margin-top: var(--space-sm);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--color-border);
+            padding: var(--space-lg) 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .footer-links a:hover {
+            color: var(--color-text);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <a href="#" class="logo">Florist</a>
+            <nav aria-label="Main Navigation">
+                <ul>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#collected">Collected</a></li>
+                    <li><a href="#shop">Shop</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section container">
+            <h1>Contemporary Hand-Cut Mosaic</h1>
+            <p class="subtitle">Florist is a London mosaic artist working in hand-cut tile. Originating in the street art movement, the work is now increasingly framed for the home and held in private collections.</p>
+            <div class="btn-group">
+                <a href="#work" class="btn btn-primary">View the work</a>
+                <a href="mailto:hello@notaflorist.com" class="btn btn-secondary">Enquire</a>
+            </div>
+        </section>
+
+        <section id="work" class="container">
+            <h2>Selected Works</h2>
+            <div class="grid-6">
+                
+                <article class="art-card">
+                    <div class="art-image-wrapper">
+                        <img src="/florist/img/2.jpg" alt="Florist - Blue mosaic artwork" loading="lazy">
+                    </div>
+                    <div class="art-meta">
+                        <h3 class="art-title">Florist - Blue</h3>
+                        <span class="art-detail">2025</span>
+                    </div>
+                </article>
+
+                <article class="art-card">
+                    <div class="art-image-wrapper">
+                        <img src="/florist/img/3.jpg" alt="Florist - Rose mosaic artwork" loading="lazy">
+                    </div>
+                    <div class="art-meta">
+                        <h3 class="art-title">Florist - Rose</h3>
+                        <span class="art-detail">2025</span>
+                    </div>
+                </article>
+
+                <article class="art-card">
+                    <div class="art-image-wrapper">
+                        <img src="/florist/img/4.jpg" alt="Florist - Amber mosaic artwork" loading="lazy">
+                    </div>
+                    <div class="art-meta">
+                        <h3 class="art-title">Florist - Amber</h3>
+                        <span class="art-detail">2025</span>
+                    </div>
+                </article>
+
+                <article class="art-card">
+                    <div class="art-image-wrapper">
+                        <img src="/florist/img/7.jpg" alt="The Plaza del Pi mosaic artwork" loading="lazy">
+                    </div>
+                    <div class="art-meta">
+                        <h3 class="art-title">The Plaza del Pi</h3>
+                        <span class="art-detail">2024</span>
+                    </div>
+                </article>
+
+                <article class="art-card">
+                    <div class="art-image-wrapper">
+                        <img src="/florist/img/6.jpg" alt="Tutti Frutti mosaic artwork" loading="lazy">
+                    </div>
+                    <div class="art-meta">
+                        <h3 class="art-title">Tutti Frutti</h3>
+                        <span class="art-detail">2025</span>
+                    </div>
+                </article>
+
+                <article class="art-card">
+                    <div class="art-image-wrapper">
+                        <img src="/florist/img/1.jpg" alt="Lightbox - Florist artwork" loading="lazy">
+                    </div>
+                    <div class="art-meta">
+                        <h3 class="art-title">Lightbox - Florist</h3>
+                        <span class="art-detail">2025</span>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section id="collected" class="proof-band">
+            <div class="container proof-content">
+                <h2>Held in private collections</h2>
+                <p>Original Florist works and limited prints have found homes with collectors across the UK and Europe, a growing archive of collected and sold pieces submitted by their owners.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">40+</span>
+                        <span class="stat-label">Works placed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Countries</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">£20 to £195</span>
+                        <span class="stat-label">Pounds for print editions</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="shop" class="container">
+            <h2>Prints & Editions</h2>
+            <div class="grid-4">
+                
+                <article class="art-card">
+                    <a href="#shop" aria-label="View Red, Pink & White">
+                        <div class="art-image-wrapper">
+                            <img src="/florist/img/3.jpg" alt="Red, Pink & White print edition" loading="lazy">
+                        </div>
+                        <div class="art-meta" style="margin-top: var(--space-sm);">
+                            <h3 class="art-title">Red, Pink & White</h3>
+                            <span class="art-detail">£195.00</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="art-card">
+                    <a href="#shop" aria-label="View Green, Pink & White">
+                        <div class="art-image-wrapper">
+                            <img src="/florist/img/2.jpg" alt="Green, Pink & White print edition" loading="lazy">
+                        </div>
+                        <div class="art-meta" style="margin-top: var(--space-sm);">
+                            <h3 class="art-title">Green, Pink & White</h3>
+                            <span class="art-detail">£195.00</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="art-card">
+                    <a href="#shop" aria-label="View Tutti Frutti - Blurple">
+                        <div class="art-image-wrapper">
+                            <img src="/florist/img/8.jpg" alt="Tutti Frutti - Blurple print edition" loading="lazy">
+                        </div>
+                        <div class="art-meta" style="margin-top: var(--space-sm);">
+                            <h3 class="art-title">Tutti Frutti - Blurple</h3>
+                            <span class="art-detail">£175.00</span>
+                        </div>
+                    </a>
+                </article>
+
+                <article class="art-card">
+                    <a href="#shop" aria-label="View Florist Print">
+                        <div class="art-image-wrapper">
+                            <img src="/florist/img/5.jpg" alt="Florist Print edition" loading="lazy">
+                        </div>
+                        <div class="art-meta" style="margin-top: var(--space-sm);">
+                            <h3 class="art-title">Florist Print</h3>
+                            <span class="art-detail">£90.00</span>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <section id="about" class="container">
+            <div class="about-grid">
+                <div class="about-image-wrapper">
+                    <img src="/florist/img/6.jpg" alt="Portrait of the artist Florist" class="about-image" loading="lazy">
+                </div>
+                <div class="about-text">
+                    <h2>About the Artist</h2>
+                    <p>Florist is a London mosaic artist working exclusively in hand-cut tile. Known for a distinctive visual language of pixel-simple imagery, the work first gained recognition installed on walls across London.</p>
+                    <p>The practice has since evolved into fine art and collectible works. Florist now focuses on original pieces, limited editions and one-off commissions for collectors and galleries.</p>
+                    <a href="mailto:hello@notaflorist.com" class="btn btn-primary">Enquire about original work</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <span>London</span>
+                <a href="https://instagram.com/florist.ldn" target="_blank" rel="noopener noreferrer">@florist.ldn</a>
+                <a href="mailto:hello@notaflorist.com">hello@notaflorist.com</a>
+            </div>
+            <p>(c) 2026 Florist</p>
+        </div>
+    </footer>
+
+</body>
+</html>
