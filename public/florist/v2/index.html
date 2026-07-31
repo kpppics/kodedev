@@ -153,11 +153,20 @@
         .header-inner {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: var(--space-sm);
             padding: var(--space-sm) var(--space-md);
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        @media (min-width: 641px) {
+            .header-inner {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: var(--space-md);
+            }
         }
 
         .logo {
@@ -165,6 +174,29 @@
             font-size: 1.5rem;
             font-weight: 500;
             letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+        }
+        .logo {
+            flex-shrink: 0;
+        }
+        .logo img {
+            display: block;
+            width: 124px;
+            height: auto;
+            image-rendering: pixelated;
+        }
+        .sold-tag {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 7px;
+            border: 1px solid currentColor;
+            border-radius: 2px;
+            font-size: 0.62rem;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            vertical-align: middle;
+            opacity: 0.72;
         }
 
         nav ul {
@@ -415,7 +447,7 @@
 
     <header>
         <div class="header-inner">
-            <a href="#" class="logo">Florist</a>
+            <a href="#" class="logo" aria-label="Florist home"><img src="/florist/florist-logo-blue.png" alt="Florist" width="200" height="55"></a>
             <nav aria-label="Main Navigation">
                 <ul>
                     <li><a href="#work">Work</a></li>
@@ -507,20 +539,20 @@
         <section id="collected" class="proof-band">
             <div class="container proof-content">
                 <h2>Held in private collections</h2>
-                <p>Original Florist works and limited prints have found homes with collectors across the UK and Europe, a growing archive of collected and sold pieces submitted by their owners.</p>
+                <p>Forty four street installations worldwide, and every print release to date sold out. Originals have placed at £3,500. This is a growing archive of collected and sold pieces, submitted by the people who own them.</p>
                 
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <span class="stat-number">40+</span>
-                        <span class="stat-label">Works placed</span>
+                        <span class="stat-number">44</span>
+                        <span class="stat-label">Installations worldwide</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">3</span>
-                        <span class="stat-label">Countries</span>
+                        <span class="stat-number">Sold out</span>
+                        <span class="stat-label">Every print release</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">£20 to £195</span>
-                        <span class="stat-label">Pounds for print editions</span>
+                        <span class="stat-number">£3,500</span>
+                        <span class="stat-label">Original works</span>
                     </div>
                 </div>
             </div>
@@ -536,8 +568,8 @@
                             <img src="/florist/img/3.jpg" alt="Red, Pink & White print edition" loading="lazy">
                         </div>
                         <div class="art-meta" style="margin-top: var(--space-sm);">
-                            <h3 class="art-title">Red, Pink & White</h3>
-                            <span class="art-detail">£195.00</span>
+                            <h3 class="art-title">Red, Light Pink &amp; White <span class="sold-tag">Sold</span></h3>
+                            <span class="art-detail">£3,500.00</span>
                         </div>
                     </a>
                 </article>
@@ -548,8 +580,8 @@
                             <img src="/florist/img/2.jpg" alt="Green, Pink & White print edition" loading="lazy">
                         </div>
                         <div class="art-meta" style="margin-top: var(--space-sm);">
-                            <h3 class="art-title">Green, Pink & White</h3>
-                            <span class="art-detail">£195.00</span>
+                            <h3 class="art-title">Green, Light Pink &amp; White <span class="sold-tag">Sold</span></h3>
+                            <span class="art-detail">£3,500.00</span>
                         </div>
                     </a>
                 </article>
@@ -560,8 +592,8 @@
                             <img src="/florist/img/8.jpg" alt="Tutti Frutti - Blurple print edition" loading="lazy">
                         </div>
                         <div class="art-meta" style="margin-top: var(--space-sm);">
-                            <h3 class="art-title">Tutti Frutti - Blurple</h3>
-                            <span class="art-detail">£175.00</span>
+                            <h3 class="art-title">Tutti Frutti - Blurple <span class="sold-tag">Sold out</span></h3>
+                            <span class="art-detail">£195.00</span>
                         </div>
                     </a>
                 </article>
@@ -572,7 +604,7 @@
                             <img src="/florist/img/5.jpg" alt="Florist Print edition" loading="lazy">
                         </div>
                         <div class="art-meta" style="margin-top: var(--space-sm);">
-                            <h3 class="art-title">Florist Print</h3>
+                            <h3 class="art-title">The Plaza Del Pi <span class="sold-tag">Sold out</span></h3>
                             <span class="art-detail">£90.00</span>
                         </div>
                     </a>
@@ -588,7 +620,7 @@
                 </div>
                 <div class="about-text">
                     <h2>About the Artist</h2>
-                    <p>Florist is a London mosaic artist working exclusively in hand-cut tile. Known for a distinctive visual language of pixel-simple imagery, the work first gained recognition installed on walls across London.</p>
+                    <p>Florist wasn't born in a studio. It started with a handful of tiles, a pair of cutters, and hours on YouTube figuring out how to make something that would last.</p>
                     <p>The practice has since evolved into fine art and collectible works. Florist now focuses on original pieces, limited editions and one-off commissions for collectors and galleries.</p>
                     <a href="mailto:hello@notaflorist.com" class="btn btn-primary">Enquire about original work</a>
                 </div>

@@ -84,6 +84,33 @@
       letter-spacing: -0.05em;
       line-height: 1;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .wordmark img {
+      display: block;
+      width: 128px;
+      height: auto;
+      image-rendering: pixelated;
+    }
+
+    .sold {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 7px;
+      border: 1px solid currentColor;
+      border-radius: 2px;
+      font-size: 0.62rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      vertical-align: middle;
+      opacity: 0.72;
+    }
+
+    .product-note {
+      opacity: 0.6;
+      font-size: 0.78em;
     }
 
     .site-nav {
@@ -544,8 +571,8 @@
         gap: 14px;
       }
 
-      .wordmark {
-        font-size: 1.45rem;
+      .wordmark img {
+        width: 104px;
       }
 
       .site-nav {
@@ -675,7 +702,7 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="wordmark" href="#top" aria-label="Florist home">Florist.</a>
+      <a class="wordmark" href="#top" aria-label="Florist home"><img src="/florist/florist-logo-blue.png" alt="Florist" width="200" height="55"></a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#work">Work</a>
         <a href="#collected">Collected</a>
@@ -777,7 +804,7 @@
       <div class="collection-inner">
         <div class="collection-intro">
           <span class="section-label">02 / Collected</span>
-          <p class="collection-copy" id="collected-title">Original Florist works and limited prints have found homes with collectors across the UK and Europe, a growing archive of collected and sold pieces submitted by their owners.</p>
+          <p class="collection-copy" id="collected-title">Forty four street installations worldwide, and every print release to date sold out. Originals have placed at £3,500. This is a growing archive of collected and sold pieces, submitted by the people who own them.</p>
         </div>
 
         <div class="collection-bottom">
@@ -789,16 +816,16 @@
 
           <div class="stats" aria-label="Collection statistics">
             <div class="stat">
-              <span class="stat-value">40+</span>
-              <span class="stat-label">works placed</span>
+              <span class="stat-value">44</span>
+              <span class="stat-label">installations worldwide</span>
             </div>
             <div class="stat">
-              <span class="stat-value">3</span>
-              <span class="stat-label">countries</span>
+              <span class="stat-value">£3,500</span>
+              <span class="stat-label">original works</span>
             </div>
             <div class="stat">
-              <span class="stat-value">£20–£195</span>
-              <span class="stat-label">print editions</span>
+              <span class="stat-value">Sold out</span>
+              <span class="stat-label">every print release</span>
             </div>
           </div>
         </div>
@@ -815,43 +842,43 @@
       </div>
 
       <div class="product-grid">
-        <a class="product-card" href="#shop" aria-label="Red, Pink and White, £195.00">
+        <a class="product-card" href="https://notaflorist.com/shop" aria-label="Red, Light Pink and White, £3,500.00, sold">
           <div class="product-image">
-            <img src="/florist/img/3.jpg" alt="Red, Pink & White print edition">
+            <img src="/florist/img/3.jpg" alt="Red, Light Pink and White original mosaic">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Red, Pink &amp; White</h3>
-            <span class="product-price">£195.00</span>
+            <h3 class="product-title">Red, Light Pink &amp; White <span class="sold">Sold</span></h3>
+            <span class="product-price">£3,500.00 <span class="product-note">original</span></span>
           </div>
         </a>
 
-        <a class="product-card" href="#shop" aria-label="Green, Pink and White, £195.00">
+        <a class="product-card" href="https://notaflorist.com/shop" aria-label="Green, Light Pink and White, £3,500.00, sold">
           <div class="product-image">
-            <img src="/florist/img/2.jpg" alt="Green, Pink & White print edition">
+            <img src="/florist/img/2.jpg" alt="Green, Light Pink and White original mosaic">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Green, Pink &amp; White</h3>
-            <span class="product-price">£195.00</span>
+            <h3 class="product-title">Green, Light Pink &amp; White <span class="sold">Sold</span></h3>
+            <span class="product-price">£3,500.00 <span class="product-note">original</span></span>
           </div>
         </a>
 
-        <a class="product-card" href="#shop" aria-label="Tutti Frutti Blurple, £175.00">
+        <a class="product-card" href="https://notaflorist.com/shop" aria-label="Tutti Frutti Blurple, £195.00, sold out">
           <div class="product-image">
-            <img src="/florist/img/8.jpg" alt="Tutti Frutti - Blurple print edition">
+            <img src="/florist/img/8.jpg" alt="Tutti Frutti Blurple print edition">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Tutti Frutti - Blurple</h3>
-            <span class="product-price">£175.00</span>
+            <h3 class="product-title">Tutti Frutti - Blurple <span class="sold">Sold out</span></h3>
+            <span class="product-price">£195.00 <span class="product-note">edition</span></span>
           </div>
         </a>
 
-        <a class="product-card" href="#shop" aria-label="Florist Print, £90.00">
+        <a class="product-card" href="https://notaflorist.com/shop" aria-label="The Plaza Del Pi, £90.00, sold out">
           <div class="product-image">
-            <img src="/florist/img/5.jpg" alt="Florist Print edition">
+            <img src="/florist/img/5.jpg" alt="The Plaza Del Pi print edition">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Florist Print</h3>
-            <span class="product-price">£90.00</span>
+            <h3 class="product-title">The Plaza Del Pi <span class="sold">Sold out</span></h3>
+            <span class="product-price">£90.00 <span class="product-note">edition</span></span>
           </div>
         </a>
       </div>
@@ -864,8 +891,9 @@
       <div class="about-copy">
         <span class="section-label">04 / About</span>
         <h2 id="about-title">Florist.</h2>
-        <p>Florist is a London mosaic artist working in hand-cut tile. Their visual language is pixel-simple imagery rendered in tile, installed on walls across London and increasingly framed for the home.</p>
-        <p>Coming from street art, Florist now makes fine art and collectible work through originals, limited editions and one-off commissions.</p>
+        <p>Florist wasn't born in a studio. It started with a handful of tiles, a pair of cutters, and hours on YouTube figuring out how to make something that would last.</p>
+        <p>Experiments with random bits of pixel art turned into the Florist pattern, a tight, repeating design that feels like order carved out of chaos. Now I look for the places the city leaves blank, boarded-up windows, bricked-in doorways, forgotten walls. The spaces that would otherwise stay empty.</p>
+        <p>Forty four installations later, the work has moved indoors too: originals, limited editions and one-off commissions.</p>
         <a class="button" href="mailto:hello@notaflorist.com?subject=Original%20work%20enquiry">Enquire about original work</a>
       </div>
     </section>
