@@ -97,7 +97,6 @@
 
     .sold {
       display: inline-block;
-      margin-left: 8px;
       padding: 2px 7px;
       border: 1px solid currentColor;
       border-radius: 2px;
@@ -162,8 +161,7 @@
     .eyebrow,
     .section-label,
     .work-year,
-    .product-price,
-    .archive-label {
+    .product-price {
       font-size: 0.69rem;
       font-weight: 600;
       letter-spacing: 0.1em;
@@ -192,6 +190,13 @@
       font-weight: 400;
       letter-spacing: -0.065em;
       line-height: 0.9;
+      text-wrap: balance;
+    }
+
+    @media (max-width: 460px) {
+      h1 {
+        font-size: clamp(2.6rem, 11vw, 3.4rem);
+      }
     }
 
     .hero-copy {
@@ -288,6 +293,7 @@
       font-weight: 400;
       letter-spacing: -0.055em;
       line-height: 0.97;
+      text-wrap: balance;
     }
 
     .work-grid {
@@ -398,8 +404,13 @@
 
     .archive-label {
       color: #d9d7cf;
-      font-size: 0.58rem;
-      line-height: 1.45;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
     }
 
     .stats {
@@ -424,6 +435,7 @@
       color: #c8c6be;
       font-size: 0.68rem;
       line-height: 1.4;
+      text-wrap: balance;
     }
 
     .editions {
@@ -475,10 +487,18 @@
     }
 
     .product-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
       margin: 0 0 4px;
       font-size: 0.88rem;
       font-weight: 500;
       line-height: 1.35;
+    }
+
+    .product-title .title-text {
+      text-wrap: balance;
     }
 
     .product-price {
@@ -716,7 +736,7 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
         <span class="eyebrow">London mosaic artist</span>
-        <h1 id="hero-title">Hand-cut tile,<br>made to last.</h1>
+        <h1 id="hero-title">Hand-cut tile, made to last.</h1>
         <p class="hero-copy">Pixel-simple imagery rendered in tile, from walls across London to original works and editions for the home.</p>
         <div class="actions">
           <a class="button" href="#work">View the work</a>
@@ -809,9 +829,9 @@
 
         <div class="collection-bottom">
           <div class="archive-strip" aria-label="Collected work archive">
-            <div class="archive-frame"><span class="archive-label">Collected work<br>Owner archive</span></div>
-            <div class="archive-frame"><span class="archive-label">Collected work<br>Owner archive</span></div>
-            <div class="archive-frame"><span class="archive-label">Collected work<br>Owner archive</span></div>
+            <div class="archive-frame"><span class="archive-label">Owner's photo</span></div>
+            <div class="archive-frame"><span class="archive-label">Owner's photo</span></div>
+            <div class="archive-frame"><span class="archive-label">Owner's photo</span></div>
           </div>
 
           <div class="stats" aria-label="Collection statistics">
@@ -847,7 +867,7 @@
             <img src="/florist/img/3.jpg" alt="Red, Light Pink and White original mosaic">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Red, Light Pink &amp; White <span class="sold">Sold</span></h3>
+            <h3 class="product-title"><span class="title-text">Red, Light Pink &amp; White</span> <span class="sold">Sold</span></h3>
             <span class="product-price">£3,500.00 <span class="product-note">original</span></span>
           </div>
         </a>
@@ -857,7 +877,7 @@
             <img src="/florist/img/2.jpg" alt="Green, Light Pink and White original mosaic">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Green, Light Pink &amp; White <span class="sold">Sold</span></h3>
+            <h3 class="product-title"><span class="title-text">Green, Light Pink &amp; White</span> <span class="sold">Sold</span></h3>
             <span class="product-price">£3,500.00 <span class="product-note">original</span></span>
           </div>
         </a>
@@ -867,7 +887,7 @@
             <img src="/florist/img/8.jpg" alt="Tutti Frutti Blurple print edition">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">Tutti Frutti - Blurple <span class="sold">Sold out</span></h3>
+            <h3 class="product-title"><span class="title-text">Tutti Frutti - Blurple</span> <span class="sold">Sold out</span></h3>
             <span class="product-price">£195.00 <span class="product-note">edition</span></span>
           </div>
         </a>
@@ -877,7 +897,7 @@
             <img src="/florist/img/5.jpg" alt="The Plaza Del Pi print edition">
           </div>
           <div class="product-meta">
-            <h3 class="product-title">The Plaza Del Pi <span class="sold">Sold out</span></h3>
+            <h3 class="product-title"><span class="title-text">The Plaza Del Pi</span> <span class="sold">Sold out</span></h3>
             <span class="product-price">£90.00 <span class="product-note">edition</span></span>
           </div>
         </a>
