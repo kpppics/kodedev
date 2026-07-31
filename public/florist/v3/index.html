@@ -678,10 +678,12 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* the mosaic */
+    /* the mosaic: broken coursing, grout-tight */
     .wall {
       display: grid;
       grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-auto-rows: calc((100vw - 27px) / 8);
+      grid-auto-flow: row;
       gap: 3px;
       margin: 0;
       padding: 0 3px;
@@ -693,17 +695,31 @@
       min-width: 0;
     }
 
+    .wall li[data-d="2x2"] { grid-column: span 2; grid-row: span 2; }
+    .wall li[data-d="2x1"] { grid-column: span 2; }
+    .wall li[data-d="1x2"] { grid-row: span 2; }
+
+    .wall li[data-d="2x2"] .tile-title {
+      font-size: 0.82rem;
+      -webkit-line-clamp: 4;
+    }
+
     .tile-btn {
       display: block;
       position: relative;
       width: 100%;
+      height: 100%;
       margin: 0;
       padding: 0;
       border: 0;
       background: var(--paper-deep);
       cursor: pointer;
       overflow: hidden;
-      aspect-ratio: 1 / 1;
+    }
+
+    .tile-btn:focus-visible {
+      outline: 2px solid var(--white);
+      outline-offset: -5px;
     }
 
     .tile-btn img {
@@ -790,6 +806,22 @@
     @media (max-width: 1100px) {
       .wall {
         grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-auto-rows: calc((100vw - 21px) / 6);
+      }
+
+      .wall li[data-d] { grid-column: auto; grid-row: auto; }
+      .wall li[data-m="2x2"] { grid-column: span 2; grid-row: span 2; }
+      .wall li[data-m="2x1"] { grid-column: span 2; }
+      .wall li[data-m="1x2"] { grid-row: span 2; }
+
+      .wall li[data-d="2x2"] .tile-title {
+        font-size: 0.7rem;
+        -webkit-line-clamp: 3;
+      }
+
+      .wall li[data-m="2x2"] .tile-title {
+        font-size: 0.72rem;
+        -webkit-line-clamp: 3;
       }
     }
 
@@ -813,6 +845,7 @@
 
       .wall {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-auto-rows: calc((100vw - 10px) / 4);
         gap: 2px;
         padding: 0 2px;
       }
@@ -964,6 +997,19 @@
         font-size: 1.48rem;
       }
     }
+
+    /* filtered state: JS-only. Spans flatten; first visible tile leads. */
+    .wall.is-filtered li[data-d],
+    .wall.is-filtered li[data-m],
+    .wall.is-filtered li {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .wall.is-filtered li.tile-lead {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
   </style>
 </head>
 <body>
@@ -1102,7 +1148,7 @@
       </div>
 
       <ul class="wall" id="wall">
-        <li class="tile" data-city="mumbai">
+        <li class="tile" data-city="mumbai" data-d="2x2" data-m="2x2">
           <button class="tile-btn" type="button" aria-label="Mumbai, Mumbai, Jan 2026">
             <img src="/florist/wall/001.jpg" alt="Mumbai, Mumbai" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1122,7 +1168,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="goa">
+        <li class="tile" data-city="goa" data-d="2x2" data-m="1x2">
           <button class="tile-btn" type="button" aria-label="Mogli, Goa, Jan 2026">
             <img src="/florist/wall/003.jpg" alt="Mogli, Goa" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1132,7 +1178,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="barcelona">
+        <li class="tile" data-city="barcelona" data-d="2x2" data-m="1x2">
           <button class="tile-btn" type="button" aria-label="Catalan Florista, Barcelona, Nov 2025">
             <img src="/florist/wall/004.jpg" alt="Catalan Florista, Barcelona" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1332,7 +1378,7 @@
             </span>
           </button>
         </li>
-        <li class="tile is-gone" data-city="london">
+        <li class="tile is-gone" data-city="london" data-d="2x2" data-m="2x2">
           <button class="tile-btn" type="button" aria-label="25 Ravenscroft Street, London, Oct 2025">
             <img src="/florist/wall/024.jpg" alt="25 Ravenscroft Street, London" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1372,7 +1418,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="london">
+        <li class="tile" data-city="london" data-d="1x2">
           <button class="tile-btn" type="button" aria-label="Berners Road N1, London, Oct 2025">
             <img src="/florist/wall/028.jpg" alt="Berners Road N1, London" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1382,7 +1428,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="london">
+        <li class="tile" data-city="london" data-m="1x2">
           <button class="tile-btn" type="button" aria-label="Sclater Street / Junction OF Bethnal Green Road, London, Oct 2025">
             <img src="/florist/wall/029.jpg" alt="Sclater Street / Junction OF Bethnal Green Road, London" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1392,7 +1438,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="london">
+        <li class="tile" data-city="london" data-m="1x2">
           <button class="tile-btn" type="button" aria-label="Railway Wall / Junction OF Pedley Street &amp; Fleet Street Hill: Tagged Over!, London, Oct 2025">
             <img src="/florist/wall/030.jpg" alt="Railway Wall / Junction OF Pedley Street &amp; Fleet Street Hill: Tagged Over!, London" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1452,7 +1498,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="manchester">
+        <li class="tile" data-city="manchester" data-d="2x2" data-m="2x2">
           <button class="tile-btn" type="button" aria-label="1 Market Place, Stockport, Manchester, Manchester, Oct 2025">
             <img src="/florist/wall/036.jpg" alt="1 Market Place, Stockport, Manchester, Manchester" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1492,7 +1538,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="portsmouth">
+        <li class="tile" data-city="portsmouth" data-d="1x2" data-m="1x2">
           <button class="tile-btn" type="button" aria-label="Pitt Street Skate Park, Portsmouth, Portsmouth, Oct 2025">
             <img src="/florist/wall/040.jpg" alt="Pitt Street Skate Park, Portsmouth, Portsmouth" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1502,7 +1548,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="london">
+        <li class="tile" data-city="london" data-d="2x1">
           <button class="tile-btn" type="button" aria-label="Columbia Road, Opposite The Birdcage Pub, London, Oct 2025">
             <img src="/florist/wall/041.jpg" alt="Columbia Road, Opposite The Birdcage Pub, London" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1512,7 +1558,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="london">
+        <li class="tile" data-city="london" data-d="2x1" data-m="2x1">
           <button class="tile-btn" type="button" aria-label="Newport Street, Opposite Newport Street Gallery, London, Oct 2025">
             <img src="/florist/wall/042.jpg" alt="Newport Street, Opposite Newport Street Gallery, London" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1532,7 +1578,7 @@
             </span>
           </button>
         </li>
-        <li class="tile" data-city="paris">
+        <li class="tile" data-city="paris" data-d="2x1" data-m="2x1">
           <button class="tile-btn" type="button" aria-label="Quai Jaques Chirac/eiffel Tower, Paris France, Paris, Oct 2025">
             <img src="/florist/wall/044.jpg" alt="Quai Jaques Chirac/eiffel Tower, Paris France, Paris" loading="lazy" width="560" height="560">
             <span class="tile-info">
@@ -1706,11 +1752,16 @@
       chips.forEach(function (c) { c.classList.toggle('is-on', c === chip); });
       chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
       var shown = 0;
+      var lead = null;
       tiles.forEach(function (t) {
         var match = (f === 'all') || (t.getAttribute('data-city') === f);
         t.hidden = !match;
+        t.classList.remove('tile-lead');
+        if (match && !lead) lead = t;
         if (match) shown++;
       });
+      wall.classList.toggle('is-filtered', f !== 'all');
+      if (f !== 'all' && lead) lead.classList.add('tile-lead');
       if (count) count.textContent = shown;
     });
   });
