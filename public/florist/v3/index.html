@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Florist is a London mosaic artist working in hand-cut tile, creating original works, limited editions and commissions.">
   <title>Florist | London Mosaic Artist</title>
+  <link rel="icon" href="/florist/florist-logo-blue.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -16,6 +17,7 @@
       --muted: #696862;
       --line: #cfcdc5;
       --white: #fbfaf7;
+      --blue: #5576E1;
       --serif: "Playfair Display", Georgia, serif;
       --sans: "DM Sans", Arial, sans-serif;
       --page: min(1380px, calc(100% - 40px));
@@ -58,14 +60,22 @@
       outline-offset: 4px;
     }
 
+    .skip-link { position: fixed; top: 10px; left: 10px; z-index: 30; padding: 10px 16px; background: var(--ink); color: var(--white); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; transform: translateY(-200%); }
+    .skip-link:focus-visible { transform: none; }
+
+    .collection-band a:focus-visible, .collection-band button:focus-visible { outline-color: var(--white); }
+
     .site-header {
       position: sticky;
       top: 0;
       z-index: 10;
       border-bottom: 1px solid rgba(23, 23, 22, 0.12);
+      border-top: 3px solid var(--blue);
       background: rgba(244, 243, 239, 0.94);
       backdrop-filter: blur(12px);
     }
+
+    ::selection { background: rgba(85, 118, 225, 0.28); }
 
     .header-inner {
       width: var(--page);
@@ -386,33 +396,17 @@
       border-top: 1px solid rgba(251, 250, 247, 0.28);
     }
 
-    .archive-strip {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-    }
-
-    .archive-frame {
-      min-height: 112px;
-      display: flex;
-      align-items: flex-end;
-      padding: 11px;
-      border: 1px solid rgba(251, 250, 247, 0.28);
-      background:
-        linear-gradient(135deg, rgba(251,250,247,0.08) 0%, transparent 55%),
-        rgba(251, 250, 247, 0.03);
-    }
-
-    .archive-label {
-      color: #d9d7cf;
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      line-height: 1.4;
-      text-transform: uppercase;
-      text-align: center;
-      width: 100%;
-    }
+    .ledger-wrap { min-width: 0; }
+    .ledger { width: 100%; border-collapse: collapse; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .ledger th, .ledger td { padding: 13px 18px 13px 0; border-bottom: 1px solid rgba(251, 250, 247, 0.28); font-size: 0.82rem; line-height: 1.4; text-align: left; vertical-align: baseline; }
+    .ledger thead th { padding-top: 0; padding-bottom: 9px; color: #bdbbb3; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .ledger .ledger-work { font-family: var(--serif); font-size: clamp(1.05rem, 1.6vw, 1.3rem); letter-spacing: -0.02em; }
+    .ledger th.ledger-price, .ledger td.ledger-price { padding-right: 0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .ledger td:last-child, .ledger th:last-child { padding-right: 0; padding-left: 18px; text-align: right; white-space: nowrap; }
+    .archive-note { margin: 18px 0 0; color: #c8c6be; font-size: 0.82rem; line-height: 1.6; max-width: 52ch; }
+    .archive-note a { border-bottom: 1px solid rgba(251, 250, 247, 0.4); transition: color 160ms ease, border-color 160ms ease; }
+    .archive-note a:hover { color: var(--white); border-color: var(--white); }
 
     .stats {
       display: grid;
@@ -459,7 +453,7 @@
 
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(16px, 2.1vw, 29px);
     }
 
@@ -549,9 +543,15 @@
       margin-top: 12px;
     }
 
+    .enquiries { margin-bottom: clamp(72px, 9vw, 140px); padding: clamp(48px, 6vw, 84px) clamp(20px, 4vw, 64px); background: var(--paper-deep); text-align: center; }
+    .enquiries h2 { margin-bottom: 14px; font-size: clamp(1.9rem, 3vw, 3rem); }
+    .enquiries p { max-width: 46ch; margin: 0 auto 26px; color: #46453f; font-size: 1.02rem; line-height: 1.6; }
+
     .site-footer {
       border-top: 1px solid var(--line);
     }
+
+    .footer-tag { width: var(--page); margin: 0 auto; padding: 26px 0 0; color: var(--muted); font-family: var(--serif); font-style: italic; font-size: 0.98rem; text-align: center; }
 
     .footer-inner {
       width: var(--page);
@@ -639,6 +639,10 @@
       gap: 7px;
     }
 
+    .chips[hidden] {
+      display: none;
+    }
+
     .chip {
       display: inline-flex;
       align-items: center;
@@ -669,7 +673,7 @@
     }
 
     .chip-n {
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       opacity: 0.65;
       font-variant-numeric: tabular-nums;
     }
@@ -742,6 +746,8 @@
       font-size: 0.7rem;
       font-weight: 600;
       line-height: 1.28;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     .tile-sub {
@@ -757,7 +763,7 @@
       margin-top: 2px;
       padding: 2px 6px;
       border: 1px solid rgba(251,250,247,0.5);
-      font-size: 0.53rem;
+      font-size: 0.6rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -895,10 +901,8 @@
         gap: 32px;
       }
 
-      .archive-frame {
-        min-height: 93px;
-        padding: 8px;
-      }
+      .ledger th.ledger-type, .ledger td.ledger-type { display: none; }
+      .ledger th, .ledger td { padding: 11px 12px 11px 0; font-size: 0.78rem; }
 
       .stats {
         gap: 12px;
@@ -963,6 +967,7 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#top">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
       <a class="wordmark" href="#top" aria-label="Florist home"><img src="/florist/florist-logo-blue.png" alt="Florist" width="200" height="55"></a>
@@ -970,7 +975,7 @@
         <a href="#work">Work</a>
         <a href="#insitu">In situ</a>
         <a href="#collected">Collected</a>
-        <a href="#shop">Shop</a>
+        <a href="#shop">Editions</a>
         <a href="#about">About</a>
       </nav>
     </div>
@@ -981,15 +986,15 @@
       <div class="hero-content">
         <span class="eyebrow">London mosaic artist</span>
         <h1 id="hero-title">Hand-cut tile, made to last.</h1>
-        <p class="hero-copy">Pixel-simple imagery rendered in tile, from walls across London to original works and editions for the home.</p>
+        <p class="hero-copy">Forty four walls in eight cities. Original works placed with collectors, and every print release to date sold out.</p>
         <div class="actions">
           <a class="button" href="#work">View the work</a>
           <a class="button button-secondary" href="mailto:hello@notaflorist.com">Enquire</a>
         </div>
       </div>
       <div class="hero-art">
-        <img src="/florist/img/1.jpg" alt="Lightbox - Florist, a hand-cut tile mosaic work">
-        <span class="hero-caption">Lightbox, 2025</span>
+        <img src="/florist/img/7.jpg" alt="The Plaza del Pi by Florist, a framed work photographed against a grey wall" width="1600" height="1600">
+        <span class="hero-caption">The Plaza del Pi, 2024</span>
       </div>
     </section>
 
@@ -1083,16 +1088,16 @@
           <div><span class="ins-fig">05</span><span class="ins-lab">Countries</span></div>
         </div>
 
-        <div class="chips" role="group" aria-label="Filter installations by city">
-        <button class="chip is-on" type="button" data-filter="all">All 44</button>
-        <button class="chip" type="button" data-filter="mumbai">Mumbai <span class="chip-n">2</span></button>
-        <button class="chip" type="button" data-filter="goa">Goa <span class="chip-n">1</span></button>
-        <button class="chip" type="button" data-filter="barcelona">Barcelona <span class="chip-n">3</span></button>
-        <button class="chip" type="button" data-filter="london">London <span class="chip-n">33</span></button>
-        <button class="chip" type="button" data-filter="manchester">Manchester <span class="chip-n">1</span></button>
-        <button class="chip" type="button" data-filter="boavista">Boa Vista <span class="chip-n">2</span></button>
-        <button class="chip" type="button" data-filter="portsmouth">Portsmouth <span class="chip-n">1</span></button>
-        <button class="chip" type="button" data-filter="paris">Paris <span class="chip-n">1</span></button>
+        <div class="chips" role="group" aria-label="Filter installations by city" hidden>
+        <button class="chip is-on" type="button" data-filter="all" aria-pressed="true">All 44</button>
+        <button class="chip" type="button" data-filter="mumbai" aria-pressed="false">Mumbai <span class="chip-n">2</span></button>
+        <button class="chip" type="button" data-filter="goa" aria-pressed="false">Goa <span class="chip-n">1</span></button>
+        <button class="chip" type="button" data-filter="barcelona" aria-pressed="false">Barcelona <span class="chip-n">3</span></button>
+        <button class="chip" type="button" data-filter="london" aria-pressed="false">London <span class="chip-n">33</span></button>
+        <button class="chip" type="button" data-filter="manchester" aria-pressed="false">Manchester <span class="chip-n">1</span></button>
+        <button class="chip" type="button" data-filter="boavista" aria-pressed="false">Boa Vista <span class="chip-n">2</span></button>
+        <button class="chip" type="button" data-filter="portsmouth" aria-pressed="false">Portsmouth <span class="chip-n">1</span></button>
+        <button class="chip" type="button" data-filter="paris" aria-pressed="false">Paris <span class="chip-n">1</span></button>
         </div>
       </div>
 
@@ -1538,27 +1543,62 @@
           </button>
         </li>
       </ul>
-      <p class="wall-foot"><span id="wall-count">44</span> installations shown. Tap any tile for the location.</p>
+      <p class="wall-foot"><span id="wall-count">44</span> installations, newest first.<span id="wall-hint"></span></p>
     </section>
 
     <section class="collection-band" id="collected" aria-labelledby="collected-title">
       <div class="collection-inner">
         <div class="collection-intro">
           <span class="section-label">03 / Collected</span>
-          <p class="collection-copy" id="collected-title">Forty four street installations worldwide, and every print release to date sold out. Originals have placed at £3,500. This is a growing archive of collected and sold pieces, submitted by the people who own them.</p>
+          <p class="collection-copy" id="collected-title">Forty four street installations across five countries. Originals placed with private collectors at £3,500, and every print release to date sold out. The work sells. This is the record.</p>
         </div>
 
         <div class="collection-bottom">
-          <div class="archive-strip" aria-label="Collected work archive">
-            <div class="archive-frame"><span class="archive-label">Owner's photo</span></div>
-            <div class="archive-frame"><span class="archive-label">Owner's photo</span></div>
-            <div class="archive-frame"><span class="archive-label">Owner's photo</span></div>
+          <div class="ledger-wrap">
+            <table class="ledger">
+              <caption class="visually-hidden">Sales record of original works and print editions</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Work</th>
+                  <th scope="col" class="ledger-type">Type</th>
+                  <th scope="col" class="ledger-price">Price</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="ledger-work">Red, Light Pink &amp; White</td>
+                  <td class="ledger-type">Original, hand-cut tile</td>
+                  <td class="ledger-price">£3,500</td>
+                  <td>Sold</td>
+                </tr>
+                <tr>
+                  <td class="ledger-work">Green, Light Pink &amp; White</td>
+                  <td class="ledger-type">Original, hand-cut tile</td>
+                  <td class="ledger-price">£3,500</td>
+                  <td>Sold</td>
+                </tr>
+                <tr>
+                  <td class="ledger-work">Tutti Frutti, Blurple</td>
+                  <td class="ledger-type">Print edition</td>
+                  <td class="ledger-price">£195</td>
+                  <td>Sold out</td>
+                </tr>
+                <tr>
+                  <td class="ledger-work">The Plaza Del Pi</td>
+                  <td class="ledger-type">Print edition</td>
+                  <td class="ledger-price">£90</td>
+                  <td>Sold out</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="archive-note">The collector archive is open. If you own a piece, send a photograph of it in place: <a href="mailto:hello@notaflorist.com?subject=Collector%20archive">hello@notaflorist.com</a></p>
           </div>
 
           <div class="stats" aria-label="Collection statistics">
             <div class="stat">
               <span class="stat-value">44</span>
-              <span class="stat-label">installations worldwide</span>
+              <span class="stat-label">installations&nbsp;worldwide</span>
             </div>
             <div class="stat">
               <span class="stat-value">£3,500</span>
@@ -1576,10 +1616,10 @@
     <section class="section editions" id="shop" aria-labelledby="shop-title">
       <div class="section-heading">
         <div>
-          <span class="section-label">04 / Shop</span>
-          <h2 id="shop-title">Prints and editions</h2>
+          <span class="section-label">04 / Editions</span>
+          <h2 id="shop-title">Editions</h2>
         </div>
-        <a class="section-link" href="#shop">Visit the shop</a>
+        <a class="section-link" href="https://notaflorist.com/shop">Visit the shop</a>
       </div>
 
       <div class="product-grid">
@@ -1588,17 +1628,7 @@
             <img src="/florist/img/3.jpg" alt="Red, Light Pink and White original mosaic">
           </div>
           <div class="product-meta">
-            <h3 class="product-title"><span class="title-text">Red, Light Pink &amp; White</span> <span class="sold">Sold</span></h3>
-            <span class="product-price">£3,500.00 <span class="product-note">original</span></span>
-          </div>
-        </a>
-
-        <a class="product-card" href="https://notaflorist.com/shop" aria-label="Green, Light Pink and White, £3,500.00, sold">
-          <div class="product-image">
-            <img src="/florist/img/2.jpg" alt="Green, Light Pink and White original mosaic">
-          </div>
-          <div class="product-meta">
-            <h3 class="product-title"><span class="title-text">Green, Light Pink &amp; White</span> <span class="sold">Sold</span></h3>
+            <h3 class="product-title"><span class="title-text">Red, Light Pink &amp; White</span>&nbsp;<span class="sold">Sold</span></h3>
             <span class="product-price">£3,500.00 <span class="product-note">original</span></span>
           </div>
         </a>
@@ -1638,16 +1668,23 @@
         <a class="button" href="mailto:hello@notaflorist.com?subject=Original%20work%20enquiry">Enquire about original work</a>
       </div>
     </section>
+
+    <section class="section enquiries" aria-labelledby="enquiries-title">
+      <h2 id="enquiries-title">Gallery and press enquiries</h2>
+      <p>Originals, editions and one-off commissions. Portfolio and availability on request.</p>
+      <a class="button" href="mailto:hello@notaflorist.com?subject=Gallery%20enquiry">hello@notaflorist.com</a>
+    </section>
   </main>
 
   <footer class="site-footer">
+    <p class="footer-tag">Bloom to the Tomb babyyy :)</p>
     <div class="footer-inner">
       <span>London</span>
       <div class="footer-contact">
         <a href="https://www.instagram.com/florist.ldn/" aria-label="Florist on Instagram">@florist.ldn</a>
         <a href="mailto:hello@notaflorist.com">hello@notaflorist.com</a>
       </div>
-      <span class="copyright">(c) 2026 Florist</span>
+      <span class="copyright">&copy; 2026 Florist</span>
     </div>
   </footer>
 
@@ -1658,11 +1695,16 @@
   var tiles = Array.prototype.slice.call(wall.querySelectorAll('.tile'));
   var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
   var count = document.getElementById('wall-count');
+  var chipsBox = document.querySelector('.chips');
+  if (chipsBox) chipsBox.hidden = false;
+  var hint = document.getElementById('wall-hint');
+  if (hint) hint.textContent = ' Tap any tile for the location.';
 
   chips.forEach(function (chip) {
     chip.addEventListener('click', function () {
       var f = chip.getAttribute('data-filter');
       chips.forEach(function (c) { c.classList.toggle('is-on', c === chip); });
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
       var shown = 0;
       tiles.forEach(function (t) {
         var match = (f === 'all') || (t.getAttribute('data-city') === f);
