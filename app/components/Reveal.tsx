@@ -16,8 +16,8 @@ export default function Reveal({ children, delay = 0, className = '' }: RevealPr
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(40px)',
-        transition: `opacity 0.75s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.75s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+        transform: visible ? 'none' : 'translateY(12px)',
+        transition: `opacity .5s ease ${delay}ms, transform .5s ease ${delay}ms`,
       }}
     >
       {children}

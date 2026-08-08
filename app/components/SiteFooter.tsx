@@ -1,43 +1,71 @@
+import Link from 'next/link'
+import { SITE, CAPABILITIES } from '../lib/site'
+
 export default function SiteFooter() {
   return (
-    <footer className="bg-slate-900">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-12">
-          <div className="max-w-sm">
-            <div className="text-xl font-bold text-white mb-3 font-headline">
-              KODEDEV <span className="text-[10px] align-top font-body font-normal text-slate-500 tracking-normal ml-1">est. 2026</span>
-            </div>
-            <p className="text-slate-400 text-sm leading-relaxed mb-4">
-              Professional websites, redesigns, and custom apps for small businesses. Affordable, human, and built to grow.
+    <footer className="bg-ink border-t border-line">
+      <div className="mx-auto max-w-[1180px] px-6 py-16">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <div className="text-lg font-semibold tracking-[-0.02em] text-cream">KODEDEV</div>
+            <p className="mt-3 text-sm text-cream-dim max-w-xs">
+              A UK software studio. Websites, web apps and iOS apps for small businesses and founders,
+              designed, built, launched and looked after by one developer.
             </p>
+            <a href={`mailto:${SITE.email}`} className="mt-4 inline-flex items-center min-h-11 text-sm text-accent hover:underline">
+              {SITE.email}
+            </a>
           </div>
 
-          <div className="flex flex-wrap gap-16">
-            <div>
-              <h4 className="text-white font-bold font-headline mb-4 text-xs uppercase tracking-widest">Services</h4>
-              <div className="flex flex-col gap-3">
-                <a className="text-slate-400 hover:text-white transition-colors text-sm" href="#services">New Websites</a>
-                <a className="text-slate-400 hover:text-white transition-colors text-sm" href="#services">Redesigns</a>
-                <a className="text-slate-400 hover:text-white transition-colors text-sm" href="#services">Custom Apps</a>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white font-bold font-headline mb-4 text-xs uppercase tracking-widest">Company</h4>
-              <div className="flex flex-col gap-3">
-                <a className="text-slate-400 hover:text-white transition-colors text-sm" href="#portfolio">Work</a>
-                <a className="text-slate-400 hover:text-white transition-colors text-sm" href="#about">About</a>
-                <a className="text-slate-400 hover:text-white transition-colors text-sm" href="#quote">Contact</a>
-              </div>
-            </div>
+          <div>
+            <h2 className="eyebrow text-cream-dim">What we build</h2>
+            <ul className="mt-4 space-y-3">
+              {CAPABILITIES.map(c => (
+                <li key={c.slug}>
+                  <Link href={c.href} className="inline-flex items-center min-h-11 text-sm text-cream-dim hover:text-cream transition-colors">
+                    {c.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="eyebrow text-cream-dim">Studio</h2>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <Link href="/work" className="inline-flex items-center min-h-11 text-sm text-cream-dim hover:text-cream transition-colors">
+                  Live work
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="inline-flex items-center min-h-11 text-sm text-cream-dim hover:text-cream transition-colors">
+                  Start a project
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://music.kodedev.co.uk"
+                  className="inline-flex items-center min-h-11 text-sm text-cream-dim hover:text-cream transition-colors"
+                >
+                  Kode Music
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://pressapp.co.uk"
+                  className="inline-flex items-center min-h-11 text-sm text-cream-dim hover:text-cream transition-colors"
+                >
+                  PressApp
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-sm">© 2026 KODE DEV LTD. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a className="text-slate-500 hover:text-slate-300 transition-colors text-sm" href="#">Privacy Policy</a>
-            <a className="text-slate-500 hover:text-slate-300 transition-colors text-sm" href="#">Terms of Service</a>
-          </div>
+        <div className="mt-14 pt-8 border-t border-line flex flex-col sm:flex-row justify-between gap-3 text-xs text-cream-dim">
+          <p>© {new Date().getFullYear()} {SITE.legal}. Registered in England.</p>
+          <p>Built in-house. No templates, no page builders.</p>
         </div>
       </div>
     </footer>
