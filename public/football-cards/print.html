@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Print 4x6</title>
+<style>
+  @page{ size:4in 6in; margin:0 }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111;color:#eee;font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;gap:16px}
+  .sheet{width:4in;height:6in;overflow:hidden;background:#000;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+  .sheet img{width:4in;height:6in;object-fit:cover;display:block}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  button,a.b{font:inherit;font-weight:650;font-size:.92rem;padding:11px 18px;border-radius:10px;cursor:pointer;
+    border:1px solid rgba(255,255,255,.16);background:#1e1e21;color:#eee;text-decoration:none}
+  button.p{background:#EF0107;border-color:#EF0107;color:#fff}
+  .hint{font-size:.82rem;color:rgba(255,255,255,.55);max-width:34em;text-align:center;line-height:1.5}
+  @media print{
+    body{background:#fff;padding:0;margin:0;display:block;min-height:0}
+    .bar,.hint{display:none}
+    .sheet{width:4in;height:6in;box-shadow:none}
+  }
+</style>
+</head>
+<body>
+<div class="sheet"><img id="card" alt="Matchday card, 4 by 6 inches"></div>
+<div class="bar">
+  <button class="p" onclick="window.print()">Print</button>
+  <a class="b" id="dl" download>Save image</a>
+  <a class="b" href="/football-cards">Back</a>
+</div>
+<p class="hint">Set paper to 4 &times; 6 and scaling to 100%, not Fit to page. If your printer adds a border, choose Borderless.</p>
+<script>
+  var ok={"1_emirates":1,"2_holo":1,"3_retro":1,"4_ink":1,"5_gold":1,"6_terrace":1};
+  var c=new URLSearchParams(location.search).get('c');
+  if(!ok[c]) c='1_emirates';
+  var src='/football-cards/img/'+c+'_4x6.jpg?v=4';
+  var img=document.getElementById('card');
+  img.src=src;
+  var dl=document.getElementById('dl');
+  dl.href=src; dl.setAttribute('download','arsenal-'+c+'-4x6.jpg');
+  img.addEventListener('load',function(){ setTimeout(function(){ window.print(); },350); });
+</script>
+</body></html>

@@ -4,161 +4,149 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Matchday Trading Cards, front and back</title>
-<meta name="description" content="Six double-sided fan trading card templates at true 2.5 x 3.5in, two per 4x6 print.">
+<title>Matchday cards, 4x6</title>
+<meta name="description" content="Six Arsenal matchday fan card designs, full 4x6 inch prints at 300dpi. Save or print straight from the page.">
 <style>
 :root{
   --accent:#EF0107; --accent-soft:rgba(239,1,7,.14);
   --bg:#0a0a0b; --surface:#141416; --raised:#1e1e21;
   --text:#f3f3f5; --muted:rgba(243,243,245,.56); --border:rgba(255,255,255,.09);
-  --shadow:0 10px 34px rgba(0,0,0,.5);
+  --shadow:0 12px 38px rgba(0,0,0,.55);
   --fs-2:clamp(1.3rem,1.1rem + .9vw,1.5rem);
   --fs-4:clamp(1.9rem,1.4rem + 2.6vw,2.6rem); --fs-5:clamp(2.2rem,1.6rem + 3.8vw,3.4rem);
-  --container:1140px; --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --container:1080px; --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 ::selection{background:var(--accent-soft)}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 .container{max-width:var(--container);margin:0 auto;padding:0 20px}
-section{padding:clamp(44px,6vw,80px) 0}
+section{padding:clamp(40px,6vw,72px) 0}
 h1{font-size:var(--fs-5);line-height:1.05;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
 h2{font-size:var(--fs-4);line-height:1.1;letter-spacing:-.025em;font-weight:800}
 h3{font-size:var(--fs-2);letter-spacing:-.01em;font-weight:700}
-p{max-width:64ch} .muted{color:var(--muted)}
+p{max-width:62ch} .muted{color:var(--muted)}
 .eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
-header{padding:clamp(52px,8vw,100px) 0 0;background:radial-gradient(900px 420px at 50% -12%,rgba(239,1,7,.20),transparent 70%)}
+header{padding:clamp(48px,8vw,92px) 0 0;background:radial-gradient(900px 420px at 50% -12%,rgba(239,1,7,.2),transparent 70%)}
 header p{margin-top:16px;font-size:1.05rem;color:var(--muted)}
 
-.designs{display:grid;gap:clamp(30px,4vw,48px);margin-top:38px}
-.design{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:clamp(18px,2.4vw,26px);box-shadow:var(--shadow)}
-.dh{display:flex;align-items:baseline;gap:10px}
+.grid{display:grid;gap:clamp(24px,3.5vw,40px);margin-top:36px;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:clamp(16px,2.2vw,22px);box-shadow:var(--shadow)}
+.ch{display:flex;align-items:baseline;gap:10px}
 .num{font-size:.8rem;color:var(--accent);font-weight:800;letter-spacing:.1em}
-.design p{margin-top:6px;font-size:.95rem}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,20px);margin-top:18px}
-.pair img{width:100%;aspect-ratio:5/7;object-fit:cover;border-radius:10px;background:#000}
-.pair span{display:block;margin-top:8px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.dl{display:inline-block;margin-top:18px;font-size:.92rem;font-weight:650;color:var(--text);text-decoration:none;
-  border:1px solid var(--border);background:var(--raised);padding:10px 16px;border-radius:10px}
-.dl:hover{border-color:var(--accent)}
+.card p{margin-top:6px;font-size:.92rem;min-height:2.9em}
+.shot{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:#000;margin-top:14px}
+.acts{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.btn{flex:1 1 auto;text-align:center;font-size:.9rem;font-weight:650;text-decoration:none;color:var(--text);
+  border:1px solid var(--border);background:var(--raised);padding:11px 14px;border-radius:10px;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{flex:0 0 auto;background:transparent;color:var(--muted)}
 
-.note{background:var(--raised);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:20px 22px;margin-top:26px}
+.note{background:var(--raised);border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:12px;padding:20px 22px;margin-top:24px}
 .note h3{font-size:1.05rem;margin-bottom:8px}
 .note p{font-size:.95rem;color:var(--muted)}
+.note p + p{margin-top:10px}
 .note code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:5px;font-size:.86em}
-.sheets{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-top:30px}
-.sheet{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.sheet img{width:100%;background:#fff}
-.sheet div{padding:13px 16px;font-size:.85rem;color:var(--muted)}
-.sheet a{color:var(--text);font-weight:650;text-decoration:none;border-bottom:1px solid var(--accent)}
 ol{margin:20px 0 0 20px;color:var(--muted);font-size:.97rem}
 ol li{margin-bottom:9px} ol li b{color:var(--text);font-weight:650}
-footer{border-top:1px solid var(--border);padding:32px 0 56px;color:var(--muted);font-size:.9rem}
-@media (max-width:520px){ .pair{gap:10px} }
+footer{border-top:1px solid var(--border);padding:30px 0 54px;color:var(--muted);font-size:.9rem}
 </style>
 </head>
 <body>
 
 <header><div class="container">
   <div class="eyebrow">Matchday capture · Arsenal</div>
-  <h1 style="margin-top:12px">Six double-sided Arsenal fan cards.</h1>
-  <p>Every design has a front and a back, both built at true trading-card size, 2.5 &times; 3.5 inches at 300dpi. Turned sideways, the two stack onto a single 4 &times; 6 photo print.</p>
+  <h1 style="margin-top:12px">One card. One 4&times;6 print.</h1>
+  <p>Six designs, each a full 4 &times; 6 inch card at 300dpi. No cutting, no gluing, no back to line up. Save it to your phone or send it straight to the printer from here.</p>
 </div></header>
 
 <section><div class="container">
   <h2>The six</h2>
-  <div class="designs">
-      <article class="design">
-        <div class="dh"><span class="num">1</span><h3>Emirates Classic</h3></div>
-        <p class="muted">The safe crowd-pleaser. Vertical name rail, red brush sweep, big script chant. Closest to a real club-issue fan card.</p>
-        <div class="pair">
-          <div><img fetchpriority="high" src="/football-cards/img/1_emirates_front.jpg?v=3" alt="Emirates Classic front"><span>Front</span></div>
-          <div><img loading="lazy" src="/football-cards/img/1_emirates_back.jpg?v=3" alt="Emirates Classic back"><span>Back</span></div>
+  <div class="grid">
+      <article class="card" id="c1">
+        <div class="ch"><span class="num">1</span><h3>Emirates Classic</h3></div>
+        <p class="muted">The safe crowd-pleaser. Red paint sweep, vertical name rail, big brush chant.</p>
+        <img class="shot" fetchpriority="high" src="/football-cards/img/1_emirates_prev.jpg?v=4" alt="Emirates Classic, 4 by 6 inch card">
+        <div class="acts">
+          <a class="btn primary" href="/football-cards/img/1_emirates_4x6.jpg?v=4" download="arsenal-emirates-4x6.jpg">Save image</a>
+          <a class="btn" href="/football-cards/print?c=1_emirates" target="_blank" rel="noopener">Print 4&times;6</a>
+          <a class="btn ghost" href="/football-cards/img/1_emirates_4x6.jpg?v=4" target="_blank" rel="noopener">Full size</a>
         </div>
-        <a class="dl" href="/football-cards/img/sheet_1_emirates.png?v=3" download>Download the 4&times;6 print sheet</a>
       </article>
-      <article class="design">
-        <div class="dh"><span class="num">2</span><h3>Prizm Refractor</h3></div>
-        <p class="muted">Hexagon cut-out, foil shimmer, serial numbered 001/100. The one people ask for a second copy of.</p>
-        <div class="pair">
-          <div><img loading="lazy" src="/football-cards/img/2_holo_front.jpg?v=3" alt="Prizm Refractor front"><span>Front</span></div>
-          <div><img loading="lazy" src="/football-cards/img/2_holo_back.jpg?v=3" alt="Prizm Refractor back"><span>Back</span></div>
+      <article class="card" id="c2">
+        <div class="ch"><span class="num">2</span><h3>Prizm Refractor</h3></div>
+        <p class="muted">Foil shimmer and serial numbering. The one they ask for a second copy of.</p>
+        <img class="shot" loading="lazy" src="/football-cards/img/2_holo_prev.jpg?v=4" alt="Prizm Refractor, 4 by 6 inch card">
+        <div class="acts">
+          <a class="btn primary" href="/football-cards/img/2_holo_4x6.jpg?v=4" download="arsenal-holo-4x6.jpg">Save image</a>
+          <a class="btn" href="/football-cards/print?c=2_holo" target="_blank" rel="noopener">Print 4&times;6</a>
+          <a class="btn ghost" href="/football-cards/img/2_holo_4x6.jpg?v=4" target="_blank" rel="noopener">Full size</a>
         </div>
-        <a class="dl" href="/football-cards/img/sheet_2_holo.png?v=3" download>Download the 4&times;6 print sheet</a>
       </article>
-      <article class="design">
-        <div class="dh"><span class="num">3</span><h3>Retro '89</h3></div>
-        <p class="muted">Aged sticker-album stock, navy plate, serif name. Lands hardest with older supporters.</p>
-        <div class="pair">
-          <div><img loading="lazy" src="/football-cards/img/3_retro_front.jpg?v=3" alt="Retro '89 front"><span>Front</span></div>
-          <div><img loading="lazy" src="/football-cards/img/3_retro_back.jpg?v=3" alt="Retro '89 back"><span>Back</span></div>
+      <article class="card" id="c3">
+        <div class="ch"><span class="num">3</span><h3>Retro '89</h3></div>
+        <p class="muted">Aged sticker-album stock, navy plate, 1930 crest. Lands with older supporters.</p>
+        <img class="shot" loading="lazy" src="/football-cards/img/3_retro_prev.jpg?v=4" alt="Retro '89, 4 by 6 inch card">
+        <div class="acts">
+          <a class="btn primary" href="/football-cards/img/3_retro_4x6.jpg?v=4" download="arsenal-retro-4x6.jpg">Save image</a>
+          <a class="btn" href="/football-cards/print?c=3_retro" target="_blank" rel="noopener">Print 4&times;6</a>
+          <a class="btn ghost" href="/football-cards/img/3_retro_4x6.jpg?v=4" target="_blank" rel="noopener">Full size</a>
         </div>
-        <a class="dl" href="/football-cards/img/sheet_3_retro.png?v=3" download>Download the 4&times;6 print sheet</a>
       </article>
-      <article class="design">
-        <div class="dh"><span class="num">4</span><h3>North London Ink</h3></div>
-        <p class="muted">Torn ink frame, offset red type. The loudest of the six and the most shareable on a phone.</p>
-        <div class="pair">
-          <div><img loading="lazy" src="/football-cards/img/4_ink_front.jpg?v=3" alt="North London Ink front"><span>Front</span></div>
-          <div><img loading="lazy" src="/football-cards/img/4_ink_back.jpg?v=3" alt="North London Ink back"><span>Back</span></div>
+      <article class="card" id="c4">
+        <div class="ch"><span class="num">4</span><h3>North London Ink</h3></div>
+        <p class="muted">Torn ink frame, offset red type. Loudest of the six, best on a phone screen.</p>
+        <img class="shot" loading="lazy" src="/football-cards/img/4_ink_prev.jpg?v=4" alt="North London Ink, 4 by 6 inch card">
+        <div class="acts">
+          <a class="btn primary" href="/football-cards/img/4_ink_4x6.jpg?v=4" download="arsenal-ink-4x6.jpg">Save image</a>
+          <a class="btn" href="/football-cards/print?c=4_ink" target="_blank" rel="noopener">Print 4&times;6</a>
+          <a class="btn ghost" href="/football-cards/img/4_ink_4x6.jpg?v=4" target="_blank" rel="noopener">Full size</a>
         </div>
-        <a class="dl" href="/football-cards/img/sheet_4_ink.png?v=3" download>Download the 4&times;6 print sheet</a>
       </article>
-      <article class="design">
-        <div class="dh"><span class="num">5</span><h3>Gold Legend</h3></div>
-        <p class="muted">Black and gold, 1 of 1. Hold this back as the rare pull for a standout shot.</p>
-        <div class="pair">
-          <div><img loading="lazy" src="/football-cards/img/5_gold_front.jpg?v=3" alt="Gold Legend front"><span>Front</span></div>
-          <div><img loading="lazy" src="/football-cards/img/5_gold_back.jpg?v=3" alt="Gold Legend back"><span>Back</span></div>
+      <article class="card" id="c5">
+        <div class="ch"><span class="num">5</span><h3>Gold Legend</h3></div>
+        <p class="muted">Black and gold, 1 of 1. Hold it back as the rare pull.</p>
+        <img class="shot" loading="lazy" src="/football-cards/img/5_gold_prev.jpg?v=4" alt="Gold Legend, 4 by 6 inch card">
+        <div class="acts">
+          <a class="btn primary" href="/football-cards/img/5_gold_4x6.jpg?v=4" download="arsenal-gold-4x6.jpg">Save image</a>
+          <a class="btn" href="/football-cards/print?c=5_gold" target="_blank" rel="noopener">Print 4&times;6</a>
+          <a class="btn ghost" href="/football-cards/img/5_gold_4x6.jpg?v=4" target="_blank" rel="noopener">Full size</a>
         </div>
-        <a class="dl" href="/football-cards/img/sheet_5_gold.png?v=3" download>Download the 4&times;6 print sheet</a>
       </article>
-      <article class="design">
-        <div class="dh"><span class="num">6</span><h3>Terrace</h3></div>
-        <p class="muted">Flare-lit crowd backdrop with the stat strip. Best for groups.</p>
-        <div class="pair">
-          <div><img loading="lazy" src="/football-cards/img/6_terrace_front.jpg?v=3" alt="Terrace front"><span>Front</span></div>
-          <div><img loading="lazy" src="/football-cards/img/6_terrace_back.jpg?v=3" alt="Terrace back"><span>Back</span></div>
+      <article class="card" id="c6">
+        <div class="ch"><span class="num">6</span><h3>Terrace</h3></div>
+        <p class="muted">Flare-lit crowd backdrop. Best for groups.</p>
+        <img class="shot" loading="lazy" src="/football-cards/img/6_terrace_prev.jpg?v=4" alt="Terrace, 4 by 6 inch card">
+        <div class="acts">
+          <a class="btn primary" href="/football-cards/img/6_terrace_4x6.jpg?v=4" download="arsenal-terrace-4x6.jpg">Save image</a>
+          <a class="btn" href="/football-cards/print?c=6_terrace" target="_blank" rel="noopener">Print 4&times;6</a>
+          <a class="btn ghost" href="/football-cards/img/6_terrace_4x6.jpg?v=4" target="_blank" rel="noopener">Full size</a>
         </div>
-        <a class="dl" href="/football-cards/img/sheet_6_terrace.png?v=3" download>Download the 4&times;6 print sheet</a>
       </article>
+  </div>
+  <div class="note">
+    <h3>Saving and printing</h3>
+    <p><b style="color:var(--text)">Save image</b> downloads the full 1200 &times; 1800 file. On an iPhone it lands in Files. To get it into Photos instead, press and hold the picture and choose Add to Photos.</p>
+    <p><b style="color:var(--text)">Print 4&times;6</b> opens a page sized to exactly 4 &times; 6 inches and brings up the print dialog. Pick your 4 &times; 6 paper and make sure scaling is set to <code>100%</code> and not <code>Fit to page</code>.</p>
   </div>
 </div></section>
 
 <section style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
   <div class="container">
-    <h2>The 4&times;6 print sheets</h2>
-    <p class="muted" style="margin-top:12px">One sheet per design. A card is 2.5 &times; 3.5in, so turned sideways it is 3.5 wide by 2.5 high. Two of those stack inside a 4 &times; 6 with room for crop marks. Front on top, back underneath.</p>
-    <div class="sheets">
-      <div class="sheet"><img loading="lazy" src="/football-cards/img/sheet_1_emirates_prev.jpg?v=3" alt="Emirates Classic 4x6 sheet">
-        <div><a href="/football-cards/img/sheet_1_emirates.png?v=3" download>Emirates Classic</a><br>Front + back, 2.5 &times; 3.5in each</div></div>
-      <div class="sheet"><img loading="lazy" src="/football-cards/img/sheet_2_holo_prev.jpg?v=3" alt="Prizm Refractor 4x6 sheet">
-        <div><a href="/football-cards/img/sheet_2_holo.png?v=3" download>Prizm Refractor</a><br>Front + back, 2.5 &times; 3.5in each</div></div>
-      <div class="sheet"><img loading="lazy" src="/football-cards/img/sheet_3_retro_prev.jpg?v=3" alt="Retro '89 4x6 sheet">
-        <div><a href="/football-cards/img/sheet_3_retro.png?v=3" download>Retro '89</a><br>Front + back, 2.5 &times; 3.5in each</div></div>
-      <div class="sheet"><img loading="lazy" src="/football-cards/img/sheet_4_ink_prev.jpg?v=3" alt="North London Ink 4x6 sheet">
-        <div><a href="/football-cards/img/sheet_4_ink.png?v=3" download>North London Ink</a><br>Front + back, 2.5 &times; 3.5in each</div></div>
-      <div class="sheet"><img loading="lazy" src="/football-cards/img/sheet_5_gold_prev.jpg?v=3" alt="Gold Legend 4x6 sheet">
-        <div><a href="/football-cards/img/sheet_5_gold.png?v=3" download>Gold Legend</a><br>Front + back, 2.5 &times; 3.5in each</div></div>
-      <div class="sheet"><img loading="lazy" src="/football-cards/img/sheet_6_terrace_prev.jpg?v=3" alt="Terrace 4x6 sheet">
-        <div><a href="/football-cards/img/sheet_6_terrace.png?v=3" download>Terrace</a><br>Front + back, 2.5 &times; 3.5in each</div></div></div>
-    <div class="note">
-      <h3>Printer settings that matter</h3>
-      <p>Print at <code>100%</code> or <code>Actual size</code>. If it is set to <b style="color:var(--text)">Fit to page</b> the cards come out undersized and the crop marks stop lining up. Cut on the corner ticks, then glue the two halves back to back for a proper double-sided card.</p>
-    </div>
+    <h2>How the live capture would work</h2>
+    <ol>
+      <li><b>Shoot</b> the fan or group on the phone outside the ground.</li>
+      <li><b>Pick</b> a design and type their name.</li>
+      <li><b>Card builds</b> with the photo, name, fixture and date dropped in.</li>
+      <li><b>Hand it over</b>: QR or AirDrop to their phone, and a 4 &times; 6 to a pocket printer.</li>
+    </ol>
+    <p class="muted" style="margin-top:22px">The fan in these previews is a stand-in so you can judge the layouts. The crest, cannon and kit are the real Arsenal marks, as you asked. Worth revisiting before anything is sold at volume, but fine for now.</p>
   </div>
 </section>
 
-<section><div class="container">
-  <h2>How the live capture would work</h2>
-  <ol>
-    <li><b>Shoot</b> the fan or group on the phone outside the ground.</li>
-    <li><b>Cut out</b> the subject from the background automatically.</li>
-    <li><b>Drop</b> them onto the chosen template. Photo, name, fixture and date all fill in, front and back together.</li>
-    <li><b>Deliver</b>: QR or AirDrop straight to their phone, and a print-ready 4 &times; 6 to a pocket printer.</li>
-  </ol>
-  <p class="muted" style="margin-top:22px">The fan in these previews is a stand-in so you can judge the layouts. The crest, cannon and kit are the real Arsenal marks, as you asked. Worth revisiting before anything is sold at volume, but fine for now.</p>
-</div></section>
-
-<footer><div class="container">Twelve faces, six sheets, all at 300dpi. Pick a design and the capture tool gets built around it.</div></footer>
+<footer><div class="container">Six designs, 1200 &times; 1800 at 300dpi. Pick one and the capture tool gets built around it.</div></footer>
 </body></html>
